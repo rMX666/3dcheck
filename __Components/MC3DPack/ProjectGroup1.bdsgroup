@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<PersonalityInfo>
+		<Option>
+			<Option Name="Personality">Default.Personality</Option>
+			<Option Name="ProjectType"></Option>
+			<Option Name="Version">1.0</Option>
+			<Option Name="GUID">{75A35F29-572D-455C-B0DD-DBA316581AB6}</Option>
+		</Option>
+	</PersonalityInfo>
+	<Default.Personality>  <Projects>
+      <Projects Name="MC3DPack.bpl">MC3DPack.bdsproj</Projects>
+      <Projects Name="ifps3_D2006_3d.bpl">ifps3\ifps3_D2006_3d.bdsproj</Projects>
+      <Projects Name="Targets">MC3DPack.bpl ifps3_D2006_3d.bpl</Projects>
+    </Projects>
+    <Dependencies/>
+  </Default.Personality>
+	<StarTeamAssociation></StarTeamAssociation>
+	<StarTeamNonRelativeFiles></StarTeamNonRelativeFiles>
+</BorlandProject>

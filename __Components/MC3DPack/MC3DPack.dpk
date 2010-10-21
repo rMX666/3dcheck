@@ -1,0 +1,47 @@
+package MC3DPack;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  SynEdit_R2006,
+  vclx,
+  vcldb,
+  vcljpg,
+  ifps3_D2006_3d,
+  VclSmp,
+  vclactnband,
+  EhLib100,
+  dclOfficeXP;
+
+contains
+  uGradient in 'uGradient.pas',
+  uConsole_1 in 'uConsole_1.pas',
+  uCript_1 in 'uCript_1.pas',
+  uService_1 in 'uService_1.pas';
+
+end.
