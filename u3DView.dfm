@@ -1,0 +1,55 @@
+object f3DView: Tf3DView
+  Left = 0
+  Top = 0
+  BorderStyle = bsSizeToolWin
+  Caption = #1055#1088#1086#1089#1084#1086#1090#1088
+  ClientHeight = 534
+  ClientWidth = 689
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  FormStyle = fsStayOnTop
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnClose = FormClose
+  OnDblClick = GLViewerCamsFormDblClick
+  OnMouseMove = GLViewerCamsFormMouseMove
+  OnMouseWheel = FormMouseWheel
+  OnShortCut = FormShortCut
+  PixelsPerInch = 96
+  TextHeight = 13
+  object btn3DViewClose: TSpeedButton
+    Tag = 5
+    Left = 0
+    Top = 519
+    Width = 689
+    Height = 15
+    Hint = #1047#1072#1087#1091#1089#1090#1080#1090#1100' '#1087#1088#1086#1089#1084#1086#1090#1088' '#1090#1088#1072#1077#1082#1090#1086#1088#1080#1080
+    Align = alBottom
+    AllowAllUp = True
+    Caption = #1047#1072#1082#1088#1099#1090#1100
+    Flat = True
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = btn3DViewCloseClick
+    ExplicitLeft = 2
+    ExplicitTop = 224
+    ExplicitWidth = 285
+  end
+  object GLViewerCamsForm: TGLSceneViewer
+    Left = 0
+    Top = 0
+    Width = 689
+    Height = 519
+    Camera = fServiceDM.GLCameraCamView
+    Buffer.BackgroundColor = cl3DDkShadow
+    Buffer.AntiAliasing = aa2xHQ
+    FieldOfView = 137.851013183593700000
+    Align = alClient
+    OnDblClick = GLViewerCamsFormDblClick
+    OnMouseMove = GLViewerCamsFormMouseMove
+  end
+end

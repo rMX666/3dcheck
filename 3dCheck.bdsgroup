@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <PersonalityInfo>
+    <Option>
+      <Option Name="Personality">Default.Personality</Option>
+      <Option Name="ProjectType"></Option>
+      <Option Name="Version">1.0</Option>
+      <Option Name="GUID">{D22136DF-C820-4044-9D3E-4C30B0CB9CD9}</Option>
+    </Option>
+  </PersonalityInfo>
+  <Default.Personality>
+    
+    
+    
+    <Projects>
+      <Projects Name="FreeTrackFilterMMX.ax">DShowFilter\FreeTrackFilter.bdsproj</Projects>
+      <Projects Name="ThreeDMotionCheck.exe">ThreeDMotionCheck.bdsproj</Projects>
+      <Projects Name="Targets">FreeTrackFilterMMX.ax ThreeDMotionCheck.exe</Projects>
+    </Projects>
+    <Dependencies/>
+  </Default.Personality>
+</BorlandProject>
