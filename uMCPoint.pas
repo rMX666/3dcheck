@@ -190,6 +190,7 @@ begin
     Xpx2 := 0
   else
     Xpx2 := FPoints[Index].Y - Wpx2 / 2;
+
   Ypx1   := FPoints[Index].Z;
 
   R      := FOwner.Options['CameraRadius'].AsFloat;
