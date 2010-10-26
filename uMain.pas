@@ -46,8 +46,8 @@ type
     Tree3DTable: TVirtualStringTree;
     Panel5: T3DGradientPanel;
     Label4: TLabel;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
+    btn3dTable: TSpeedButton;
+    btn3dModel: TSpeedButton;
     Label1: TLabel;
     Image1: TImage;
     ComboTestList: TComboBox;
@@ -155,6 +155,9 @@ type
     Label28: TLabel;
     Label29: TLabel;
     ComboPointCount: TComboBox;
+    procedure Tree3DTableGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
+      TextType: TVSTTextType; var CellText: WideString);
+    procedure Tree3DTableGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
     procedure CheckBoxMouseMoveClick(Sender: TObject);
     procedure CheckBox3DViewClick(Sender: TObject);
     procedure CheckBoxEnablePerspectiveClick(Sender: TObject);
@@ -206,6 +209,7 @@ type
     procedure SceneAnimatePlaceCubes;
     procedure SceneAnimateClear;
     procedure SceneAnimateEnd;
+    procedure SceneAnimateCountParameters;
 
     procedure FillComboTestList;
 
@@ -235,7 +239,7 @@ var
 implementation
 
 uses
-  uDebug, Math, uMCPoint, uParams, u3DView;
+  uDebug, Math, uMCPoint, uParams, u3DView, uVTData;
 
 {$R *.dfm}
 
@@ -293,11 +297,14 @@ end;
 
 procedure TfMain.btnStartTestClick(Sender: TObject);
 begin
-  if TSpeedButton(Sender).Down then
-    StartTest
-  else
-    StopTest;
-  ChangeStartButtonImage(TSpeedButton(Sender));
+  try
+    if TSpeedButton(Sender).Down then
+      StartTest
+    else
+      StopTest;
+  finally
+    ChangeStartButtonImage(TSpeedButton(Sender));
+  end;
 end;
 
 procedure TfMain.SceneControlButtonClick(Sender: TObject);
@@ -699,6 +706,11 @@ begin
   SetLength(FSceneCubes, 0);
 end;
 
+procedure TfMain.SceneAnimateCountParameters;
+begin
+
+end;
+
 procedure TfMain.SceneAnimateEnd;
 begin
   CreateScene;
@@ -800,8 +812,56 @@ begin
 end;
 
 procedure TfMain.SceneMakeTable;
+
+  function GetOptionCaption(const Name: String): String;
+  begin
+    if Name = 'Mass'              then Result := 'Масса' else
+    if Name = 'LineColor'         then Result := 'Цвет линии' else
+    if Name = 'Interval'          then Result := 'Интервал' else
+    if Name = 'CameraRadius'      then Result := 'Расстояние до камеры' else
+    if Name = 'PointCount'        then Result := 'Количество точек' else
+    if Name = 'CameraHeight'      then Result := 'Высота камеры' else
+    if Name = 'TestName'          then Result := 'Название испытания' else
+    if Name = 'X0'                then Result := 'X0' else
+    if Name = 'Y0'                then Result := 'Y0' else
+    if Name = 'Z0'                then Result := 'Z0' else
+    if Name = 'EnablePerspective' then Result := 'Перспектива' else
+    if Name = 'Cam1Degree'        then Result := 'Угол камеры №1' else
+    if Name = 'Cam2Degree'        then Result := 'Угол камеры №2' else
+    if Name = 'Cam1ResX'          then Result := 'Разрешение камеры №1 по ширине' else
+    if Name = 'Cam1ResY'          then Result := 'Разрешение камеры №1 по высоте' else
+    if Name = 'Cam2ResX'          then Result := 'Разрешение камеры №2 по ширине' else
+    if Name = 'Cam2ResY'          then Result := 'Разрешение камеры №2 по высоте'
+    else Result := Name;
+  end;
+
+var
+  I: Integer;
+  Data: PSceneTableData;
+  Node: PVirtualNode;
 begin
-  { TODO : Make table }
+  Tree3DTable.Clear;
+  with fServiceDM.MCFile, Tree3DTable do
+    begin
+      Node := AddChild(nil);
+      Data := GetNodeData(Node);
+      Data.Caption := 'Параметры';
+      for I := 0 to OptionCount - 1 do
+        begin
+          Data := GetNodeData(AddChild(Node));
+          Data.Caption := GetOptionCaption(GetOptionByIndex(I).Name);
+          Data.Value := GetOptionByIndex(I).AsString;
+        end;
+
+      Node := AddChild(nil);
+      Data := GetNodeData(Node);
+      Data.Caption := 'Точки';
+      for I := 0 to CoordinateCount - 1 do
+        begin
+          
+        end;
+      FullExpand;
+    end;
 end;
 
 procedure TfMain.ScenePrepare;
@@ -987,6 +1047,24 @@ begin
     f3DView.Hide;
 end;
 
+procedure TfMain.Tree3DTableGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
+begin
+  NodeDataSize := SizeOf(TSceneTableData);
+end;
+
+procedure TfMain.Tree3DTableGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
+  TextType: TVSTTextType; var CellText: WideString);
+var
+  Data: PSceneTableData;
+begin
+  Data := Sender.GetNodeData(Node);
+  case Column of
+    0: CellText := Data.Caption;
+    1: CellText := Data.Value;
+    else CellText := '';
+  end;
+end;
+
 // =====================================================================================================================
 // Helper functions ----------------------------------------------------------------------------------------------------
 // =====================================================================================================================
@@ -1012,9 +1090,9 @@ begin
   fServiceDM.ImgStartStop.GetBitmap(Integer(btn.Down), btn.Glyph);
   btn.Glyph.Transparent := True;
   if btn.Down then
-    btn.Caption := 'Начать'#13#10'испытание'
+    btn.Caption := 'Остановить'#13#10'испытание'
   else
-    btn.Caption := 'Остановить'#13#10'испытание';
+    btn.Caption := 'Начать'#13#10'испытание';
 end;
 
 end.

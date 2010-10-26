@@ -47,7 +47,7 @@ object fMain: TfMain
         Top = 73
         Width = 996
         Height = 610
-        ActivePage = TabSheet4
+        ActivePage = TabSheet5
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
@@ -1267,15 +1267,11 @@ object fMain: TfMain
           Caption = #1058#1072#1073#1083#1080#1094#1072
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Tree3DTable: TVirtualStringTree
             Left = 0
             Top = 0
-            Width = 981
-            Height = 605
+            Width = 988
+            Height = 600
             Align = alClient
             Font.Charset = RUSSIAN_CHARSET
             Font.Color = clWindowText
@@ -1295,6 +1291,8 @@ object fMain: TfMain
             TabOrder = 0
             TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
             TreeOptions.SelectionOptions = [toFullRowSelect]
+            OnGetText = Tree3DTableGetText
+            OnGetNodeDataSize = Tree3DTableGetNodeDataSize
             Columns = <
               item
                 Position = 0
@@ -1307,38 +1305,48 @@ object fMain: TfMain
                 WideText = #1047#1085#1072#1095#1077#1085#1080#1077
               end
               item
-                Alignment = taCenter
                 Position = 2
-                Width = 95
-                WideText = #1050#1086#1086#1088#1076#1080#1085#1072#1090#1072' (X)'
+                Width = 60
+                WideText = #1042#1088#1077#1084#1103' (T)'
               end
               item
-                Alignment = taCenter
                 Position = 3
-                Width = 95
-                WideText = #1050#1086#1086#1088#1076#1080#1085#1072#1090#1072' (Y)'
+                Width = 65
+                WideText = #1042#1088#1077#1084#1103' (dT)'
               end
               item
                 Alignment = taCenter
                 Position = 4
                 Width = 95
-                WideText = #1050#1086#1086#1088#1076#1080#1085#1072#1090#1072' (Z)'
+                WideText = #1050#1086#1086#1088#1076#1080#1085#1072#1090#1072' (X)'
               end
               item
                 Alignment = taCenter
                 Position = 5
                 Width = 95
-                WideText = #1056#1072#1089#1089#1090#1086#1103#1085#1080#1077' (S)'
+                WideText = #1050#1086#1086#1088#1076#1080#1085#1072#1090#1072' (Y)'
               end
               item
                 Alignment = taCenter
                 Position = 6
                 Width = 95
-                WideText = #1057#1082#1086#1088#1086#1089#1090#1100' (v)'
+                WideText = #1050#1086#1086#1088#1076#1080#1085#1072#1090#1072' (Z)'
               end
               item
                 Alignment = taCenter
                 Position = 7
+                Width = 95
+                WideText = #1056#1072#1089#1089#1090#1086#1103#1085#1080#1077' (S)'
+              end
+              item
+                Alignment = taCenter
+                Position = 8
+                Width = 95
+                WideText = #1057#1082#1086#1088#1086#1089#1090#1100' (v)'
+              end
+              item
+                Alignment = taCenter
+                Position = 9
                 Width = 95
                 WideText = #1059#1089#1082#1086#1088#1077#1085#1080#1077' (a)'
               end>
@@ -1378,7 +1386,7 @@ object fMain: TfMain
           ParentFont = False
           Transparent = True
         end
-        object SpeedButton1: TSpeedButton
+        object btn3dTable: TSpeedButton
           Tag = 1
           AlignWithMargins = True
           Left = 908
@@ -1496,7 +1504,7 @@ object fMain: TfMain
           ExplicitTop = 4
           ExplicitHeight = 65
         end
-        object SpeedButton2: TSpeedButton
+        object btn3dModel: TSpeedButton
           AlignWithMargins = True
           Left = 817
           Top = 5
@@ -1865,10 +1873,6 @@ object fMain: TfMain
     object TabSheet2: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel4: T3DGradientPanel
         Left = 0
         Top = 0
@@ -2381,7 +2385,7 @@ object fMain: TfMain
             Width = 289
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboSourceChange
           end
@@ -2544,7 +2548,7 @@ object fMain: TfMain
             Width = 257
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 13
             OnChange = ComboMediaTypesChange
           end
@@ -2681,7 +2685,7 @@ object fMain: TfMain
             Width = 289
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboSourceChange
           end
@@ -2848,7 +2852,7 @@ object fMain: TfMain
             Width = 257
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 13
             OnChange = ComboMediaTypesChange
           end
@@ -3121,7 +3125,7 @@ object fMain: TfMain
             Width = 129
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 11
             Text = '1'

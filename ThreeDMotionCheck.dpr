@@ -3,7 +3,6 @@ program ThreeDMotionCheck;
 uses
   Forms,
   uMain in 'uMain.pas' {fMain},
-  uParserLog in 'uParserLog.pas',
   uCameraDM in 'uCameraDM.pas' {fCameraDM: TDataModule},
   uConst in 'uConst.pas',
   uDebug in 'uDebug.pas',
@@ -12,7 +11,8 @@ uses
   uMCPoint in 'uMCPoint.pas',
   u3DView in 'u3DView.pas' {f3DView},
   ifpii_MCFile in 'ifpii_MCFile.pas',
-  ifpiir_MCFile in 'ifpiir_MCFile.pas';
+  ifpiir_MCFile in 'ifpiir_MCFile.pas',
+  uVTData in 'uVTData.pas';
 
 {$R *.res}
 

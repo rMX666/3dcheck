@@ -227,10 +227,22 @@ begin
       Options['EnablePerspective'].AsBoolean := CheckBoxEnablePerspective.Checked;
       Options['Cam1Degree'].AsString := EditCameraDegree1.Text;
       Options['Cam2Degree'].AsString := EditCameraDegree2.Text;
-      Options['Cam1ResX'].AsInteger := FCam1Width;
-      Options['Cam1ResY'].AsInteger := FCam1Height;
-      Options['Cam2ResX'].AsInteger := FCam2Width;
-      Options['Cam2ResY'].AsInteger := FCam2Height;
+      if FCam1Width > 0 then
+        Options['Cam1ResX'].AsInteger := FCam1Width
+      else
+        Options['Cam1ResX'].AsInteger := 1;
+      if FCam1Height > 0 then
+        Options['Cam1ResY'].AsInteger := FCam1Height
+      else
+        Options['Cam1ResY'].AsInteger := 1;
+      if FCam2Width > 0 then
+        Options['Cam2ResX'].AsInteger := FCam2Width
+      else
+        Options['Cam2ResX'].AsInteger := 1;
+      if FCam2Height > 0 then
+        Options['Cam2ResY'].AsInteger := FCam2Height
+      else
+        Options['Cam2ResY'].AsInteger := 1;
     end;
 end;
 

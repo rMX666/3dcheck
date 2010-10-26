@@ -61,6 +61,7 @@ type
     FXmlParser: TXmlParser;
     FOptions: TParams;
     FCoordinates: TList;
+    function GetOptionCount: Integer;
     function GetOption(const Name: String): TParam;
     function GetCoordinateCount: Integer;
     function GetCoordinate(const Index: Integer): TMCPoint;
@@ -74,6 +75,8 @@ type
     procedure LoadFile(const FileName: String);
     procedure SaveFile(const FileName: String);
     function AddCoordinate: TMCPoint;
+    function GetOptionByIndex(const Index: Integer): TParam;
+    property OptionCount: Integer read GetOptionCount;
     property Coordinates[const Index: Integer]: TMCPoint read GetCoordinate;
     property CoordinateCount: Integer read GetCoordinateCount;
     property Options[const Name: String]: TParam read GetOption;
@@ -172,40 +175,47 @@ end;
 
 function TMCPoint.GetMetricPoint(const Index: Integer): T3DPoint;
 var
-  Xpx1, Xpx2, Ypx1,
-  R,
+  Xpx1, Xpx2, Ypx1, R,
   TanAw1, TanAh1, TanAw2,
   Xm, Ym, Zm: Real;
   Wpx1, Hpx1, Wpx2: Integer;
 begin
-  Wpx1   := FOwner.Options['Cam1ResX'].AsInteger;
-  Hpx1   := FOwner.Options['Cam1ResY'].AsInteger;
-  Wpx2   := FOwner.Options['Cam2ResX'].AsInteger;
+  // Разрешение камер
+  Wpx1 := FOwner.Options['Cam1ResX'].AsInteger;
+  Hpx1 := FOwner.Options['Cam1ResY'].AsInteger;
+  Wpx2 := FOwner.Options['Cam2ResX'].AsInteger;
 
-  if (FPoints[Index].X = -1) then
-    Xpx1 := 0
-  else
-    Xpx1 := FPoints[Index].X - Wpx1 / 2;
-  if (FPoints[Index].Y = -1) then
-    Xpx2 := 0
-  else
-    Xpx2 := FPoints[Index].Y - Wpx2 / 2;
+  // Радиус (расстояние от камер до объекта)
+  R := FOwner.Options['CameraRadius'].AsFloat;
 
-  Ypx1   := FPoints[Index].Z;
-
-  R      := FOwner.Options['CameraRadius'].AsFloat;
-
+  // Углы обзора камер по горизонтали и вертикали
   TanAw1 := 5/3 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 180);
-  TanAh1 := 5/4 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 180);
   TanAw2 := 5/3 * Tan(FOwner.Options['Cam2Degree'].AsFloat * Pi / 180);
+  TanAh1 := 5/4 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 180);
 
-  Xm     := (2 * R * Xpx1 * TanAw1 * (Wpx2 + 2 * Xpx2 * TanAw2)) / (Wpx1 * Wpx2 - 4 * Xpx1 * Xpx2 * TanAw1 * TanAw2);
-  Ym     := (2 * R * Xpx2 * TanAw2 * (Wpx1 + 2 * Xpx1 * TanAw1)) / (Wpx1 * Wpx2 - 4 * Xpx1 * Xpx2 * TanAw1 * TanAw2);
-  Zm     := Ypx1 * (R + Ym) * 2 * TanAh1 / Hpx1;
+  // Координаты точки
+  Xpx1 := FPoints[Index].X - Wpx1 / 2; // Камера1 пиксели по горизонтали
+  Xpx2 := FPoints[Index].Y - Wpx2 / 2; // Камера2 пиксели по горизонтали
+  Ypx1 := Hpx1 / 2 - FPoints[Index].Z; // Камера1 пиксели по вертикали
 
+  if (FPoints[Index].X = -1) then Xpx1 := 0;
+  if (FPoints[Index].Y = -1) then Xpx2 := 0;
+  if (FPoints[Index].Z = -1) then Ypx1 := 0;
+
+  // Формулы перевода координат из пиклесей в метры
+  Xm := (2 * R * Xpx1 * TanAw1 * (Wpx2 + 2 * Xpx2 * TanAw2)) / (Wpx1 * Wpx2 - 4 * Xpx1 * Xpx2 * TanAw1 * TanAw2);
+  Ym := (2 * R * Xpx2 * TanAw2 * (Wpx1 + 2 * Xpx1 * TanAw1)) / (Wpx1 * Wpx2 - 4 * Xpx1 * Xpx2 * TanAw1 * TanAw2);
+  Zm := Ypx1 * (R + Ym) * 2 * TanAh1 / Hpx1;
+
+  // Возвращаем резултат
   Result.X := Xm;
-  Result.Y := Zm;
-  Result.Z := Ym;
+  Result.Y := Zm; // С осями все хорошо. Просто по вертикали ось Y и я с этим ничего сделать не могу.
+  Result.Z := Ym; // Нужно отдавать координаты на вывод в таком виде X = X, Y = Z, Z = Y и все.
+
+  // А это на тот случай если захочется посмотреть точки без преобразования
+  //Result.X := Xpx1;
+  //Result.Y := Xpx2;
+  //Result.Z := Ypx1;
 end;
 
 function TMCPoint.GetPoint(const Index: Integer): T3DPoint;
@@ -347,6 +357,16 @@ end;
 function TMCFile.GetOption(const Name: String): TParam;
 begin
   Result := FOptions[Name];
+end;
+
+function TMCFile.GetOptionByIndex(const Index: Integer): TParam;
+begin
+  Result := FOptions.ParamByIndex(Index);
+end;
+
+function TMCFile.GetOptionCount: Integer;
+begin
+  Result := FOptions.Count;
 end;
 
 procedure TMCFile.LoadFile(const FileName: String);
