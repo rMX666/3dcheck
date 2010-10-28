@@ -122,7 +122,6 @@ type
     EditX0: TEdit;
     EditY0: TEdit;
     EditZ0: TEdit;
-    CheckBoxEnablePerspective: TCheckBox;
     CheckBoxSyncCamSettings: TCheckBox;
     CheckBoxMouseMove: TCheckBox;
     CheckBox3DView: TCheckBox;
@@ -160,7 +159,6 @@ type
     procedure Tree3DTableGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
     procedure CheckBoxMouseMoveClick(Sender: TObject);
     procedure CheckBox3DViewClick(Sender: TObject);
-    procedure CheckBoxEnablePerspectiveClick(Sender: TObject);
     procedure CheckBoxSyncCamSettingsClick(Sender: TObject);
     procedure EditMassChange(Sender: TObject);
     procedure PanelColorClick(Sender: TObject);
@@ -335,11 +333,6 @@ procedure TfMain.CheckBoxAnimationClick(Sender: TObject);
 begin
   fServiceDM.AnimateTimer.Enabled := TCheckBox(Sender).Checked;
   Params['Animation'].AsBoolean := CheckBoxAnimation.Checked;
-end;
-
-procedure TfMain.CheckBoxEnablePerspectiveClick(Sender: TObject);
-begin
-  Params['EnablePerspective'].AsBoolean := CheckBoxEnablePerspective.Checked;
 end;
 
 procedure TfMain.CheckBoxMouseMoveClick(Sender: TObject);
@@ -825,7 +818,6 @@ procedure TfMain.SceneMakeTable;
     if Name = 'X0'                then Result := 'X0' else
     if Name = 'Y0'                then Result := 'Y0' else
     if Name = 'Z0'                then Result := 'Z0' else
-    if Name = 'EnablePerspective' then Result := 'Перспектива' else
     if Name = 'Cam1Degree'        then Result := 'Угол камеры №1' else
     if Name = 'Cam2Degree'        then Result := 'Угол камеры №2' else
     if Name = 'Cam1ResX'          then Result := 'Разрешение камеры №1 по ширине' else
@@ -1001,11 +993,27 @@ begin
 end;
 
 procedure TfMain.ChangeMediaType(const Index: Integer);
+var
+  cp: TCapturePack;
+  IsCapturing: Boolean;
 begin
   case Index of
-    1: CameraManager.FirstCamera.MediaTypeIndex := ComboMediaTypes1.ItemIndex;
-    2: CameraManager.SecondCamera.MediaTypeIndex := ComboMediaTypes2.ItemIndex;
+    1:
+      begin
+        cp := CameraManager.FirstCamera;
+        IsCapturing := btnPreview1.Down;
+      end;
+    2:
+      begin
+        cp := CameraManager.SecondCamera;
+        IsCapturing := btnPreview2.Down;
+      end;
   end;
+  if IsCapturing then
+    StopPreview(Index);
+  cp.MediaTypeIndex := ComboMediaTypes1.ItemIndex;
+  if IsCapturing then
+    StartPreview(Index);
 end;
 
 procedure TfMain.StartPreview(const Index: Integer);

@@ -36,7 +36,7 @@ object fMain: TfMain
     Top = 0
     Width = 1004
     Height = 711
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
@@ -1243,7 +1243,7 @@ object fMain: TfMain
                 end
                 item
                   Position = 1
-                  Width = 91
+                  Width = 95
                   WideText = #1047#1085#1072#1095#1077#1085#1080#1077
                 end>
             end
@@ -2861,7 +2861,7 @@ object fMain: TfMain
           Left = 696
           Top = 0
           Width = 290
-          Height = 281
+          Height = 265
           Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099
           TabOrder = 2
           object Label7: TLabel
@@ -2921,16 +2921,16 @@ object fMain: TfMain
           object Label14: TLabel
             Left = 264
             Top = 112
-            Width = 6
+            Width = 12
             Height = 13
-            Caption = #1084
+            Caption = #1084#1084
           end
           object Label15: TLabel
             Left = 264
             Top = 136
-            Width = 6
+            Width = 12
             Height = 13
-            Caption = #1084
+            Caption = #1084#1084
           end
           object Label19: TLabel
             Left = 52
@@ -3037,7 +3037,7 @@ object fMain: TfMain
             Height = 21
             Hint = 'CameraRadius'
             TabOrder = 4
-            Text = '2'
+            Text = '1000'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
           end
@@ -3049,7 +3049,7 @@ object fMain: TfMain
             Height = 21
             Hint = 'CameraHeight'
             TabOrder = 5
-            Text = '1,5'
+            Text = '1000'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
           end
@@ -3107,18 +3107,6 @@ object fMain: TfMain
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
           end
-          object CheckBoxEnablePerspective: TCheckBox
-            Left = 127
-            Top = 256
-            Width = 152
-            Height = 17
-            Hint = 'EnablePerspective'
-            Caption = #1059#1095#1080#1090#1099#1074#1072#1090#1100' '#1087#1077#1088#1089#1087#1077#1082#1090#1080#1074#1091
-            Checked = True
-            State = cbChecked
-            TabOrder = 10
-            OnClick = CheckBoxEnablePerspectiveClick
-          end
           object ComboPointCount: TComboBox
             Left = 128
             Top = 232
@@ -3127,7 +3115,7 @@ object fMain: TfMain
             Style = csDropDownList
             ItemHeight = 13
             ItemIndex = 0
-            TabOrder = 11
+            TabOrder = 10
             Text = '1'
             OnChange = FilterPropertyChange
             Items.Strings = (
@@ -3140,7 +3128,7 @@ object fMain: TfMain
         end
         object CheckBoxSyncCamSettings: TCheckBox
           Left = 697
-          Top = 321
+          Top = 305
           Width = 217
           Height = 17
           Caption = #1057#1080#1085#1093#1088#1086#1085#1080#1079#1080#1088#1086#1074#1072#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080' '#1082#1072#1084#1077#1088
@@ -3151,7 +3139,7 @@ object fMain: TfMain
         end
         object CheckBoxMouseMove: TCheckBox
           Left = 697
-          Top = 288
+          Top = 272
           Width = 144
           Height = 17
           Caption = #1059#1087#1088#1072#1074#1083#1077#1085#1080#1077' '#1084#1099#1096#1100#1102' (F3)'
@@ -3160,7 +3148,7 @@ object fMain: TfMain
         end
         object CheckBox3DView: TCheckBox
           Left = 697
-          Top = 304
+          Top = 288
           Width = 120
           Height = 17
           Caption = #1055#1088#1086#1089#1084#1086#1090#1088' '#1074' 3D (F2)'

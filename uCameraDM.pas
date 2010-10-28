@@ -224,7 +224,6 @@ begin
       Options['X0'].AsString := EditX0.Text;
       Options['Y0'].AsString := EditY0.Text;
       Options['Z0'].AsString := EditZ0.Text;
-      Options['EnablePerspective'].AsBoolean := CheckBoxEnablePerspective.Checked;
       Options['Cam1Degree'].AsString := EditCameraDegree1.Text;
       Options['Cam2Degree'].AsString := EditCameraDegree2.Text;
       if FCam1Width > 0 then
@@ -340,19 +339,39 @@ begin
       CheckBoxShowCamera.Checked := Params['ShowCamera'].AsBoolean;
       ComboPointCount.ItemIndex := Params['PointCount'].AsInteger - 1;
 
+      MinPointSize1.OnChange := nil;
+      MinPointSize2.OnChange := nil;
+      MaxPointSize1.OnChange := nil;
+      MaxPointSize2.OnChange := nil;
+
+      MinPointSize1Edit.OnChange := nil;
+      MinPointSize2Edit.OnChange := nil;
+      MaxPointSize1Edit.OnChange := nil;
+      MaxPointSize2Edit.OnChange := nil;
+
       Treshhold1.Position := Params['Treshhold1'].AsInteger;
       Treshhold2.Position := Params['Treshhold2'].AsInteger;
-      MinPointSize2.Position := Params['MinPointSize2'].AsInteger;
-      MinPointSize1.Position := Params['MinPointSize1'].AsInteger;
-      MaxPointSize2.Position := Params['MaxPointSize2'].AsInteger;
-      MaxPointSize1.Position := Params['MaxPointSize1'].AsInteger;
+      MinPointSize1.Position := Params['MinPointSize2'].AsInteger;
+      MinPointSize2.Position := Params['MinPointSize1'].AsInteger;
+      MaxPointSize1.Position := Params['MaxPointSize2'].AsInteger;
+      MaxPointSize2.Position := Params['MaxPointSize1'].AsInteger;
 
       Treshhold1UpDown.Position    := Treshhold1.Position;
       Treshhold2UpDown.Position    := Treshhold2.Position;
-      MinPointSize2UpDown.Position := MinPointSize2.Position;
       MinPointSize1UpDown.Position := MinPointSize1.Position;
-      MaxPointSize2UpDown.Position := MaxPointSize2.Position;
+      MinPointSize2UpDown.Position := MinPointSize2.Position;
       MaxPointSize1UpDown.Position := MaxPointSize1.Position;
+      MaxPointSize2UpDown.Position := MaxPointSize2.Position;
+
+      MinPointSize1.OnChange := FilterPropertyChange;
+      MinPointSize2.OnChange := FilterPropertyChange;
+      MaxPointSize1.OnChange := FilterPropertyChange;
+      MaxPointSize2.OnChange := FilterPropertyChange;
+
+      MinPointSize1Edit.OnChange := FilterPropertyChange;
+      MinPointSize2Edit.OnChange := FilterPropertyChange;
+      MaxPointSize1Edit.OnChange := FilterPropertyChange;
+      MaxPointSize2Edit.OnChange := FilterPropertyChange;
 
       CheckBoxDisableFilter1.Checked := Params['DisableFilter2'].AsBoolean;
       CheckBoxDisableFilter2.Checked := Params['DisableFilter1'].AsBoolean;
@@ -365,7 +384,6 @@ begin
       EditZ0.Text := Params['Z0'].AsString;
       EditMass.Text := Params['Mass'].AsString;
       EditColor.Text := Params['Color'].AsString;
-      CheckBoxEnablePerspective.Checked := Params['EnablePerspective'].AsBoolean;
       CheckBoxSyncCamSettings.Checked := Params['SyncCamSettings'].AsBoolean;
     end;
 end;
@@ -588,6 +606,7 @@ var
   HR: HRESULT;
   sErr: String;
 begin
+  FGraph.Active := True;
   if CheckDSError((FGraph as ICaptureGraphBuilder2).FindPin(FCamera, PINDIR_OUTPUT,
         @PIN_CATEGORY_CAPTURE, @MEDIATYPE_Video, False, 0, VideoPin)) = S_OK then
     begin
@@ -820,7 +839,6 @@ begin
       Seuil.SetActive(False);
       Seuil.SetCallback(nil);
     end;
-  //(FGraph as IMediaControl).StopWhenReady;
   FIsCapturing := False;
   FGraph.ClearGraph;
   FGraph.Active := False;
