@@ -175,7 +175,7 @@ end;
 
 function TMCPoint.GetMetricPoint(const Index: Integer): T3DPoint;
 var
-  Xpx1, Xpx2, Ypx1, R,
+  Xpx1, Xpx2, Ypx1, R, H,
   TanAw1, TanAh1, TanAw2,
   Xm, Ym, Zm: Real;
   Wpx1, Hpx1, Wpx2: Integer;
@@ -187,11 +187,12 @@ begin
 
   // Радиус (расстояние от камер до объекта)
   R := FOwner.Options['CameraRadius'].AsFloat;
+  H := FOwner.Options['CameraHeight'].AsFloat;
 
   // Углы обзора камер по горизонтали и вертикали
-  TanAw1 := 5/3 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 180);
-  TanAw2 := 5/3 * Tan(FOwner.Options['Cam2Degree'].AsFloat * Pi / 180);
-  TanAh1 := 5/4 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 180);
+  TanAw1 := 5/3 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 360);
+  TanAw2 := 5/3 * Tan(FOwner.Options['Cam2Degree'].AsFloat * Pi / 360);
+  TanAh1 := 5/4 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 360);
 
   // Координаты точки
   Xpx1 := FPoints[Index].X - Wpx1 / 2; // Камера1 пиксели по горизонтали
