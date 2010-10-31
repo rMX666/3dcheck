@@ -186,8 +186,8 @@ begin
   Wpx2 := FOwner.Options['Cam2ResX'].AsInteger;
 
   // Радиус (расстояние от камер до объекта)
-  R := FOwner.Options['CameraRadius'].AsFloat;
-  H := FOwner.Options['CameraHeight'].AsFloat;
+  R := FOwner.Options['CameraRadius'].AsFloat / 1000;
+  H := FOwner.Options['CameraHeight'].AsFloat / 1000;
 
   // Углы обзора камер по горизонтали и вертикали
   TanAw1 := 5/3 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 360);

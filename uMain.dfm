@@ -36,7 +36,7 @@ object fMain: TfMain
     Top = 0
     Width = 1004
     Height = 711
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
@@ -1267,10 +1267,6 @@ object fMain: TfMain
           Caption = #1058#1072#1073#1083#1080#1094#1072
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Tree3DTable: TVirtualStringTree
             Left = 0
             Top = 0
@@ -1867,7 +1863,7 @@ object fMain: TfMain
           Width = 479
           Height = 21
           Anchors = [akLeft, akTop, akRight]
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
           OnChange = ComboTestListChange
           OnDropDown = ComboTestListDropDown
@@ -1877,10 +1873,6 @@ object fMain: TfMain
     object TabSheet2: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel4: T3DGradientPanel
         Left = 0
         Top = 0
@@ -2393,7 +2385,7 @@ object fMain: TfMain
             Width = 289
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboSourceChange
           end
@@ -2556,7 +2548,7 @@ object fMain: TfMain
             Width = 257
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 13
             OnChange = ComboMediaTypesChange
           end
@@ -2693,7 +2685,7 @@ object fMain: TfMain
             Width = 289
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboSourceChange
           end
@@ -2854,13 +2846,13 @@ object fMain: TfMain
             OnKeyPress = CheckEditKeyPress
           end
           object ComboMediaTypes2: TComboBox
-            Tag = 1
+            Tag = 2
             Left = 72
             Top = 48
             Width = 257
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 13
             OnChange = ComboMediaTypesChange
           end

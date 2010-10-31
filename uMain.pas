@@ -904,8 +904,10 @@ var
 begin
   if R < 0 then
     R := fServiceDM.MCFile.Options['CameraRadius'].AsFloat;
+  R := R / 1000;
   if H < 0 then
     H := fServiceDM.MCFile.Options['CameraHeight'].AsFloat;
+  H := H / 1000;
 
   with fServiceDM do
     begin
@@ -995,23 +997,26 @@ end;
 procedure TfMain.ChangeMediaType(const Index: Integer);
 var
   cp: TCapturePack;
+  cb: TComboBox;
   IsCapturing: Boolean;
 begin
   case Index of
     1:
       begin
         cp := CameraManager.FirstCamera;
+        cb := ComboMediaTypes1;
         IsCapturing := btnPreview1.Down;
       end;
     2:
       begin
         cp := CameraManager.SecondCamera;
+        cb := ComboMediaTypes2;
         IsCapturing := btnPreview2.Down;
       end;
   end;
   if IsCapturing then
     StopPreview(Index);
-  cp.MediaTypeIndex := ComboMediaTypes1.ItemIndex;
+  cp.MediaTypeIndex := cb.ItemIndex;
   if IsCapturing then
     StartPreview(Index);
 end;

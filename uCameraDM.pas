@@ -272,12 +272,8 @@ procedure TfCameraDM.DoOnGetPoints(Sender: TObject; const List: T3DPointList);
 
 begin
   with FCaptureFile.AddCoordinate do
-    begin
-      //FCurStep := FCaptureFile.CoordinateCount - 1;
-      SetList(List);
-    end;
+    SetList(List);
 
-  //f3DView.SceneStepForvard(FLastStep, FCurStep);
   FLastStep := FCurStep;
   Inc(FTestTime, List.Time);
   fMain.StBar.Panels[0].Text := 'Время: ' + MilliSecToDateTimeFormat('hh:nn:ss.zzz', FTestTime);
@@ -311,7 +307,6 @@ procedure TfCameraDM.DoOnStartCature(Sender: TObject);
 begin
   FCaptureFile := TMCFile.Create;
   ApplyCameraParams;
-  //f3DView.ScenePrepare;
   FLastStep := 0;
   FCurStep := 0;
 end;
@@ -708,7 +703,7 @@ begin
         begin
           while (EnumMediaTypes.Next(1, pmt, nil) = S_OK) do
             begin
-              if IsEqualGUID(pmt.formattype, FORMAT_VideoInfo) then
+              if IsEqualGUID(pmt.formattype, FORMAT_VideoInfo) and (SubTypeToStr(pmt.subtype) <> '') then
                 FEnumMT.Add(pmt);
             end;
           if FEnumMT.Count = 0 then
@@ -805,7 +800,14 @@ begin
 
   FMediaTypeIndex := Value;
 
-  ChangeMediaType;
+  try
+    ChangeMediaType;
+  except
+    on Ec: ECameraManagerError do
+      raise Ec;
+    on Ee: Exception do
+      raise ECameraManagerError.CreateFmt('New outer exception %s', [Ee.ClassName + ': ' + Ee.Message]);
+  end;
 end;
 
 procedure TCapturePack.StartCapture;
@@ -978,7 +980,7 @@ begin
           L := FCamera2Points.Count
         else
           L := FCamera1Points.Count;
-        for I := 0 to L do
+        for I := 0 to L - 1 do
           begin
             P.X := FCamera1Points[I].X;
             P.Y := FCamera2Points[I].X;
