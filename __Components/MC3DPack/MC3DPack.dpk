@@ -35,7 +35,6 @@ requires
   ifps3_D2006_3d,
   VclSmp,
   vclactnband,
-  EhLib100,
   dclOfficeXP;
 
 contains

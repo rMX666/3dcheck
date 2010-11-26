@@ -1873,6 +1873,10 @@ object fMain: TfMain
     object TabSheet2: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel4: T3DGradientPanel
         Left = 0
         Top = 0
@@ -2385,7 +2389,7 @@ object fMain: TfMain
             Width = 289
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
             OnChange = ComboSourceChange
           end
@@ -2548,7 +2552,7 @@ object fMain: TfMain
             Width = 257
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 13
             OnChange = ComboMediaTypesChange
           end
@@ -2685,7 +2689,7 @@ object fMain: TfMain
             Width = 289
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
             OnChange = ComboSourceChange
           end
@@ -2852,7 +2856,7 @@ object fMain: TfMain
             Width = 257
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 13
             OnChange = ComboMediaTypesChange
           end
@@ -3113,7 +3117,7 @@ object fMain: TfMain
             Width = 129
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
+            ItemHeight = 0
             ItemIndex = 0
             TabOrder = 10
             Text = '1'

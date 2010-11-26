@@ -808,22 +808,22 @@ procedure TfMain.SceneMakeTable;
 
   function GetOptionCaption(const Name: String): String;
   begin
-    if Name = 'Mass'              then Result := 'Масса' else
-    if Name = 'LineColor'         then Result := 'Цвет линии' else
-    if Name = 'Interval'          then Result := 'Интервал' else
-    if Name = 'CameraRadius'      then Result := 'Расстояние до камеры' else
-    if Name = 'PointCount'        then Result := 'Количество точек' else
-    if Name = 'CameraHeight'      then Result := 'Высота камеры' else
-    if Name = 'TestName'          then Result := 'Название испытания' else
-    if Name = 'X0'                then Result := 'X0' else
-    if Name = 'Y0'                then Result := 'Y0' else
-    if Name = 'Z0'                then Result := 'Z0' else
-    if Name = 'Cam1Degree'        then Result := 'Угол камеры №1' else
-    if Name = 'Cam2Degree'        then Result := 'Угол камеры №2' else
-    if Name = 'Cam1ResX'          then Result := 'Разрешение камеры №1 по ширине' else
-    if Name = 'Cam1ResY'          then Result := 'Разрешение камеры №1 по высоте' else
-    if Name = 'Cam2ResX'          then Result := 'Разрешение камеры №2 по ширине' else
-    if Name = 'Cam2ResY'          then Result := 'Разрешение камеры №2 по высоте'
+    if Name = 'Mass'         then Result := 'Масса' else
+    if Name = 'LineColor'    then Result := 'Цвет линии' else
+    if Name = 'Interval'     then Result := 'Интервал' else
+    if Name = 'CameraRadius' then Result := 'Расстояние до камеры' else
+    if Name = 'PointCount'   then Result := 'Количество точек' else
+    if Name = 'CameraHeight' then Result := 'Высота камеры' else
+    if Name = 'TestName'     then Result := 'Название испытания' else
+    if Name = 'X0'           then Result := 'X0' else
+    if Name = 'Y0'           then Result := 'Y0' else
+    if Name = 'Z0'           then Result := 'Z0' else
+    if Name = 'Cam1Degree'   then Result := 'Угол камеры №1' else
+    if Name = 'Cam2Degree'   then Result := 'Угол камеры №2' else
+    if Name = 'Cam1ResX'     then Result := 'Разрешение камеры №1 по ширине' else
+    if Name = 'Cam1ResY'     then Result := 'Разрешение камеры №1 по высоте' else
+    if Name = 'Cam2ResX'     then Result := 'Разрешение камеры №2 по ширине' else
+    if Name = 'Cam2ResY'     then Result := 'Разрешение камеры №2 по высоте'
     else Result := Name;
   end;
 

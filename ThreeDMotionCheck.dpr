@@ -12,7 +12,8 @@ uses
   u3DView in 'u3DView.pas' {f3DView},
   ifpii_MCFile in 'ifpii_MCFile.pas',
   ifpiir_MCFile in 'ifpiir_MCFile.pas',
-  uVTData in 'uVTData.pas';
+  uVTData in 'uVTData.pas',
+  uMCCounter in 'uMCCounter.pas';
 
 {$R *.res}
 
