@@ -18,6 +18,9 @@ const
   cStartCaptureNotReadyError = 'Приложение не готово с запуску видео';
   cSynchronizeNoneModeError = 'Критическая ошибка синхронизации камер. Невозможно установить источник';
 
+  cOutOfRangeCoordinate = 'Out of range. %d is not in range [0, %d] OR %d is not in range [0, %d]';
+  cOutOfRangeWrappers = 'Out of range. %d is not in range [0, %d]';  
+
 implementation
 
 end.

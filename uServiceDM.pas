@@ -7,7 +7,7 @@ uses
   uConsole_1,
   ifpiclass, ifpiclassruntime, ifpiir_MCFile, ifpii_MCFile, XPMan, GLScene, GLGeomObjects,
   GLObjects, GLGraph, GLMisc,
-  uMCPoint;
+  uMCPoint, uMCCounter;
 
 type
   TfServiceDM = class(TDataModule)
@@ -38,6 +38,8 @@ type
     procedure DataModuleCreate(Sender: TObject);
   private
     FMCFile: TMCFile;
+    FCounter: TCounter;
+    procedure DoOnLoadMCFile(Sender: TObject);
   public
     function GetFileList(const Path, Mask: String): TStrings;
     function GetLastFile(Mask: String): String;
@@ -46,6 +48,7 @@ type
     function IsColor(const C: Char): Boolean;
     function IsFloat(const C: Char; const S: String): Boolean;
     property MCFile: TMCFile read FMCFile;
+    property MCCounter: TCounter read FCounter;
   end;
 
 var
@@ -91,11 +94,21 @@ begin
   Application.Title := PROGRAM_NAME + ' ' + Version;
 
   FMCFile := TMCFile.Create;
+  FMCFile.OnLoadFile := DoOnLoadMCFile;
 end;
 
 procedure TfServiceDM.DataModuleDestroy(Sender: TObject);
 begin
+  if Assigned(FCounter) then
+    FreeAndNil(FCounter);
   FreeAndNil(FMCFile);
+end;
+
+procedure TfServiceDM.DoOnLoadMCFile(Sender: TObject);
+begin
+  if Assigned(FCounter) then
+    FreeAndNil(FCounter);
+  FCounter := TCounter.Create(FMCFile);
 end;
 
 function TfServiceDM.GetFileList(const Path, Mask: String): TStrings;

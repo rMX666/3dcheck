@@ -17,7 +17,7 @@ procedure SIRegisterTMCFile(cl: TIFPSCompileTimeClassesImporter);
 implementation
 
 uses
-  uMCPoint, uParams;
+  uMCPoint, uParams, uMCCounter;
 
 procedure SIRegisterT3DPoint(cl: TIFPSCompileTimeClassesImporter);
 begin
@@ -64,12 +64,36 @@ begin
     end;
 end;
 
+procedure SIRegisterTCountParameterNameWraper(cl: TIFPSCompileTimeClassesImporter);
+begin
+  with Cl.Add(cl.FindClass('TObject'), TCountParameterNameWraper) do
+    begin
+      RegisterMethod('constructor Create;');
+      RegisterMethod('procedure Add(Name: String);');
+      RegisterProperty('Count', 'Integer', iptR);
+      RegisterProperty('Name', 'String Integer', iptRW);
+    end;
+end;
+
+procedure SIRegisterTCounter(cl: TIFPSCompileTimeClassesImporter);
+begin
+  with Cl.Add(cl.FindClass('TObject'), TCounter) do
+    begin
+      RegisterMethod('constructor Create(AOwner: TMCFile);');
+      RegisterMethod('function GetNameWrapper(Index: Integer): TCountParameterNameWraper;');
+      RegisterProperty('TypeCount', 'Integer', iptR);
+      RegisterProperty('Value', 'Double Integer Integer Integer', iptR);
+    end;
+end;
+
 procedure SIRegister_Parser(cl: TIFPSCompileTimeClassesImporter);
 begin
   SIRegisterT3DPoint(cl);
   SIRegisterTMCPoint(cl);
   SIRegisterTParam(cl);
   SIRegisterTMCFile(cl);
+  SIRegisterTCountParameterNameWraper(cl);
+  SIRegisterTCounter(cl);
 end;
 
 end.

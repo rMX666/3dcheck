@@ -61,6 +61,7 @@ type
     FXmlParser: TXmlParser;
     FOptions: TParams;
     FCoordinates: TList;
+    FOnLoadFile: TNotifyEvent;
     function GetOptionCount: Integer;
     function GetOption(const Name: String): TParam;
     function GetCoordinateCount: Integer;
@@ -68,6 +69,7 @@ type
     function CheckNodeType(const Name: String): TMCNodeType;
   protected
     procedure OrderPoints;
+    procedure DoOnLoadFile;
   public
     constructor Create;
     destructor Destroy; override;
@@ -80,6 +82,7 @@ type
     property Coordinates[const Index: Integer]: TMCPoint read GetCoordinate;
     property CoordinateCount: Integer read GetCoordinateCount;
     property Options[const Name: String]: TParam read GetOption;
+    property OnLoadFile: TNotifyEvent read FOnLoadFile write FOnLoadFile;
   end;
 
 implementation
@@ -343,6 +346,12 @@ begin
   inherited;
 end;
 
+procedure TMCFile.DoOnLoadFile;
+begin
+  if Assigned(FOnLoadFile) then
+    FOnLoadFile(Self);
+end;
+
 function TMCFile.GetCoordinate(const Index: Integer): TMCPoint;
 begin
   Result := nil;
@@ -396,6 +405,7 @@ begin
               );
           end;
     end;
+  DoOnLoadFile;
 end;
 
 procedure TMCFile.OrderPoints;

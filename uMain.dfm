@@ -1291,6 +1291,7 @@ object fMain: TfMain
             TabOrder = 0
             TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
             TreeOptions.SelectionOptions = [toFullRowSelect]
+            OnBeforeCellPaint = Tree3DTableBeforeCellPaint
             OnGetText = Tree3DTableGetText
             OnGetNodeDataSize = Tree3DTableGetNodeDataSize
             Columns = <
@@ -3329,7 +3330,6 @@ object fMain: TfMain
         Gradient.ToColor = clBtnFace
         Gradient.Active = True
         Gradient.Orientation = fgdHorizontal
-        ExplicitWidth = 964
         object Label2: TLabel
           Left = 80
           Top = 24
@@ -3710,13 +3710,14 @@ object fMain: TfMain
           object Browser: TWebBrowser
             Left = 0
             Top = 0
-            Width = 855
-            Height = 436
+            Width = 988
+            Height = 600
             Align = alClient
             TabOrder = 0
-            ExplicitHeight = 627
+            ExplicitWidth = 855
+            ExplicitHeight = 436
             ControlData = {
-              4C0000005E580000102D00000000000000000000000000000000000000000000
+              4C0000001D660000033E00000000000000000000000000000000000000000000
               000000004C000000000000000000000001000000E0D057007335CF11AE690800
               2B2E126201000000000000004C0000000114020000000000C000000000000046
               8000000000000000000000000000000000000000000000000000000000000000
@@ -3728,7 +3729,7 @@ object fMain: TfMain
           TabVisible = False
           ExplicitLeft = 0
           ExplicitTop = 0
-          ExplicitWidth = 956
+          ExplicitWidth = 0
           ExplicitHeight = 0
           object GradientPanel2: T3DGradientPanel
             Left = 0
@@ -3741,7 +3742,6 @@ object fMain: TfMain
             Gradient.ToColor = clBtnFace
             Gradient.Active = True
             Gradient.Orientation = fgdHorizontal
-            ExplicitWidth = 956
             object Image2: TImage
               Left = 8
               Top = 8
