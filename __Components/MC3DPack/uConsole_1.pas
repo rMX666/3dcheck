@@ -893,9 +893,12 @@ begin
 end;
 
 procedure TCustomConsole.ComboBoxChange(Sender: TObject);
-var S: String;
+var
+  S: String;
+//  OldIndex: Integer;
 begin
-  TComboBox(Sender).Items.Assign(GetFileList);
+//  OldIndex := TComboBox(Sender).ItemIndex;
+//  TComboBox(Sender).Items.Assign(GetFileList);
   S := TComboBox(Sender).Text;
   if S <> '' then
     begin
