@@ -1524,19 +1524,37 @@ var flgTime: Boolean;
   StrTime: String;
 
   procedure OutputMessages;
-  var l: Longint;
+  var l, Selection: Longint;
     b: Boolean;
   begin
     b := False;
     for l := 0 to FScriptCompiler.CompExec.CompilerMessageCount - 1 do
       begin
-        FResultMemo.Lines.Add('Compiler: '+ FScriptCompiler.CompExec.CompilerErrorToStr(l));
-        if (not b) and (FScriptCompiler.CompExec.CompilerMessages[l].MessageType = pterror) then
+        FSynMemo.SelStart := FScriptCompiler.CompExec.CompilerMessages[l].Position;
+        FResultMemo.Lines.Add('Compiler: ' + FScriptCompiler.CompExec.CompilerErrorToStr(l) + ' >> at line [ ' +
+          IntToStr(FSynMemo.CaretY) + ' ]');
+        if (not b) and (FScriptCompiler.CompExec.CompilerMessages[l].MessageType in [ptWarning, ptError]) then
           begin
             b := True;
-            FSynMemo.SelStart := FScriptCompiler.CompExec.CompilerMessages[l].Position;
+            Selection := FScriptCompiler.CompExec.CompilerMessages[l].Position;
           end;
       end;
+    if b then
+      FSynMemo.SelStart := Selection;
+  end;
+
+  procedure OutputExecuteMessages;
+  var
+    Err: String;
+  begin
+    FSynMemo.SelStart := FScriptCompiler.CompExec.ExecErrorPosition;
+
+    FSynMemo.SelStart := FScriptCompiler.CompExec.ExecErrorPosition;
+    Err := FScriptCompiler.CompExec.ExecErrorToString + ' at ' +
+      FScriptCompiler.CompExec.Exec.ProcNames.GetItem(FScriptCompiler.CompExec.ExecErrorProcNo) +
+      ' : ' + Inttostr(FScriptCompiler.CompExec.ExecErrorPosition) + ' on line ' +
+      IntToStr(FSynMemo.CaretY);
+    FResultMemo.Lines.Add('Executor: ' + Err);
   end;
 
   function Rounder(Value: Double; Decimals: Integer): Double;
@@ -1577,11 +1595,7 @@ begin
         end
       else
         begin // Execute error
-          FSynMemo.SelStart := FScriptCompiler.CompExec.ExecErrorPosition;
-          FResultMemo.Lines.Add(FScriptCompiler.CompExec.ExecErrorToString +
-            ' at ' + Inttostr(FScriptCompiler.CompExec.ExecErrorProcNo) +
-            '.' + Inttostr(FScriptCompiler.CompExec.ExecErrorByteCodePosition)
-          );
+          OutputExecuteMessages;
         end;
     end
   else

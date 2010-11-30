@@ -70,7 +70,7 @@ end;
 
 procedure TMCFileCoordinatesR(Self: TMCFile; var T: TMCPoint; var I: Integer); begin T := Self.Coordinates[I]; end;
 procedure TMCFileCoordinateCountR(Self: TMCFile; var T: Integer); begin T := Self.CoordinateCount; end;
-procedure TMCFileOptionsR(Self: TMCFile; var T: TParam; var S: String); begin T := Self.Options[String((@S)^)]; end;
+procedure TMCFileOptionsR(Self: TMCFile; var T: TParam; var S: String); begin T := Self.Options[String(PChar(@S))]; end;
 
 procedure RIRegisterTMCFile(cl: TIFPSRuntimeClassImporter);
 begin
