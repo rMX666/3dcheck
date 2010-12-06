@@ -154,6 +154,11 @@ type
     Label28: TLabel;
     Label29: TLabel;
     ComboPointCount: TComboBox;
+    procedure TreeInfoBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
+      Column: TColumnIndex; CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
+    procedure TreeInfoGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
+      TextType: TVSTTextType; var CellText: WideString);
+    procedure TreeInfoGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
     procedure Tree3DTableBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
       Column: TColumnIndex; CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
     procedure Tree3DTableGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
@@ -172,7 +177,7 @@ type
     procedure ComboSourceChange(Sender: TObject);
     procedure btnPreviewClick(Sender: TObject);
     procedure HelpPanelSwitch(Sender: TObject);
-    procedure SceneControlButtonClick(Sender: TObject);
+    procedure SceneControlButtonClick(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure PlayTimerTimer(Sender: TObject);
     procedure CheckBoxAnimationClick(Sender: TObject);
     procedure CheckBoxShowCameraClick(Sender: TObject);
@@ -190,10 +195,13 @@ type
   protected
     procedure EnableCameraControls(const Index: String; const Enabled: Boolean);
   private
+    FNeedRebuildTable: Boolean;
     FTestsDir: String;
     FSceneLines: array of TGLLines;
     FSceneCubes: array of TGLDummyCube;
     FSceneAnimateLastStep: Integer;
+
+    function GetOptionCaption(const Name: String): String;
 
     procedure ClearScene;
     procedure CreateScene;
@@ -202,6 +210,7 @@ type
     procedure SceneCreatePath;
     procedure ScenePrepare;
     procedure SceneMakeTable;
+    procedure SceneMakeAnimateTable;
 
     procedure SceneAnimateBegin;
     procedure SceneAnimateStepBack(StepCount: Integer = 1);
@@ -239,7 +248,7 @@ var
 implementation
 
 uses
-  uDebug, Math, uMCPoint, uParams, u3DView, uVTData;
+  uDebug, Math, uMCPoint, uParams, u3DView, uVTData, uMCCounter;
 
 {$R *.dfm}
 
@@ -256,6 +265,8 @@ end;
 procedure TfMain.AnalyzeButtonClick(Sender: TObject);
 begin
   PageAnalize.ActivePageIndex := TComponent(Sender).Tag;
+  if (TComponent(Sender).Tag = 1) and FNeedRebuildTable then
+    SceneMakeTable;
 end;
 
 procedure TfMain.btnPlayClick(Sender: TObject);
@@ -307,7 +318,7 @@ begin
   end;
 end;
 
-procedure TfMain.SceneControlButtonClick(Sender: TObject);
+procedure TfMain.SceneControlButtonClick(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   with fServiceDM do
     case TControlButton(TComponent(Sender).Tag) of
@@ -672,8 +683,10 @@ begin
   ClearScene;
   LoadFile(FTestsDir + ComboTestList.Items[ComboTestList.ItemIndex]);
   SceneShowCameras(CheckBoxShowCamera.Checked, fServiceDM.MCFile.Options['CameraRadius'].AsFloat, fServiceDM.MCFile.Options['CameraHeight'].AsFloat);
+  SceneCenterCamera;
   SceneCreatePath;
-  SceneMakeTable;
+  SceneMakeAnimateTable;
+  FNeedRebuildTable := True;
 end;
 
 procedure TfMain.SceneAnimateBegin;
@@ -702,8 +715,34 @@ begin
 end;
 
 procedure TfMain.SceneAnimateCountParameters;
+var
+  Run: PVirtualNode;
+  Data, ParentData: PSceneInfoData;
 begin
-
+  with fServiceDM.MCCounter, TreeInfo do
+    begin
+      BeginUpdate;
+      Run := GetFirst;
+      while Run <> nil do
+        begin
+          Data := GetNodeData(Run);
+          if NodeParent[Run] <> nil then
+            begin
+              ParentData := GetNodeData(Run.Parent);
+              if Data.CountMetaType <> cpatNone then
+                begin
+                  Data.Value := FloatToStr(RoundTo(Value[Integer(Data.CountType), FSceneAnimateLastStep, StrToInt(ParentData.Value) - 1], -3));
+                  if Run = GetFirstChild(NodeParent[Run]) then
+                    begin
+                      ParentData := GetNodeData(NodeParent[NodeParent[Run]]);
+                      ParentData.Value := IntToStr(FSceneAnimateLastStep + 1);
+                    end;
+                end;
+            end;
+          Run := GetNext(Run);
+        end;
+      EndUpdate;
+    end;
 end;
 
 procedure TfMain.SceneAnimateEnd;
@@ -780,7 +819,7 @@ begin
   Cam.Position.Y := 3;
   Cam.Position.Z := 3;
   Cam.TargetObject.Position.X := 0;
-  Cam.TargetObject.Position.Y := 0;
+  Cam.TargetObject.Position.Y := fServiceDM.MCFile.Options['CameraHeight'].AsFloat / 1000;
   Cam.TargetObject.Position.Z := 0;
 end;
 
@@ -809,29 +848,71 @@ begin
   FSceneAnimateLastStep := fServiceDM.MCFile.CoordinateCount - 1;
 end;
 
+function TfMain.GetOptionCaption(const Name: String): String;
+begin
+  if Name = 'Mass'         then Result := 'Масса' else
+  if Name = 'LineColor'    then Result := 'Цвет линии' else
+  if Name = 'Interval'     then Result := 'Интервал' else
+  if Name = 'CameraRadius' then Result := 'Расстояние до камеры' else
+  if Name = 'PointCount'   then Result := 'Количество точек' else
+  if Name = 'CameraHeight' then Result := 'Высота камеры' else
+  if Name = 'TestName'     then Result := 'Название' else
+  if Name = 'X0'           then Result := 'X0' else
+  if Name = 'Y0'           then Result := 'Y0' else
+  if Name = 'Z0'           then Result := 'Z0' else
+  if Name = 'Cam1Degree'   then Result := 'Угол кам. №1' else
+  if Name = 'Cam2Degree'   then Result := 'Угол кам. №2' else
+  if Name = 'Cam1ResX'     then Result := 'Кам. №1 ширина' else
+  if Name = 'Cam1ResY'     then Result := 'Кам. №1 высота' else
+  if Name = 'Cam2ResX'     then Result := 'Кам. №2 ширина' else
+  if Name = 'Cam2ResY'     then Result := 'Кам. №2 высота'
+  else Result := Name;
+end;
+
+procedure TfMain.SceneMakeAnimateTable;
+var
+  Node, ChildNode: PVirtualNode;
+  Data: PSceneInfoData;
+  I, J: Integer;
+begin
+  TreeInfo.Clear;
+  with fServiceDM.MCFile, TreeInfo do
+    begin
+      Node := AddChild(nil);
+      Data := GetNodeData(Node);
+      Data.Caption := 'Параметры';
+      for I := 0 to OptionCount - 1 do
+        begin
+          Data := GetNodeData(AddChild(Node));
+          Data.Caption := GetOptionCaption(GetOptionByIndex(I).Name);
+          Data.Value := GetOptionByIndex(I).AsString;
+        end;
+
+      Node := AddChild(nil);
+      Data := GetNodeData(Node);
+      Data.Caption := 'Координата';
+      Data.Value := IntToStr(FSceneAnimateLastStep + 1);
+      for I := 0 to Options['PointCount'].AsInteger - 1 do
+        begin
+          ChildNode := AddChild(Node);
+          Data := GetNodeData(ChildNode);
+          Data.Caption := 'Точка №';
+          Data.Value := IntToStr(I + 1);
+          with fServiceDM.MCCounter do
+            for J := 0 to TypeCount - 1 do
+              begin
+                Data := GetNodeData(AddChild(ChildNode));
+                Data.Caption := GetNameWrapper(1).Name[J];
+                Data.Value := FloatToStr(RoundTo(Value[J, FSceneAnimateLastStep, I], -3));
+                Data.CountMetaType := CountParameterMeta[TCountParameterType(J)];
+                Data.CountType := TCountParameterType(J);
+              end;
+        end;
+      FullExpand;
+    end;
+end;
+
 procedure TfMain.SceneMakeTable;
-
-  function GetOptionCaption(const Name: String): String;
-  begin
-    if Name = 'Mass'         then Result := 'Масса' else
-    if Name = 'LineColor'    then Result := 'Цвет линии' else
-    if Name = 'Interval'     then Result := 'Интервал' else
-    if Name = 'CameraRadius' then Result := 'Расстояние до камеры' else
-    if Name = 'PointCount'   then Result := 'Количество точек' else
-    if Name = 'CameraHeight' then Result := 'Высота камеры' else
-    if Name = 'TestName'     then Result := 'Название испытания' else
-    if Name = 'X0'           then Result := 'X0' else
-    if Name = 'Y0'           then Result := 'Y0' else
-    if Name = 'Z0'           then Result := 'Z0' else
-    if Name = 'Cam1Degree'   then Result := 'Угол камеры №1' else
-    if Name = 'Cam2Degree'   then Result := 'Угол камеры №2' else
-    if Name = 'Cam1ResX'     then Result := 'Разрешение камеры №1 по ширине' else
-    if Name = 'Cam1ResY'     then Result := 'Разрешение камеры №1 по высоте' else
-    if Name = 'Cam2ResX'     then Result := 'Разрешение камеры №2 по ширине' else
-    if Name = 'Cam2ResY'     then Result := 'Разрешение камеры №2 по высоте'
-    else Result := Name;
-  end;
-
 var
   I, J, K, CountCnt, PtCnt: Integer;
   Data: PSceneTableData;
@@ -899,6 +980,7 @@ begin
         end;
       FullExpand;
     end;
+  FNeedRebuildTable := False;
 end;
 
 procedure TfMain.ScenePrepare;
@@ -1149,6 +1231,55 @@ begin
         CellText := Data.PointChars[Column - 2]
       else
         CellText := '';
+  end;
+end;
+
+procedure TfMain.TreeInfoBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
+  Column: TColumnIndex; CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
+var
+  Data: PSceneInfoData;
+  BackCol: TColor;
+begin
+  Data := Sender.GetNodeData(Node);
+  if Data.CountMetaType <> cpatNone then
+    begin
+      case Data.CountMetaType of
+        cpatStandart:
+          BackCol := RGB(240, 255, 240);
+        cpatCinamatic:
+          BackCol := RGB(255, 240, 240);
+        cpatDinamic:
+          BackCol := RGB(255, 255, 240);
+        cpatAngle:
+          BackCol := RGB(240, 240, 255);
+      end;
+      TargetCanvas.Brush.Color := BackCol;
+      TargetCanvas.Pen.Color := BackCol;
+      TargetCanvas.Rectangle(CellRect);
+    end
+  else if Data.Caption = 'Координата' then
+    begin
+      BackCol := RGB(200, 255, 200);
+      TargetCanvas.Brush.Color := BackCol;
+      TargetCanvas.Pen.Color := BackCol;
+      TargetCanvas.Rectangle(CellRect);
+    end;
+end;
+
+procedure TfMain.TreeInfoGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
+begin
+  NodeDataSize := SizeOf(TSceneInfoData);
+end;
+
+procedure TfMain.TreeInfoGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
+  TextType: TVSTTextType; var CellText: WideString);
+var
+  Data: PSceneInfoData;
+begin
+  Data := Sender.GetNodeData(Node);
+  case Column of
+    0: CellText := Data.Caption;
+    1: CellText := Data.Value;
   end;
 end;
 

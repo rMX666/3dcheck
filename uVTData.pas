@@ -3,7 +3,7 @@ unit uVTData;
 interface
 
 uses
-  SysUtils;
+  SysUtils, uMCCounter;
 
 type
   PSceneTableData = ^TSceneTableData;
@@ -17,6 +17,8 @@ type
   TSceneInfoData = record
     Caption: String;
     Value: String;
+    CountMetaType: TCountParameterMetaType;
+    CountType: TCountParameterType;
   end;
   
 implementation

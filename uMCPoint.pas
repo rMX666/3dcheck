@@ -48,6 +48,7 @@ type
     procedure Add(const X, Y, Z: Real);
     procedure AddList(const List: T3DPointList);
     procedure SetList(const List: T3DPointList);
+    function IsEmpty(const Index: Integer): Boolean;
     property Points[const Index: Integer]: T3DPoint read GetPoint;
     property Time: Cardinal read GetTime write SetTime;
     property Count: Integer read GetCount;
@@ -193,9 +194,9 @@ begin
   H := FOwner.Options['CameraHeight'].AsFloat / 1000;
 
   // Углы обзора камер по горизонтали и вертикали
-  TanAw1 := 5/3 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 360);
-  TanAw2 := 5/3 * Tan(FOwner.Options['Cam2Degree'].AsFloat * Pi / 360);
-  TanAh1 := 5/4 * Tan(FOwner.Options['Cam1Degree'].AsFloat * Pi / 360);
+  TanAw1 := 5/3 * Tan(FOwner.Options['Cam1Degree'].AsFloat);
+  TanAw2 := 5/3 * Tan(FOwner.Options['Cam2Degree'].AsFloat);
+  TanAh1 := 5/4 * Tan(FOwner.Options['Cam1Degree'].AsFloat);
 
   // Координаты точки
   Xpx1 := FPoints[Index].X - Wpx1 / 2; // Камера1 пиксели по горизонтали
@@ -231,6 +232,11 @@ end;
 function TMCPoint.GetTime: Cardinal;
 begin
   Result := FPoints.Time;
+end;
+
+function TMCPoint.IsEmpty(const Index: Integer): Boolean;
+begin
+  Result := (FPoints[Index].X = -1) and (FPoints[Index].Y = -1) and (FPoints[Index].Z = -1);
 end;
 
 procedure TMCPoint.OrderPoints;

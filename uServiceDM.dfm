@@ -897,20 +897,20 @@ object fServiceDM: TfServiceDM
       ShowAxes = True
       AntiAliased = True
       LineColor.Color = {C1CA613FC1CA613FC1CA613F0000803F}
-      XSamplingScale.Min = -10.000000000000000000
-      XSamplingScale.Max = 10.000000000000000000
-      XSamplingScale.Step = 0.250000000000000000
+      XSamplingScale.Min = -1.000000000000000000
+      XSamplingScale.Max = 1.000000000000000000
+      XSamplingScale.Step = 0.100000001490116100
       YSamplingScale.Min = -5.000000000000000000
       YSamplingScale.Max = 5.000000000000000000
       YSamplingScale.Step = 1.000000000000000000
-      ZSamplingScale.Min = -10.000000000000000000
-      ZSamplingScale.Max = 10.000000000000000000
-      ZSamplingScale.Step = 0.250000000000000000
+      ZSamplingScale.Min = -1.000000000000000000
+      ZSamplingScale.Max = 1.000000000000000000
+      ZSamplingScale.Step = 0.100000001490116100
       Parts = [gpX, gpZ]
     end
     object GLCam1: TGLDummyCube
       Position.Coordinates = {0000000000000040000040400000803F}
-      Scale.Coordinates = {3333B33E3333B33E3333B33E00000000}
+      Scale.Coordinates = {CDCCCC3DCDCCCC3DCDCCCC3D00000000}
       CubeSize = 1.000000000000000000
       object GLSphere1: TGLSphere
         Radius = 0.500000000000000000
@@ -933,7 +933,7 @@ object fServiceDM: TfServiceDM
     end
     object GLCam2: TGLDummyCube
       Position.Coordinates = {0000004000000000000040400000803F}
-      Scale.Coordinates = {3333B33E3333B33E3333B33E00000000}
+      Scale.Coordinates = {CDCCCC3DCDCCCC3DCDCCCC3D00000000}
       CubeSize = 1.000000000000000000
       object GLSphere2: TGLSphere
         Radius = 0.500000000000000000

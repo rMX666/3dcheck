@@ -123,6 +123,7 @@ type
     FOwner: TMCFile;
     FDefHandler: TDefaultHandler;
     FHandlers: TCountHandlers;
+    function GetCountParameterMeta(const AType: TCountParameterType): TCountParameterMetaType;
     function GetTypeCount: Integer;
     function GetValue(const AType, Index, PointIndex: Integer): Real;
     procedure InitHandlers;
@@ -132,6 +133,7 @@ type
     function GetNameWrapper(const Index: Integer): TCountParameterNameWraper;
     property TypeCount: Integer read GetTypeCount;
     property Value[const AType, Index, PointIndex: Integer]: Real read GetValue;
+    property CountParameterMeta[const AType: TCountParameterType]: TCountParameterMetaType read GetCountParameterMeta;
   end;
 
 implementation
@@ -346,7 +348,7 @@ begin
   if not FCache.IsCached(cpaDeltaTime, Index, PointIndex) then
     begin
       with AOwner.FOwner do
-        if CheckCoordinatePoint(AOwner, Index, 0, cOutOfRangeCoordinate) then
+        if CheckCoordinatePoint(AOwner, Index, PointIndex, cOutOfRangeCoordinate) then
           FCache.Value[cpaDeltaTime, Index, PointIndex] := Coordinates[Index].Time / 1000;
     end;
   Result := FCache.Value[cpaDeltaTime, Index, PointIndex];
@@ -759,20 +761,20 @@ begin
       Add('Путь Sz');
       Add('Путь Smod');
       Add('Скорость vx');
-      Add('Скорость vY');
+      Add('Скорость vy');
       Add('Скорость vz');
       Add('Скорость Vmod');
       Add('Ускорение ax');
-      Add('Ускорение aY');
+      Add('Ускорение ay');
       Add('Ускорение az');
       Add('Ускорение amod');
 
       Add('Импульс силы Px');
-      Add('Импульс силы PY');
+      Add('Импульс силы Py');
       Add('Импульс силы Pz');
       Add('Импульс силы Pmod');
       Add('Сила Fx');
-      Add('Сила FY');
+      Add('Сила Fy');
       Add('Сила Fz');
       Add('Сила Fmod');
       Add('Работа A');
@@ -819,6 +821,22 @@ begin
   FreeAndNil(FWrappers);
   FreeAndNil(FDefHandler);
   inherited;
+end;
+
+function TCounter.GetCountParameterMeta(const AType: TCountParameterType): TCountParameterMetaType;
+begin
+  case AType of
+    cpaDeltaTime..cpaZ:
+      Result := cpatStandart;
+    cpaPathX..cpaAccelMod:
+      Result := cpatCinamatic;
+    cpaPulseX..cpaWork:
+      Result := cpatDinamic;
+    cpaAnglePath..cpaCircleRadius:
+      Result := cpatAngle;
+    else
+      Result := cpatNone;
+  end;
 end;
 
 function TCounter.GetNameWrapper(const Index: Integer): TCountParameterNameWraper;

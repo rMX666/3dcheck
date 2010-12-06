@@ -944,9 +944,9 @@ procedure TCameraSynchronizer.Make3DList;
     ToFill, I: Integer;
   begin
     ToFill := Params['PointCount'].AsInteger - FPoints.Count;
-    P.X := 0;
-    P.Y := 0;
-    P.Z := 0;
+    P.X := -1;
+    P.Y := -1;
+    P.Z := -1;
     for I := 0 to ToFill - 1 do
       FPoints.Add(P);
   end;
