@@ -7,7 +7,7 @@ uses
   uConsole_1,
   ifpiclass, ifpiclassruntime, ifpiir_MCFile, ifpii_MCFile, XPMan, GLScene, GLGeomObjects,
   GLObjects, GLGraph, GLMisc,
-  uMCPoint, uMCCounter;
+  uMCPoint, uMCCounter, GLExtrusion;
 
 type
   TfServiceDM = class(TDataModule)
@@ -31,6 +31,14 @@ type
     GLCone2: TGLCone;
     GLCameraMain: TGLCamera;
     GLCameraCamView: TGLCamera;
+    GLTripod1: TGLDummyCube;
+    GLPipe1: TGLPipe;
+    GLPipe2: TGLPipe;
+    GLPipe3: TGLPipe;
+    GLTripod2: TGLDummyCube;
+    GLPipe4: TGLPipe;
+    GLPipe5: TGLPipe;
+    GLPipe6: TGLPipe;
     procedure AnimateTimerTimer(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure ScriptCompiler1AfterExecImport(Sender: TObject; x: TIFPSRuntimeClassImporter);

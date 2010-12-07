@@ -953,11 +953,91 @@ object fServiceDM: TfServiceDM
         Height = 1.000000000000000000
       end
     end
+    object GLTripod1: TGLDummyCube
+      Position.Coordinates = {000000000000003F0000803F0000803F}
+      CubeSize = 1.000000000000000000
+      object GLPipe1: TGLPipe
+        Nodes = <
+          item
+            X = 0.252999991178512600
+            Y = -0.500000000000000000
+            Z = 0.140000000596046400
+          end
+          item
+            Y = 0.500000000000000000
+          end>
+        Radius = 0.004999999888241291
+      end
+      object GLPipe2: TGLPipe
+        Nodes = <
+          item
+            X = -0.252999991178512600
+            Y = -0.500000000000000000
+            Z = 0.140000000596046400
+          end
+          item
+            Y = 0.500000000000000000
+          end>
+        Radius = 0.004999999888241291
+      end
+      object GLPipe3: TGLPipe
+        Nodes = <
+          item
+            Y = -0.500000000000000000
+            Z = -0.300000011920929000
+          end
+          item
+            Y = 0.500000000000000000
+          end>
+        Radius = 0.004999999888241291
+      end
+    end
+    object GLTripod2: TGLDummyCube
+      Direction.Coordinates = {0000803F000000000000000000000000}
+      Position.Coordinates = {0000803F0000003F000000000000803F}
+      Up.Coordinates = {000000000000803F0000008000000000}
+      CubeSize = 1.000000000000000000
+      object GLPipe4: TGLPipe
+        Nodes = <
+          item
+            X = 0.252999991178512600
+            Y = -0.500000000000000000
+            Z = 0.140000000596046400
+          end
+          item
+            Y = 0.500000000000000000
+          end>
+        Radius = 0.004999999888241291
+      end
+      object GLPipe5: TGLPipe
+        Nodes = <
+          item
+            X = -0.252999991178512600
+            Y = -0.500000000000000000
+            Z = 0.140000000596046400
+          end
+          item
+            Y = 0.500000000000000000
+          end>
+        Radius = 0.004999999888241291
+      end
+      object GLPipe6: TGLPipe
+        Nodes = <
+          item
+            Y = -0.500000000000000000
+            Z = -0.300000011920929000
+          end
+          item
+            Y = 0.500000000000000000
+          end>
+        Radius = 0.004999999888241291
+      end
+    end
     object GLCameraMain: TGLCamera
       DepthOfView = 10000.000000000000000000
       FocalLength = 100.000000000000000000
       TargetObject = GLDummyCube1
-      Position.Coordinates = {0000804000008040000080400000803F}
+      Position.Coordinates = {000080C000008040000080C00000803F}
       Direction.Coordinates = {0000803F000000000000008000000000}
     end
     object GLCameraCamView: TGLCamera

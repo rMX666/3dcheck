@@ -386,6 +386,8 @@ begin
 end;
 
 procedure TMCFile.LoadFile(const FileName: String);
+var
+  X, Y, Z: Real;
 begin
   Clear;
   with FXmlParser do
@@ -404,11 +406,26 @@ begin
             ntPoints:
               FCoordinates.Add(TMCPoint.Create(Self, StrToInt(CurAttr.Value('T'))));
             ntPoint:
-              TMCPoint(Coordinates[CoordinateCount - 1]).Add(
-                StrToFloat(CurAttr.Value('X')),
-                StrToFloat(CurAttr.Value('Y')),
-                StrToFloat(CurAttr.Value('Z'))
-              );
+              begin
+                X := StrToFloat(CurAttr.Value('X'));
+                Y := StrToFloat(CurAttr.Value('Y'));
+                Z := StrToFloat(CurAttr.Value('Z'));
+                if (X = -1) and (Y = -1) and (Z = -1) then
+                  if CoordinateCount = 1 then
+                    begin
+                      X := 0;
+                      Y := 0;
+                      Z := 0;
+                    end
+                  else if CoordinateCount > 1 then
+                    with Coordinates[CoordinateCount - 2].FPoints do
+                      begin
+                        X := Items[Coordinates[CoordinateCount - 1].FPoints.Count].X;
+                        Y := Items[Coordinates[CoordinateCount - 1].FPoints.Count].Y;
+                        Z := Items[Coordinates[CoordinateCount - 1].FPoints.Count].Z;
+                      end;
+                Coordinates[CoordinateCount - 1].Add(X, Y, Z);
+              end;
           end;
     end;
   DoOnLoadFile;

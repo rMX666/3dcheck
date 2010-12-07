@@ -583,7 +583,7 @@ end;
 
 procedure TfMain.GLViewerMainClick(Sender: TObject);
 begin
-  TGLSceneViewer(Sender).SetFocus
+  TGLSceneViewer(Sender).SetFocus;
 end;
 
 procedure TfMain.GLViewerMainDblClick(Sender: TObject);
@@ -1045,13 +1045,42 @@ begin
         end;
 
       GLCam1.Position.X := 0;
-      GLCam1.Position.Z := R;
       GLCam1.Position.Y := H;
+      GLCam1.Position.Z := R;
 
-      GLCam2.Position.Z := 0;
       GLCam2.Position.X := R;
       GLCam2.Position.Y := H;
-    
+      GLCam2.Position.Z := 0;
+
+      GLTripod1.Position.X := 0;
+      GLTripod1.Position.Y := H / 2;
+      GLTripod1.Position.Z := R;
+
+      GLTripod2.Position.X := R;
+      GLTripod2.Position.Y := H / 2;
+      GLTripod2.Position.Z := 0;
+
+      if H >= 1 then
+        begin
+          GLTripod1.Scale.X := 1;
+          GLTripod1.Scale.Y := H;
+          GLTripod1.Scale.Z := 1;
+
+          GLTripod2.Scale.X := 1;
+          GLTripod2.Scale.Y := H;
+          GLTripod2.Scale.Z := 1;
+        end
+      else
+        begin
+          GLTripod1.Scale.X := H;
+          GLTripod1.Scale.Y := H;
+          GLTripod1.Scale.Z := H;
+
+          GLTripod2.Scale.X := H;
+          GLTripod2.Scale.Y := H;
+          GLTripod2.Scale.Z := H;
+        end;
+
       GLGrid.XSamplingScale.Min := -R;
       GLGrid.XSamplingScale.Max := R;
       GLGrid.ZSamplingScale.Min := -R;
@@ -1099,26 +1128,32 @@ begin
     1:
       begin
         CameraManager.FirstCamera.CameraIndex := ComboSource1.ItemIndex - 1;
-        with CameraManager.FirstCamera.EnumMediaTypes do
+        if ComboSource1.ItemIndex > 0 then
           begin
-            ComboMediaTypes1.Items.Text := Text;
-            Free;
+            with CameraManager.FirstCamera.EnumMediaTypes do
+              begin
+                ComboMediaTypes1.Items.Text := Text;
+                Free;
+              end;
+            ComboMediaTypes1.ItemIndex := 0;
           end;
-        ComboMediaTypes1.ItemIndex := 0;
-        ChangeMediaType(1);
       end;
     2:
       begin
         CameraManager.SecondCamera.CameraIndex := ComboSource2.ItemIndex - 1;
-        with CameraManager.SecondCamera.EnumMediaTypes do
+        if ComboSource2.ItemIndex > 0 then
           begin
-            ComboMediaTypes2.Items.Text := Text;
-            Free;
+  
+            with CameraManager.SecondCamera.EnumMediaTypes do
+              begin
+                ComboMediaTypes2.Items.Text := Text;
+                Free;
+              end;
+            ComboMediaTypes2.ItemIndex := 0;
           end;
-        ComboMediaTypes2.ItemIndex := 0;
-        ChangeMediaType(2);
       end;
   end;
+  ChangeMediaType(Index);
 end;
 
 procedure TfMain.ChangeMediaType(const Index: Integer);
