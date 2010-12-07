@@ -117,6 +117,7 @@ type
 
   TCameraManager = class
   private
+    FCapturing: Boolean;
     FCameraEnum: TSysDevEnum;
     FCams: TTwoCapturePack;
     FOnSetMediaType: TSetMediaTypeEvent;
@@ -835,6 +836,9 @@ procedure TCapturePack.StopCapture;
 var
   Seuil: ISeuil;
 begin
+  if not FIsCapturing then
+    Exit;
+
   FFilter.QueryInterface(IID_ISeuil, Seuil);
   if Assigned(Seuil) then
     begin
@@ -1037,10 +1041,14 @@ begin
   FCamSync := TCameraSynchronizer.Create(Self);
   for I := 0 to 1 do
     FCams[I] := TCapturePack.Create(Self);
+
+  FCapturing := False;
 end;
 
 destructor TCameraManager.Destroy;
 begin
+  StopCapture;
+
   FreeAndNil(FCams[0]);
   FreeAndNil(FCams[1]);
   if Assigned(FCameraEnum) then
@@ -1150,6 +1158,7 @@ begin
         end;
     end;
   DoOnStartCapture;
+  FCapturing := True;
   FCamSync.FPrevSyncTime := Now;
 end;
 
@@ -1157,9 +1166,13 @@ procedure TCameraManager.StopCapture;
 var
   I: Integer;
 begin
+  if not FCapturing then
+    Exit;
+
   for I := 0 to 1 do
     FCams[I].StopCapture;
   DoOnStopCapture;
+  FCapturing := False;
 end;
 
 initialization

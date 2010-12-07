@@ -154,6 +154,7 @@ type
     Label28: TLabel;
     Label29: TLabel;
     ComboPointCount: TComboBox;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure TreeInfoBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
       Column: TColumnIndex; CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
     procedure TreeInfoGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
@@ -546,6 +547,11 @@ begin
           5: MaxPointSize2.Position := StrToInt(TEdit(Sender).Text);
         end;
     end;
+end;
+
+procedure TfMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  CameraManager.StopCapture;
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);
