@@ -24,24 +24,7 @@ type
     PageAnalize: TPageControl;
     TabSheet4: TTabSheet;
     AnalPanel: T3DGradientPanel;
-    Image6: TImage;
-    btnZoomIn: TSpeedButton;
-    btnZoomOut: TSpeedButton;
-    btnRotateUp: TSpeedButton;
-    btnRotateRight: TSpeedButton;
-    btnRotateLeft: TSpeedButton;
-    btnRotateDown: TSpeedButton;
-    btnPlay: TSpeedButton;
-    btnPause: TSpeedButton;
-    btnStop: TSpeedButton;
-    btnStepForvard: TSpeedButton;
-    btnStepBack: TSpeedButton;
-    btnBack: TSpeedButton;
-    btnForvard: TSpeedButton;
-    CheckBoxAnimation: TCheckBox;
-    CheckBoxShowCamera: TCheckBox;
     TreeInfo: TVirtualStringTree;
-    GLViewerMain: TGLSceneViewer;
     TabSheet5: TTabSheet;
     Tree3DTable: TVirtualStringTree;
     Panel5: T3DGradientPanel;
@@ -154,6 +137,28 @@ type
     Label28: TLabel;
     Label29: TLabel;
     ComboPointCount: TComboBox;
+    Panel1: TPanel;
+    pnl3dViewControls: TPanel;
+    GLViewerMain: TGLSceneViewer;
+    btnPlay: TSpeedButton;
+    btnPause: TSpeedButton;
+    btnStop: TSpeedButton;
+    btnStepForvard: TSpeedButton;
+    btnStepBack: TSpeedButton;
+    btnBack: TSpeedButton;
+    btnForvard: TSpeedButton;
+    trAnimation: TTrackBar;
+    btnZoomIn: TSpeedButton;
+    btnZoomOut: TSpeedButton;
+    btnRotateLeft: TSpeedButton;
+    btnRotateRight: TSpeedButton;
+    btnRotateUp: TSpeedButton;
+    btnRotateDown: TSpeedButton;
+    CheckBoxAnimation: TCheckBox;
+    CheckBoxShowCamera: TCheckBox;
+    CheckBoxEnablePerspective: TCheckBox;
+    procedure trAnimationChange(Sender: TObject);
+    procedure CheckBoxEnablePerspectiveClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure TreeInfoBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
       Column: TColumnIndex; CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
@@ -202,6 +207,10 @@ type
     FSceneCubes: array of TGLDummyCube;
     FSceneAnimateLastStep: Integer;
 
+    FSceneAnimatePaused: Boolean;
+
+    FTrackBarChange: TNotifyEvent;
+
     function GetOptionCaption(const Name: String): String;
 
     procedure ClearScene;
@@ -216,10 +225,14 @@ type
     procedure SceneAnimateBegin;
     procedure SceneAnimateStepBack(StepCount: Integer = 1);
     procedure SceneAnimateStepForvard(StepCount: Integer = 1);
+    procedure SceneAnimateStepTo(const Step: Integer);
     procedure SceneAnimatePlaceCubes;
     procedure SceneAnimateClear;
     procedure SceneAnimateEnd;
     procedure SceneAnimateCountParameters;
+
+    procedure SceneAnimateBeginUpdate;
+    procedure SceneAnimateEndUpdate;
 
     procedure FillComboTestList;
 
@@ -270,30 +283,63 @@ begin
     SceneMakeTable;
 end;
 
+procedure TfMain.trAnimationChange(Sender: TObject);
+begin
+  PlayTimer.Interval := fServiceDM.MCFile.Options['Interval'].AsInteger;
+  PlayTimer.Enabled := False;
+  FSceneAnimatePaused := True;
+  SceneAnimateStepTo(TTrackBar(Sender).Position);
+end;
+
 procedure TfMain.btnPlayClick(Sender: TObject);
 const
   MOVE_COUNT = 15;
 begin
+  PlayTimer.Interval := fServiceDM.MCFile.Options['Interval'].AsInteger;
   case TPlayBtnType(TSpeedButton(Sender).Tag) of
     btPlay:
-      SceneAnimateBegin;
+      begin
+        if not FSceneAnimatePaused then
+          begin
+            SceneAnimateBegin;
+            FSceneAnimatePaused := False;
+          end
+        else
+          PlayTimer.Enabled := True;
+      end;
     btPause:
-      PlayTimer.Enabled := False;
+      begin
+        PlayTimer.Enabled := False;
+        FSceneAnimatePaused := True;
+      end;
     btStop:
-      SceneAnimateEnd;
+      begin
+        SceneAnimateEnd;
+        FSceneAnimatePaused := False;
+      end;
     btStepBack:
-      SceneAnimateStepBack;
+      begin
+        PlayTimer.Enabled := False;
+        SceneAnimateStepBack;
+        FSceneAnimatePaused := True;
+      end;
     btStepForvard:
       begin
         PlayTimer.Enabled := False;
         SceneAnimateStepForvard;
+        FSceneAnimatePaused := True;
       end;
     btBack:
-      SceneAnimateStepBack(MOVE_COUNT);
+      begin
+        PlayTimer.Enabled := False;
+        SceneAnimateStepBack(MOVE_COUNT);
+        FSceneAnimatePaused := True;
+      end;
     btForvard:
       begin
         PlayTimer.Enabled := False;
         SceneAnimateStepForvard(MOVE_COUNT);
+        FSceneAnimatePaused := True;
       end;
   end;
 end;
@@ -347,6 +393,11 @@ procedure TfMain.CheckBoxAnimationClick(Sender: TObject);
 begin
   fServiceDM.AnimateTimer.Enabled := TCheckBox(Sender).Checked;
   Params['Animation'].AsBoolean := CheckBoxAnimation.Checked;
+end;
+
+procedure TfMain.CheckBoxEnablePerspectiveClick(Sender: TObject);
+begin
+  Params['EnablePerspective'].AsBoolean := TCheckBox(Sender).Checked;
 end;
 
 procedure TfMain.CheckBoxMouseMoveClick(Sender: TObject);
@@ -575,6 +626,15 @@ begin
       CreateScene;
     end;
   ScriptConsole1.SourcePath := ExpandFileName('.\Source\');
+
+  GLViewerMain.Buffer.BackgroundColor := fServiceDM.HexToInt(Params['GLBackground'].AsString);
+  with fServiceDM.HexToGlColor(Params['GlGridColor'].AsString) do
+    begin
+      fServiceDM.GLGrid.LineColor.Red := Red;
+      fServiceDM.GLGrid.LineColor.Green := Green;
+      fServiceDM.GLGrid.LineColor.Blue := Blue;
+      Free;
+    end;
 end;
 
 procedure TfMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint;
@@ -728,32 +788,46 @@ begin
   with fServiceDM.MCCounter, TreeInfo do
     begin
       BeginUpdate;
-      Run := GetFirst;
-      while Run <> nil do
-        begin
-          Data := GetNodeData(Run);
-          if NodeParent[Run] <> nil then
-            begin
-              ParentData := GetNodeData(Run.Parent);
-              if Data.CountMetaType <> cpatNone then
-                begin
-                  Data.Value := FloatToStr(RoundTo(Value[Integer(Data.CountType), FSceneAnimateLastStep, StrToInt(ParentData.Value) - 1], -3));
-                  if Run = GetFirstChild(NodeParent[Run]) then
-                    begin
-                      ParentData := GetNodeData(NodeParent[NodeParent[Run]]);
-                      ParentData.Value := IntToStr(FSceneAnimateLastStep + 1);
-                    end;
-                end;
-            end;
-          Run := GetNext(Run);
-        end;
-      EndUpdate;
+      try
+        Run := GetFirst;
+        while Run <> nil do
+          begin
+            Data := GetNodeData(Run);
+            if NodeParent[Run] <> nil then
+              begin
+                ParentData := GetNodeData(Run.Parent);
+                if Data.CountMetaType <> cpatNone then
+                  begin
+                    Data.Value := FloatToStr(RoundTo(Value[Integer(Data.CountType), FSceneAnimateLastStep, StrToInt(ParentData.Value) - 1], -3));
+                    if Run = GetFirstChild(NodeParent[Run]) then
+                      begin
+                        ParentData := GetNodeData(NodeParent[NodeParent[Run]]);
+                        ParentData.Value := IntToStr(FSceneAnimateLastStep + 1);
+                      end;
+                  end;
+              end;
+            Run := GetNext(Run);
+          end;
+      finally
+        EndUpdate;
+      end;
     end;
 end;
 
 procedure TfMain.SceneAnimateEnd;
 begin
   CreateScene;
+end;
+
+procedure TfMain.SceneAnimateBeginUpdate;
+begin
+  FTrackBarChange := trAnimation.OnChange;
+  trAnimation.OnChange := nil;
+end;
+
+procedure TfMain.SceneAnimateEndUpdate;
+begin
+  trAnimation.OnChange := FTrackBarChange;
 end;
 
 procedure TfMain.SceneAnimatePlaceCubes;
@@ -763,52 +837,80 @@ begin
   for I := 0 to Length(FSceneCubes) - 1 do
     with fServiceDM.MCFile.Coordinates[FSceneAnimateLastStep] do
       FSceneCubes[I].Position.SetPoint(PointsMetric[I].X, PointsMetric[I].Y, PointsMetric[I].Z);
-  SceneAnimateCountParameters;
+//  SceneAnimateCountParameters;
 end;
 
 procedure TfMain.SceneAnimateStepBack(StepCount: Integer);
 var
   I, J: Integer;
 begin
-  PlayTimer.Enabled := False;
+  SceneAnimateBeginUpdate;
 
-  if FSceneAnimateLastStep - StepCount + 1 < 0 then
-    StepCount := FSceneAnimateLastStep;
-  if FSceneAnimateLastStep = 0 then
-    Exit;
+  try
+    PlayTimer.Enabled := False;
 
-  for I := 0 to StepCount - 1 do
-    begin
-      for J := 0 to Length(FSceneLines) - 1 do
-        FSceneLines[J].Nodes.Delete(FSceneAnimateLastStep);
-      Dec(FSceneAnimateLastStep);
-    end;
-  SceneAnimatePlaceCubes;
-  SceneAnimateCountParameters;
+    if FSceneAnimateLastStep - StepCount + 1 < 0 then
+      StepCount := FSceneAnimateLastStep;
+    if FSceneAnimateLastStep = 0 then
+      Exit;
+
+    trAnimation.Position := FSceneAnimateLastStep - StepCount;
+
+    for I := 0 to StepCount - 1 do
+      begin
+        for J := 0 to Length(FSceneLines) - 1 do
+          if FSceneLines[J].Nodes.Count > FSceneAnimateLastStep then
+            FSceneLines[J].Nodes.Delete(FSceneAnimateLastStep);
+        Dec(FSceneAnimateLastStep);
+      end;
+    SceneAnimatePlaceCubes;
+//    SceneAnimateCountParameters;
+  finally
+    SceneAnimateEndUpdate
+  end;
 end;
 
 procedure TfMain.SceneAnimateStepForvard(StepCount: Integer);
 var
   I, J: Integer;
 begin
-  if FSceneAnimateLastStep >= fServiceDM.MCFile.CoordinateCount - 1 then
-    begin
-      SceneAnimateEnd;
-      Exit;
-    end;
+  SceneAnimateBeginUpdate;
 
-  if (StepCount + FSceneAnimateLastStep) >= fServiceDM.MCFile.CoordinateCount then
-    StepCount := fServiceDM.MCFile.CoordinateCount - FSceneAnimateLastStep;
+  try
+    if FSceneAnimateLastStep >= fServiceDM.MCFile.CoordinateCount - 1 then
+      begin
+        SceneAnimateEnd;
+        Exit;
+      end;
 
-  SceneAnimatePlaceCubes;
-  for I := 0 to StepCount - 1 do
-    begin
-      for J := 0 to Length(FSceneLines) - 1 do
-        with fServiceDM.MCFile.Coordinates[FSceneAnimateLastStep] do
-          FSceneLines[J].Nodes.AddNode(PointsMetric[J].X, PointsMetric[J].Y, PointsMetric[J].Z);
-      Inc(FSceneAnimateLastStep);
-    end;
-  SceneAnimateCountParameters;
+    if (StepCount + FSceneAnimateLastStep) >= fServiceDM.MCFile.CoordinateCount then
+      StepCount := fServiceDM.MCFile.CoordinateCount - FSceneAnimateLastStep - 1;
+
+    trAnimation.Position := FSceneAnimateLastStep + StepCount;
+
+    SceneAnimatePlaceCubes;
+    for I := 0 to StepCount - 1 do
+      begin
+        for J := 0 to Length(FSceneLines) - 1 do
+          with fServiceDM.MCFile.Coordinates[FSceneAnimateLastStep] do
+            FSceneLines[J].Nodes.AddNode(PointsMetric[J].X, PointsMetric[J].Y, PointsMetric[J].Z);
+        Inc(FSceneAnimateLastStep);
+      end;
+//    SceneAnimateCountParameters;
+  finally
+    SceneAnimateEndUpdate;
+  end;
+end;
+
+procedure TfMain.SceneAnimateStepTo(const Step: Integer);
+var
+  StepDelta: Integer;
+begin
+  StepDelta := Step - FSceneAnimateLastStep;
+  if StepDelta > 0 then
+    SceneAnimateStepForvard(StepDelta)
+  else if StepDelta < 0 then
+    SceneAnimateStepBack(Abs(StepDelta));
 end;
 
 procedure TfMain.SceneCenterCamera;
@@ -852,6 +954,7 @@ begin
     end;
 
   FSceneAnimateLastStep := fServiceDM.MCFile.CoordinateCount - 1;
+  trAnimation.Position := FSceneAnimateLastStep;
 end;
 
 function TfMain.GetOptionCaption(const Name: String): String;
@@ -894,6 +997,7 @@ begin
           Data.Value := GetOptionByIndex(I).AsString;
         end;
 
+{
       Node := AddChild(nil);
       Data := GetNodeData(Node);
       Data.Caption := 'Координата';
@@ -914,6 +1018,7 @@ begin
                 Data.CountType := TCountParameterType(J);
               end;
         end;
+}
       FullExpand;
     end;
 end;
@@ -955,16 +1060,6 @@ begin
     begin
       Node := AddChild(nil);
       Data := GetNodeData(Node);
-      Data.Caption := 'Параметры';
-      for I := 0 to OptionCount - 1 do
-        begin
-          Data := GetNodeData(AddChild(Node));
-          Data.Caption := GetOptionCaption(GetOptionByIndex(I).Name);
-          Data.Value := GetOptionByIndex(I).AsString;
-        end;
-
-      Node := AddChild(nil);
-      Data := GetNodeData(Node);
       Data.Caption := 'Координаты';
       PtCnt := Options['PointCount'].AsInteger;
       CountCnt := fServiceDM.MCCounter.TypeCount;
@@ -996,21 +1091,25 @@ begin
   ClearScene;
   with fServiceDM.MCFile do
     begin
+      trAnimation.Max := CoordinateCount - 1;
+
       SetLength(FSceneLines, Options['PointCount'].AsInteger);
       SetLength(FSceneCubes, Options['PointCount'].AsInteger);
       for I := 0 to Options['PointCount'].AsInteger - 1 do
         begin
           FSceneLines[I] := TGLLines.Create(Self);
+          FSceneLines[I].LineWidth := Params['GLLineWidth'].AsFloat;
+          if FSceneLines[I].LineWidth = 0 then
+            FSceneLines[I].LineWidth := 1;
           FSceneLines[I].Division := 500;
-          FSceneLines[I].LineWidth := 1;
           FSceneLines[I].NodesAspect := lnaInvisible;
           FSceneLines[I].NodeSize := 0.2;
           FSceneLines[I].Options := [loUseNodeColorForLines];
           with fServiceDM.MCFile.Options['LineColor'] do
             begin
-              FSceneLines[I].NodeColor.Red := fServiceDM.HexToInt(Copy(AsString, 1, 2)) / 255;
-              FSceneLines[I].NodeColor.Green := fServiceDM.HexToInt(Copy(AsString, 3, 2)) / 255;
-              FSceneLines[I].NodeColor.Blue := fServiceDM.HexToInt(Copy(AsString, 5, 2)) / 255;
+              FSceneLines[I].NodeColor.Red := fServiceDM.HexToInt(Copy(AsString, 2, 2)) / 255;
+              FSceneLines[I].NodeColor.Green := fServiceDM.HexToInt(Copy(AsString, 4, 2)) / 255;
+              FSceneLines[I].NodeColor.Blue := fServiceDM.HexToInt(Copy(AsString, 6, 2)) / 255;
             end;
           FSceneLines[I].SplineMode := lsmLines;
 
@@ -1019,9 +1118,9 @@ begin
           FSceneCubes[I].VisibleAtRunTime := True;
           with fServiceDM.MCFile.Options['LineColor'] do
             begin
-              FSceneCubes[I].EdgeColor.Red := fServiceDM.HexToInt(Copy(AsString, 1, 2)) / 255;
-              FSceneCubes[I].EdgeColor.Green := fServiceDM.HexToInt(Copy(AsString, 3, 2)) / 255;
-              FSceneCubes[I].EdgeColor.Blue := fServiceDM.HexToInt(Copy(AsString, 5, 2)) / 255;
+              FSceneCubes[I].EdgeColor.Red := fServiceDM.HexToInt(Copy(AsString, 2, 2)) / 255;
+              FSceneCubes[I].EdgeColor.Green := fServiceDM.HexToInt(Copy(AsString, 4, 2)) / 255;
+              FSceneCubes[I].EdgeColor.Blue := fServiceDM.HexToInt(Copy(AsString, 6, 2)) / 255;
             end;
 
           fServiceDM.GLScene1.Objects.AddChild(FSceneLines[I]);
@@ -1048,6 +1147,12 @@ begin
         begin
           GLCam1.Children[i].Visible := Visible;
           GLCam2.Children[i].Visible := Visible;
+        end;
+
+      for I := 0 to GLTripod1.Count - 1 do
+        begin
+          GLTripod1.Children[i].Visible := Visible;
+          GLTripod2.Children[i].Visible := Visible;
         end;
 
       GLCam1.Position.X := 0;

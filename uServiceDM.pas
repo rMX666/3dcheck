@@ -6,8 +6,8 @@ uses
   SysUtils, Classes, Dialogs, ExtCtrls, ImgList, Controls,
   uConsole_1,
   ifpiclass, ifpiclassruntime, ifpiir_MCFile, ifpii_MCFile, XPMan, GLScene, GLGeomObjects,
-  GLObjects, GLGraph, GLMisc,
-  uMCPoint, uMCCounter, GLExtrusion;
+  GLObjects, GLGraph, GLMisc, GLExtrusion, GLTexture,
+  uMCPoint, uMCCounter;
 
 type
   TfServiceDM = class(TDataModule)
@@ -52,6 +52,7 @@ type
     function GetFileList(const Path, Mask: String): TStrings;
     function GetLastFile(Mask: String): String;
     function HexToInt(Hex: String): Integer;
+    function HexToGlColor(Hex: String): TGLColor;
     function IsDigit(const C: Char): Boolean;
     function IsColor(const C: Char): Boolean;
     function IsFloat(const C: Char; const S: String): Boolean;
@@ -131,6 +132,18 @@ begin
       until FindNext(Sr) <> 0;
       FindClose(Sr);
     end;
+end;
+
+function TfServiceDM.HexToGlColor(Hex: String): TGLColor;
+var
+  I, Len, Value: Integer;
+begin
+  Hex := StringReplace(AnsiUpperCase(Hex), '#', '', [rfReplaceAll]);
+  Len := Length(Hex);
+  Result := TGLColor.Create(nil);
+  Result.Red := HexToInt(Copy(Hex, 1, 2)) / 255;
+  Result.Green := HexToInt(Copy(Hex, 3, 2)) / 255;
+  Result.Blue := HexToInt(Copy(Hex, 5, 2)) / 255;
 end;
 
 function TfServiceDM.HexToInt(Hex: String): Integer;

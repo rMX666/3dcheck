@@ -227,6 +227,7 @@ begin
       Options['Z0'].AsString := EditZ0.Text;
       Options['Cam1Degree'].AsString := EditCameraDegree1.Text;
       Options['Cam2Degree'].AsString := EditCameraDegree2.Text;
+      Options['EnablePerspective'].AsBoolean := CheckBoxEnablePerspective.Checked;
       if FCam1Width > 0 then
         Options['Cam1ResX'].AsInteger := FCam1Width
       else
@@ -381,6 +382,8 @@ begin
       EditMass.Text := Params['Mass'].AsString;
       EditColor.Text := Params['Color'].AsString;
       CheckBoxSyncCamSettings.Checked := Params['SyncCamSettings'].AsBoolean;
+
+      CheckBoxEnablePerspective.Checked := Params['EnablePerspective'].AsBoolean;
     end;
 end;
 

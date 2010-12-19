@@ -179,11 +179,16 @@ end;
 
 function TMCPoint.GetMetricPoint(const Index: Integer): T3DPoint;
 var
+  X0, Y0, Z0,
   Xpx1, Xpx2, Ypx1, R, H,
   TanAw1, TanAh1, TanAw2,
   Xm, Ym, Zm: Real;
   Wpx1, Hpx1, Wpx2: Integer;
 begin
+  X0 := FOwner.Options['X0'].AsFloat;
+  Y0 := FOwner.Options['Y0'].AsFloat;
+  Z0 := FOwner.Options['Z0'].AsFloat;
+
   // Разрешение камер
   Wpx1 := FOwner.Options['Cam1ResX'].AsInteger;
   Hpx1 := FOwner.Options['Cam1ResY'].AsInteger;
@@ -208,14 +213,23 @@ begin
   if (FPoints[Index].Z = -1) then Ypx1 := 0;
 
   // Формулы перевода координат из пиклесей в метры
-  Xm := (2 * R * Xpx1 * TanAw1 * (Wpx2 + 2 * Xpx2 * TanAw2)) / (Wpx1 * Wpx2 - 4 * Xpx1 * Xpx2 * TanAw1 * TanAw2);
-  Ym := (2 * R * Xpx2 * TanAw2 * (Wpx1 + 2 * Xpx1 * TanAw1)) / (Wpx1 * Wpx2 - 4 * Xpx1 * Xpx2 * TanAw1 * TanAw2);
-  Zm := Ypx1 * (R + Ym) * 2 * TanAh1 / Hpx1;
+  if FOwner.Options['EnablePerspective'].AsBoolean then
+    begin
+      Xm := (2 * R * Xpx1 * TanAw1 * (Wpx2 + 2 * Xpx2 * TanAw2)) / (Wpx1 * Wpx2 - 4 * Xpx1 * Xpx2 * TanAw1 * TanAw2);
+      Ym := (2 * R * Xpx2 * TanAw2 * (Wpx1 + 2 * Xpx1 * TanAw1)) / (Wpx1 * Wpx2 - 4 * Xpx1 * Xpx2 * TanAw1 * TanAw2);
+      Zm := Ypx1 * (R + Ym) * 2 * TanAh1 / Hpx1;
+    end
+  else
+    begin
+      Xm := Xpx1 * (R * TanAw1) / Wpx1;
+      Ym := Xpx2 * (R * TanAw2) / Wpx2;
+      Zm := Ypx1 * (R * TanAh1) / Hpx1;
+    end;
 
   // Возвращаем резултат
-  Result.X := Xm;
-  Result.Y := Zm + H; // С осями все хорошо. Просто по вертикали ось Y и я с этим ничего сделать не могу.
-  Result.Z := Ym; // Нужно отдавать координаты на вывод в таком виде X = X, Y = Z, Z = Y и все.
+  Result.X := X0 + Xm;
+  Result.Y := Z0 + Zm + H; // С осями все хорошо. Просто по вертикали ось Y и я с этим ничего сделать не могу.
+  Result.Z := Y0 + Ym; // Нужно отдавать координаты на вывод в таком виде X = X, Y = Z, Z = Y и все.
 
   // А это на тот случай если захочется посмотреть точки без преобразования
   //Result.X := Xpx1;

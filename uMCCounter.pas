@@ -139,7 +139,7 @@ type
 implementation
 
 uses
-  Math, uConst;
+  Math, Windows, uConst;
 
 { THandlerCache }
 
