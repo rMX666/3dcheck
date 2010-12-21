@@ -157,6 +157,10 @@ type
     CheckBoxAnimation: TCheckBox;
     CheckBoxShowCamera: TCheckBox;
     CheckBoxEnablePerspective: TCheckBox;
+    Panel2: TPanel;
+    cbTrajectory: TComboBox;
+    btnCountTrajectory: TButton;
+    procedure btnCountTrajectoryClick(Sender: TObject);
     procedure trAnimationChange(Sender: TObject);
     procedure CheckBoxEnablePerspectiveClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -201,7 +205,7 @@ type
   protected
     procedure EnableCameraControls(const Index: String; const Enabled: Boolean);
   private
-    FNeedRebuildTable: Boolean;
+//    FNeedRebuildTable: Boolean;
     FTestsDir: String;
     FSceneLines: array of TGLLines;
     FSceneCubes: array of TGLDummyCube;
@@ -219,6 +223,7 @@ type
     procedure SceneCenterCamera;
     procedure SceneCreatePath;
     procedure ScenePrepare;
+    procedure SceneMakeTrajectoryList;
     procedure SceneMakeTable;
     procedure SceneMakeAnimateTable;
 
@@ -279,8 +284,8 @@ end;
 procedure TfMain.AnalyzeButtonClick(Sender: TObject);
 begin
   PageAnalize.ActivePageIndex := TComponent(Sender).Tag;
-  if (TComponent(Sender).Tag = 1) and FNeedRebuildTable then
-    SceneMakeTable;
+  //if (TComponent(Sender).Tag = 1) and FNeedRebuildTable then
+  //  SceneMakeTable;
 end;
 
 procedure TfMain.trAnimationChange(Sender: TObject);
@@ -289,6 +294,13 @@ begin
   PlayTimer.Enabled := False;
   FSceneAnimatePaused := True;
   SceneAnimateStepTo(TTrackBar(Sender).Position);
+end;
+
+procedure TfMain.btnCountTrajectoryClick(Sender: TObject);
+begin
+  SceneMakeTable;
+  PageAnalize.ActivePageIndex := 1;
+  btn3dTable.Down := True;
 end;
 
 procedure TfMain.btnPlayClick(Sender: TObject);
@@ -465,6 +477,7 @@ end;
 procedure TfMain.ComboTestListChange(Sender: TObject);
 begin
   AnalPanel.Enabled := TComboBox(Sender).ItemIndex <> -1;
+  pnl3dViewControls.Enabled := AnalPanel.Enabled;
   if AnalPanel.Enabled then
     SceneAnimateEnd;
 end;
@@ -752,7 +765,8 @@ begin
   SceneCenterCamera;
   SceneCreatePath;
   SceneMakeAnimateTable;
-  FNeedRebuildTable := True;
+  SceneMakeTrajectoryList;
+//  FNeedRebuildTable := True;
 end;
 
 procedure TfMain.SceneAnimateBegin;
@@ -1025,63 +1039,104 @@ end;
 
 procedure TfMain.SceneMakeTable;
 var
-  I, J, K, CountCnt, PtCnt: Integer;
+  I, J, CountCnt, PtCnt: Integer;
   Data: PSceneTableData;
-  Node, ChildNode: PVirtualNode;
+  TrajectoryIndex: Integer;
 begin
   Tree3DTable.Clear;
+  Tree3DTable.BeginUpdate;
 
-  with Tree3DTable.Header do
-    begin
-      Columns.Clear;
-      with Columns.Add do
-        begin
-          Text := 'Название';
-          Width := 230;
-        end;
-      with Columns.Add do
-        begin
-          Text := 'Значение';
-          Width := 70;
-        end;
+  try
+    with Tree3DTable.Header do
+      begin
+        Columns.Clear;
+{
+        with Columns.Add do
+          begin
+            Text := 'Название';
+            Width := 230;
+          end;
+        with Columns.Add do
+          begin
+            Text := 'Значение';
+            Width := 70;
+          end;
+}
+        with fServiceDM.MCCounter.GetNameWrapper(1) do
+          for I := 0 to Count - 1 do
+            with Columns.Add do
+              begin
+                Text := Name[I];
+                Width := Length(Name[I]) * 8;
+                if Width > 150 then
+                  Width := 150;
+              end;
+      end;
 
-      with fServiceDM.MCCounter.GetNameWrapper(1) do
-        for I := 0 to Count - 1 do
-          with Columns.Add do
-            begin
-              Text := Name[I];
-              Width := Length(Name[I]) * 8;
-              if Width > 150 then
-                Width := 150;
-            end;
+    TrajectoryIndex := cbTrajectory.ItemIndex;
+    if TrajectoryIndex = -1 then
+      Exit;
+
+    with fServiceDM.MCFile, Tree3DTable do
+      begin
+        CountCnt := fServiceDM.MCCounter.TypeCount;
+        for I := 0 to CoordinateCount - 1 do
+          begin
+            Data := GetNodeData(AddChild(nil));
+            Data.Caption := 'Координата';
+            Data.Value := IntToStr(I + 1);
+            SetLength(Data.PointChars, CountCnt);
+            for J := 0 to CountCnt - 1 do
+              Data.PointChars[J] := FloatToStr(RoundTo(fServiceDM.MCCounter.Value[J, I, TrajectoryIndex], -3));
+          end;
+      end;
+{
+    with fServiceDM.MCFile, Tree3DTable do
+      begin
+        Node := AddChild(nil);
+        Data := GetNodeData(Node);
+        Data.Caption := 'Координаты';
+        PtCnt := Options['PointCount'].AsInteger;
+        CountCnt := fServiceDM.MCCounter.TypeCount;
+        for I := 0 to CoordinateCount - 1 do
+          begin
+            ChildNode := AddChild(Node);
+            Data := GetNodeData(ChildNode);
+            Data.Caption := 'Координата';
+            Data.Value := IntToStr(I + 1);
+            for J := 0 to PtCnt - 1 do
+              begin
+                Data := GetNodeData(AddChild(ChildNode));
+                Data.Caption := 'Точка';
+                Data.Value := IntToStr(J + 1);
+                SetLength(Data.PointChars, CountCnt);
+                for K := 0 to CountCnt - 1 do
+                  Data.PointChars[K] := FloatToStr(RoundTo(fServiceDM.MCCounter.Value[K, I, J], -3));
+              end;
+          end;
+        FullExpand;
+      end;
+    FNeedRebuildTable := False;
+}
+  finally
+    Tree3DTable.FullExpand;
+    Tree3DTable.EndUpdate;
+  end;
+end;
+
+procedure TfMain.SceneMakeTrajectoryList;
+var
+  I: Integer;
+begin
+  with cbTrajectory do
+    try
+      Clear;
+      for I := 1 to fServiceDM.MCFile.Options['PointCount'].AsInteger do
+        Items.Add('Траектория №' + IntToStr(I));
+    finally
+      ItemIndex := Integer(Items.Count > 0) - 1;
+      Tree3DTable.Clear;
     end;
-
-  with fServiceDM.MCFile, Tree3DTable do
-    begin
-      Node := AddChild(nil);
-      Data := GetNodeData(Node);
-      Data.Caption := 'Координаты';
-      PtCnt := Options['PointCount'].AsInteger;
-      CountCnt := fServiceDM.MCCounter.TypeCount;
-      for I := 0 to CoordinateCount - 1 do
-        begin
-          ChildNode := AddChild(Node);
-          Data := GetNodeData(ChildNode);
-          Data.Caption := 'Координата';
-          Data.Value := IntToStr(I + 1);
-          for J := 0 to PtCnt - 1 do
-            begin
-              Data := GetNodeData(AddChild(ChildNode));
-              Data.Caption := 'Точка';
-              Data.Value := IntToStr(J + 1);
-              SetLength(Data.PointChars, CountCnt);
-              for K := 0 to CountCnt - 1 do
-                Data.PointChars[K] := FloatToStr(RoundTo(fServiceDM.MCCounter.Value[K, I, J], -3));
-            end;
-        end;
-      FullExpand;
-    end;
-  FNeedRebuildTable := False;
 end;
 
 procedure TfMain.ScenePrepare;
@@ -1338,9 +1393,10 @@ end;
 
 procedure TfMain.Tree3DTableBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
   Column: TColumnIndex; CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
-var
-  Data: PSceneTableData;
+//var
+//  Data: PSceneTableData;
 begin
+{
   if CellPaintMode = cpmPaint then
     begin
       Data := Sender.GetNodeData(Node);
@@ -1356,6 +1412,7 @@ begin
             TargetCanvas.FillRect(CellRect);
           end;
     end;
+}
 end;
 
 procedure TfMain.Tree3DTableGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
@@ -1369,15 +1426,15 @@ var
   Data: PSceneTableData;
 begin
   Data := Sender.GetNodeData(Node);
-  case Column of
-    0: CellText := Data.Caption;
-    1: CellText := Data.Value;
-    else
-      if (Length(Data.PointChars) > 0) and (Column - 2 < Length(Data.PointChars)) then
-        CellText := Data.PointChars[Column - 2]
+//  case Column of
+//    0: CellText := Data.Caption;
+//    1: CellText := Data.Value;
+//    else
+      if (Length(Data.PointChars) > 0) and (Column { - 2} < Length(Data.PointChars)) then
+        CellText := Data.PointChars[Column] // - 2]
       else
         CellText := '';
-  end;
+//  end;
 end;
 
 procedure TfMain.TreeInfoBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;

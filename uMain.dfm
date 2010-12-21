@@ -45,22 +45,25 @@ object fMain: TfMain
       Caption = #1040#1085#1072#1083#1080#1090#1080#1095#1077#1089#1082#1080#1081' '#1084#1086#1076#1091#1083#1100
       object PageAnalize: TPageControl
         Left = 0
-        Top = 73
+        Top = 98
         Width = 996
-        Height = 587
-        ActivePage = TabSheet4
+        Height = 562
+        ActivePage = TabSheet5
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
+        ExplicitTop = 73
+        ExplicitHeight = 587
         object TabSheet4: TTabSheet
           Caption = '3D-'#1084#1086#1076#1077#1083#1100
           TabVisible = False
+          ExplicitHeight = 577
           object AnalPanel: T3DGradientPanel
             AlignWithMargins = True
             Left = 759
             Top = 0
             Width = 229
-            Height = 577
+            Height = 552
             Margins.Top = 0
             Margins.Right = 0
             Margins.Bottom = 0
@@ -69,12 +72,13 @@ object fMain: TfMain
             TabOrder = 0
             Gradient.Active = False
             Gradient.Orientation = fgdHorizontal
+            ExplicitHeight = 577
             object TreeInfo: TVirtualStringTree
               AlignWithMargins = True
               Left = 3
               Top = 3
               Width = 223
-              Height = 571
+              Height = 546
               Align = alClient
               Header.AutoSizeIndex = 1
               Header.DefaultHeight = 17
@@ -93,6 +97,7 @@ object fMain: TfMain
               OnBeforeCellPaint = TreeInfoBeforeCellPaint
               OnGetText = TreeInfoGetText
               OnGetNodeDataSize = TreeInfoGetNodeDataSize
+              ExplicitHeight = 571
               Columns = <
                 item
                   Position = 0
@@ -110,19 +115,21 @@ object fMain: TfMain
             Left = 0
             Top = 0
             Width = 756
-            Height = 577
+            Height = 552
             Align = alClient
             BevelOuter = bvNone
             Caption = 'pnl3dView'
             TabOrder = 1
+            ExplicitHeight = 577
             object pnl3dViewControls: TPanel
               Left = 0
-              Top = 528
+              Top = 503
               Width = 756
               Height = 49
               Align = alBottom
               BevelOuter = bvNone
               TabOrder = 0
+              ExplicitTop = 528
               DesignSize = (
                 756
                 49)
@@ -1078,10 +1085,10 @@ object fMain: TfMain
               Left = 3
               Top = 3
               Width = 750
-              Height = 522
+              Height = 497
               Camera = fServiceDM.GLCameraMain
               Buffer.BackgroundColor = cl3DDkShadow
-              FieldOfView = 138.072158813476600000
+              FieldOfView = 136.158859252929700000
               Align = alClient
               OnClick = GLViewerMainClick
               OnDblClick = GLViewerMainDblClick
@@ -1090,18 +1097,15 @@ object fMain: TfMain
           end
         end
         object TabSheet5: TTabSheet
-          Caption = #1058#1072#1073#1083#1080#1094#1072
+          Caption = #1056#1072#1089#1095#1077#1090#1099
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
+          ExplicitHeight = 577
           object Tree3DTable: TVirtualStringTree
             Left = 0
             Top = 0
             Width = 988
-            Height = 577
+            Height = 552
             Align = alClient
             Font.Charset = RUSSIAN_CHARSET
             Font.Color = clWindowText
@@ -1115,6 +1119,7 @@ object fMain: TfMain
             Header.Font.Height = -11
             Header.Font.Name = 'Tahoma'
             Header.Font.Style = []
+            Header.MainColumn = -1
             Header.Options = [hoColumnResize, hoDrag, hoHotTrack, hoVisible]
             Header.Style = hsFlatButtons
             ParentFont = False
@@ -1124,63 +1129,8 @@ object fMain: TfMain
             OnBeforeCellPaint = Tree3DTableBeforeCellPaint
             OnGetText = Tree3DTableGetText
             OnGetNodeDataSize = Tree3DTableGetNodeDataSize
-            Columns = <
-              item
-                Position = 0
-                Width = 200
-                WideText = #1053#1072#1079#1074#1072#1085#1080#1077
-              end
-              item
-                Position = 1
-                Width = 60
-                WideText = #1047#1085#1072#1095#1077#1085#1080#1077
-              end
-              item
-                Position = 2
-                Width = 60
-                WideText = #1042#1088#1077#1084#1103' (T)'
-              end
-              item
-                Position = 3
-                Width = 65
-                WideText = #1042#1088#1077#1084#1103' (dT)'
-              end
-              item
-                Alignment = taCenter
-                Position = 4
-                Width = 95
-                WideText = #1050#1086#1086#1088#1076#1080#1085#1072#1090#1072' (X)'
-              end
-              item
-                Alignment = taCenter
-                Position = 5
-                Width = 95
-                WideText = #1050#1086#1086#1088#1076#1080#1085#1072#1090#1072' (Y)'
-              end
-              item
-                Alignment = taCenter
-                Position = 6
-                Width = 95
-                WideText = #1050#1086#1086#1088#1076#1080#1085#1072#1090#1072' (Z)'
-              end
-              item
-                Alignment = taCenter
-                Position = 7
-                Width = 95
-                WideText = #1056#1072#1089#1089#1090#1086#1103#1085#1080#1077' (S)'
-              end
-              item
-                Alignment = taCenter
-                Position = 8
-                Width = 95
-                WideText = #1057#1082#1086#1088#1086#1089#1090#1100' (v)'
-              end
-              item
-                Alignment = taCenter
-                Position = 9
-                Width = 95
-                WideText = #1059#1089#1082#1086#1088#1077#1085#1080#1077' (a)'
-              end>
+            ExplicitHeight = 577
+            Columns = <>
           end
         end
       end
@@ -1698,6 +1648,35 @@ object fMain: TfMain
           TabOrder = 0
           OnChange = ComboTestListChange
           OnDropDown = ComboTestListDropDown
+        end
+      end
+      object Panel2: TPanel
+        Left = 0
+        Top = 73
+        Width = 996
+        Height = 25
+        Align = alTop
+        BevelOuter = bvNone
+        ParentBackground = False
+        TabOrder = 2
+        ExplicitTop = 96
+        object cbTrajectory: TComboBox
+          Left = 8
+          Top = 3
+          Width = 273
+          Height = 21
+          Style = csDropDownList
+          ItemHeight = 13
+          TabOrder = 0
+        end
+        object btnCountTrajectory: TButton
+          Left = 288
+          Top = 2
+          Width = 75
+          Height = 21
+          Caption = #1056#1072#1089#1095#1080#1090#1072#1090#1100
+          TabOrder = 1
+          OnClick = btnCountTrajectoryClick
         end
       end
     end
