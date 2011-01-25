@@ -298,6 +298,7 @@ begin
       begin
         if not FSceneAnimatePaused then
           begin
+            SceneAnimateStepTo(0);
             SceneAnimateBegin;
             FSceneAnimatePaused := False;
           end
@@ -754,6 +755,7 @@ begin
   SceneMakeTrajectoryList;
   if cbNeedCountTrajectory.Checked then
     SceneMakeTable;
+  FSceneAnimatePaused := False;
 //  FNeedRebuildTable := True;
 end;
 
