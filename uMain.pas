@@ -152,15 +152,14 @@ type
     CheckBoxAnimation: TCheckBox;
     CheckBoxShowCamera: TCheckBox;
     CheckBoxEnablePerspective: TCheckBox;
-    PanelAnalCount: TPanel;
-    cbTrajectory: TComboBox;
-    btnCountTrajectory: TButton;
     CheckBoxShowGridAndAxes: TCheckBox;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
+    cbTrajectory: TComboBox;
+    cbNeedCountTrajectory: TCheckBox;
+    procedure cbNeedCountTrajectoryClick(Sender: TObject);
     procedure Tree3DTableClick(Sender: TObject);
     procedure CheckBoxShowGridAndAxesClick(Sender: TObject);
-    procedure btnCountTrajectoryClick(Sender: TObject);
     procedure trAnimationChange(Sender: TObject);
     procedure CheckBoxEnablePerspectiveClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -289,11 +288,6 @@ begin
   SceneAnimateStepTo(TTrackBar(Sender).Position);
 end;
 
-procedure TfMain.btnCountTrajectoryClick(Sender: TObject);
-begin
-  SceneMakeTable;
-end;
-
 procedure TfMain.btnPlayClick(Sender: TObject);
 const
   MOVE_COUNT = 15;
@@ -366,6 +360,12 @@ begin
   finally
     ChangeStartButtonImage(TSpeedButton(Sender));
   end;
+end;
+
+procedure TfMain.cbNeedCountTrajectoryClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    SceneMakeTable;
 end;
 
 procedure TfMain.SceneControlButtonClick(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -752,7 +752,8 @@ begin
   SceneCreatePath;
   SceneMakeAnimateTable;
   SceneMakeTrajectoryList;
-  SceneMakeTable;
+  if cbNeedCountTrajectory.Checked then
+    SceneMakeTable;
 //  FNeedRebuildTable := True;
 end;
 

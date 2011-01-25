@@ -37,7 +37,7 @@ object fMain: TfMain
     Top = 0
     Width = 1004
     Height = 688
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
@@ -56,49 +56,54 @@ object fMain: TfMain
       end
       object PageAnalize: TPageControl
         Left = 0
-        Top = 98
+        Top = 73
         Width = 996
-        Height = 396
+        Height = 421
         ActivePage = TabSheet4
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
+        ExplicitTop = 98
+        ExplicitHeight = 396
         object TabSheet4: TTabSheet
           Caption = '3D-'#1084#1086#1076#1077#1083#1100
           TabVisible = False
+          ExplicitHeight = 386
           object Splitter2: TSplitter
             Left = 753
             Top = 0
             Width = 6
-            Height = 386
+            Height = 411
             Align = alRight
             Beveled = True
             ResizeStyle = rsUpdate
             ExplicitLeft = 756
+            ExplicitHeight = 386
           end
           object Panel1: TPanel
             Left = 0
             Top = 0
             Width = 753
-            Height = 386
+            Height = 411
             Align = alClient
             BevelOuter = bvNone
             Caption = 'pnl3dView'
             TabOrder = 0
+            ExplicitHeight = 386
             object pnl3dViewControls: TPanel
               Left = 0
-              Top = 333
+              Top = 344
               Width = 753
-              Height = 53
+              Height = 67
               Align = alBottom
               BevelOuter = bvNone
               TabOrder = 0
               DesignSize = (
                 753
-                53)
+                67)
               object btnPlay: TSpeedButton
                 Left = 56
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1047#1072#1087#1091#1089#1090#1080#1090#1100' '#1087#1088#1086#1089#1084#1086#1090#1088
@@ -164,11 +169,12 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
+                ExplicitTop = 21
               end
               object btnPause: TSpeedButton
                 Tag = 2
                 Left = 84
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1055#1072#1091#1079#1072' '#1087#1088#1086#1089#1084#1086#1090#1088#1072
@@ -234,11 +240,12 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
+                ExplicitTop = 21
               end
               object btnStop: TSpeedButton
                 Tag = 1
                 Left = 112
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1087#1088#1086#1089#1084#1086#1090#1088
@@ -304,11 +311,12 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
+                ExplicitTop = 21
               end
               object btnStepForvard: TSpeedButton
                 Tag = 4
                 Left = 140
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1053#1072' '#1090#1086#1095#1082#1091' '#1074#1087#1077#1088#1077#1076
@@ -374,11 +382,12 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
+                ExplicitTop = 21
               end
               object btnStepBack: TSpeedButton
                 Tag = 3
                 Left = 28
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1053#1072' '#1090#1086#1095#1082#1091' '#1085#1072#1079#1072#1076
@@ -444,11 +453,12 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
+                ExplicitTop = 21
               end
               object btnBack: TSpeedButton
                 Tag = 5
                 Left = -1
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1053#1072' 15 '#1090#1086#1095#1077#1082' '#1085#1072#1079#1072#1076
@@ -514,11 +524,12 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
+                ExplicitTop = 21
               end
               object btnForvard: TSpeedButton
                 Tag = 6
                 Left = 168
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1053#1072' 15 '#1090#1086#1095#1077#1082' '#1074#1087#1077#1088#1077#1076
@@ -584,14 +595,15 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
+                ExplicitTop = 21
               end
               object btnZoomIn: TSpeedButton
                 Left = 689
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1055#1088#1080#1073#1083#1080#1079#1080#1090#1100
-                Anchors = [akTop, akRight]
+                Anchors = [akRight, akBottom]
                 Flat = True
                 Glyph.Data = {
                   F6060000424DF606000000000000360000002800000018000000180000000100
@@ -653,16 +665,16 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
-                ExplicitLeft = 692
+                ExplicitTop = 43
               end
               object btnZoomOut: TSpeedButton
                 Tag = 1
                 Left = 717
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1054#1090#1076#1072#1083#1080#1090#1100
-                Anchors = [akTop, akRight]
+                Anchors = [akRight, akBottom]
                 Flat = True
                 Glyph.Data = {
                   F6060000424DF606000000000000360000002800000018000000180000000100
@@ -724,16 +736,16 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
-                ExplicitLeft = 720
+                ExplicitTop = 43
               end
               object btnRotateLeft: TSpeedButton
                 Tag = 3
                 Left = 578
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1055#1086#1074#1077#1088#1085#1091#1090#1100' '#1087#1086' '#1075#1086#1088#1080#1079#1086#1090#1072#1083#1080' '#1074#1083#1077#1074#1086
-                Anchors = [akTop, akRight]
+                Anchors = [akRight, akBottom]
                 Flat = True
                 Glyph.Data = {
                   F6060000424DF606000000000000360000002800000018000000180000000100
@@ -795,16 +807,16 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
-                ExplicitLeft = 581
+                ExplicitTop = 43
               end
               object btnRotateRight: TSpeedButton
                 Tag = 4
                 Left = 662
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1055#1086#1074#1077#1088#1085#1091#1090#1100' '#1087#1086' '#1075#1086#1088#1080#1079#1086#1085#1090#1072#1083#1080' '#1074#1087#1088#1072#1074#1086
-                Anchors = [akTop, akRight]
+                Anchors = [akRight, akBottom]
                 Flat = True
                 Glyph.Data = {
                   F6060000424DF606000000000000360000002800000018000000180000000100
@@ -866,16 +878,16 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
-                ExplicitLeft = 665
+                ExplicitTop = 43
               end
               object btnRotateUp: TSpeedButton
                 Tag = 2
                 Left = 606
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1055#1086#1074#1077#1088#1085#1091#1090#1100' '#1087#1086' '#1074#1077#1088#1090#1080#1082#1072#1083#1080' '#1074#1074#1077#1088#1093
-                Anchors = [akTop, akRight]
+                Anchors = [akRight, akBottom]
                 Flat = True
                 Glyph.Data = {
                   F6060000424DF606000000000000360000002800000018000000180000000100
@@ -937,16 +949,16 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
-                ExplicitLeft = 609
+                ExplicitTop = 43
               end
               object btnRotateDown: TSpeedButton
                 Tag = 5
                 Left = 634
-                Top = 21
+                Top = 35
                 Width = 28
                 Height = 28
                 Hint = #1055#1086#1074#1077#1088#1085#1091#1090#1100' '#1087#1086' '#1074#1077#1088#1090#1080#1082#1072#1083#1080' '#1074#1085#1080#1079
-                Anchors = [akTop, akRight]
+                Anchors = [akRight, akBottom]
                 Flat = True
                 Glyph.Data = {
                   F6060000424DF606000000000000360000002800000018000000180000000100
@@ -1008,7 +1020,7 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
-                ExplicitLeft = 637
+                ExplicitTop = 43
               end
               object trAnimation: TTrackBar
                 Left = 0
@@ -1022,8 +1034,8 @@ object fMain: TfMain
                 OnChange = trAnimationChange
               end
               object CheckBoxAnimation: TCheckBox
-                Left = 296
-                Top = 16
+                Left = 160
+                Top = 17
                 Width = 73
                 Height = 17
                 Caption = #1040#1085#1080#1084#1072#1094#1080#1103
@@ -1031,8 +1043,8 @@ object fMain: TfMain
                 OnClick = CheckBoxAnimationClick
               end
               object CheckBoxShowCamera: TCheckBox
-                Left = 208
-                Top = 16
+                Left = 96
+                Top = 17
                 Width = 57
                 Height = 17
                 Caption = #1050#1072#1084#1077#1088#1099
@@ -1042,8 +1054,8 @@ object fMain: TfMain
                 OnClick = CheckBoxShowCameraClick
               end
               object CheckBoxShowGridAndAxes: TCheckBox
-                Left = 208
-                Top = 32
+                Left = 8
+                Top = 17
                 Width = 81
                 Height = 17
                 Caption = #1057#1077#1090#1082#1072' '#1080' '#1086#1089#1080
@@ -1052,20 +1064,41 @@ object fMain: TfMain
                 TabOrder = 3
                 OnClick = CheckBoxShowGridAndAxesClick
               end
+              object cbTrajectory: TComboBox
+                Left = 232
+                Top = 14
+                Width = 129
+                Height = 21
+                Style = csDropDownList
+                ItemHeight = 13
+                TabOrder = 4
+              end
+              object cbNeedCountTrajectory: TCheckBox
+                Left = 368
+                Top = 16
+                Width = 57
+                Height = 17
+                Caption = #1056#1072#1089#1095#1077#1090
+                Checked = True
+                State = cbChecked
+                TabOrder = 5
+                OnClick = cbNeedCountTrajectoryClick
+              end
             end
             object GLViewerMain: TGLSceneViewer
               AlignWithMargins = True
               Left = 3
               Top = 3
               Width = 747
-              Height = 327
+              Height = 338
               Camera = fServiceDM.GLCameraMain
               Buffer.BackgroundColor = cl3DDkShadow
-              FieldOfView = 117.098350524902300000
+              FieldOfView = 118.773040771484400000
               Align = alClient
               OnClick = GLViewerMainClick
               OnDblClick = GLViewerMainDblClick
               OnMouseMove = GLViewerMainMouseMove
+              ExplicitHeight = 352
             end
           end
           object TreeInfo: TVirtualStringTree
@@ -1073,7 +1106,7 @@ object fMain: TfMain
             Left = 762
             Top = 3
             Width = 223
-            Height = 380
+            Height = 405
             Align = alRight
             Header.AutoSizeIndex = 1
             Header.DefaultHeight = 17
@@ -1092,6 +1125,7 @@ object fMain: TfMain
             OnBeforeCellPaint = TreeInfoBeforeCellPaint
             OnGetText = TreeInfoGetText
             OnGetNodeDataSize = TreeInfoGetNodeDataSize
+            ExplicitHeight = 380
             Columns = <
               item
                 Position = 0
@@ -1395,34 +1429,6 @@ object fMain: TfMain
           OnDropDown = ComboTestListDropDown
         end
       end
-      object PanelAnalCount: TPanel
-        Left = 0
-        Top = 73
-        Width = 996
-        Height = 25
-        Align = alTop
-        BevelOuter = bvNone
-        ParentBackground = False
-        TabOrder = 2
-        object cbTrajectory: TComboBox
-          Left = 8
-          Top = 3
-          Width = 273
-          Height = 21
-          Style = csDropDownList
-          ItemHeight = 13
-          TabOrder = 0
-        end
-        object btnCountTrajectory: TButton
-          Left = 288
-          Top = 2
-          Width = 75
-          Height = 21
-          Caption = #1056#1072#1089#1095#1080#1090#1072#1090#1100
-          TabOrder = 1
-          OnClick = btnCountTrajectoryClick
-        end
-      end
       object Tree3DTable: TVirtualStringTree
         Left = 0
         Top = 500
@@ -1445,7 +1451,7 @@ object fMain: TfMain
         Header.Options = [hoColumnResize, hoDrag, hoHotTrack, hoVisible]
         Header.Style = hsFlatButtons
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 2
         TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
         TreeOptions.SelectionOptions = [toFullRowSelect]
         OnBeforeCellPaint = Tree3DTableBeforeCellPaint
