@@ -34,7 +34,7 @@ var
 implementation
 
 uses
-  uMain, uServiceDM, uCameraDM;
+  uMain, uServiceDM, uCameraDM, uParams;
 
 {$R *.dfm}
 
@@ -153,7 +153,7 @@ begin
           FSceneLines[I].NodesAspect := lnaInvisible;
           FSceneLines[I].NodeSize := 0.2;
           FSceneLines[I].Options := [loUseNodeColorForLines];
-          with fServiceDM.MCFile.Options['LineColor'] do
+          with Params['GLLineColor'] do
             begin
               FSceneLines[I].NodeColor.Red := fServiceDM.HexToInt(Copy(AsString, 1, 2)) / 255;
               FSceneLines[I].NodeColor.Green := fServiceDM.HexToInt(Copy(AsString, 3, 2)) / 255;
@@ -164,7 +164,7 @@ begin
           FSceneCubes[I] := TGLDummyCube.Create(Self);
           FSceneCubes[I].CubeSize := 0.2;
           FSceneCubes[I].VisibleAtRunTime := True;
-          with fServiceDM.MCFile.Options['LineColor'] do
+          with Params['GLLineColor'] do
             begin
               FSceneCubes[I].EdgeColor.Red := fServiceDM.HexToInt(Copy(AsString, 1, 2)) / 255;
               FSceneCubes[I].EdgeColor.Green := fServiceDM.HexToInt(Copy(AsString, 3, 2)) / 255;

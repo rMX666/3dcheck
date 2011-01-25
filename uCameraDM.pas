@@ -216,7 +216,6 @@ begin
   with FCaptureFile, fMain do
     begin
       Options['Mass'].AsString := EditMass.Text;
-      Options['LineColor'].AsString := EditColor.Text;
       Options['Interval'].AsString := EditInterval.Text;
       Options['CameraRadius'].AsString := EditCamRadius.Text;
       Options['CameraHeight'].AsString := EditCamHeight.Text;
@@ -380,7 +379,6 @@ begin
       EditY0.Text := Params['Y0'].AsString;
       EditZ0.Text := Params['Z0'].AsString;
       EditMass.Text := Params['Mass'].AsString;
-      EditColor.Text := Params['Color'].AsString;
       CheckBoxSyncCamSettings.Checked := Params['SyncCamSettings'].AsBoolean;
 
       CheckBoxEnablePerspective.Checked := Params['EnablePerspective'].AsBoolean;

@@ -888,7 +888,7 @@ object fServiceDM: TfServiceDM
       SpotCutOff = 180.000000000000000000
     end
     object GLDummyCube1: TGLDummyCube
-      Scale.Coordinates = {0000803E0000803E0000803E00000000}
+      Scale.Coordinates = {CDCC4C3DCDCC4C3DCDCC4C3D00000000}
       CubeSize = 1.000000000000000000
       EdgeColor.Color = {E5D0A23E508D173F0000803F0000803F}
       VisibleAtRunTime = True
@@ -962,9 +962,11 @@ object fServiceDM: TfServiceDM
             X = 0.252999991178512600
             Y = -0.500000000000000000
             Z = 0.140000000596046400
+            RadiusFactor = 0.500000000000000000
           end
           item
             Y = 0.500000000000000000
+            RadiusFactor = 2.000000000000000000
           end>
         Radius = 0.004999999888241291
       end
@@ -974,9 +976,11 @@ object fServiceDM: TfServiceDM
             X = -0.252999991178512600
             Y = -0.500000000000000000
             Z = 0.140000000596046400
+            RadiusFactor = 0.500000000000000000
           end
           item
             Y = 0.500000000000000000
+            RadiusFactor = 2.000000000000000000
           end>
         Radius = 0.004999999888241291
       end
@@ -985,9 +989,11 @@ object fServiceDM: TfServiceDM
           item
             Y = -0.500000000000000000
             Z = -0.300000011920929000
+            RadiusFactor = 0.500000000000000000
           end
           item
             Y = 0.500000000000000000
+            RadiusFactor = 2.000000000000000000
           end>
         Radius = 0.004999999888241291
       end
@@ -1003,9 +1009,11 @@ object fServiceDM: TfServiceDM
             X = 0.252999991178512600
             Y = -0.500000000000000000
             Z = 0.140000000596046400
+            RadiusFactor = 0.500000000000000000
           end
           item
             Y = 0.500000000000000000
+            RadiusFactor = 2.000000000000000000
           end>
         Radius = 0.004999999888241291
       end
@@ -1015,9 +1023,11 @@ object fServiceDM: TfServiceDM
             X = -0.252999991178512600
             Y = -0.500000000000000000
             Z = 0.140000000596046400
+            RadiusFactor = 0.500000000000000000
           end
           item
             Y = 0.500000000000000000
+            RadiusFactor = 2.000000000000000000
           end>
         Radius = 0.004999999888241291
       end
@@ -1026,9 +1036,11 @@ object fServiceDM: TfServiceDM
           item
             Y = -0.500000000000000000
             Z = -0.300000011920929000
+            RadiusFactor = 0.500000000000000000
           end
           item
             Y = 0.500000000000000000
+            RadiusFactor = 2.000000000000000000
           end>
         Radius = 0.004999999888241291
       end
@@ -1036,6 +1048,7 @@ object fServiceDM: TfServiceDM
     object GLCameraMain: TGLCamera
       DepthOfView = 10000.000000000000000000
       FocalLength = 100.000000000000000000
+      NearPlaneBias = 0.200000002980232200
       TargetObject = GLDummyCube1
       Position.Coordinates = {000080C000008040000080C00000803F}
       Direction.Coordinates = {0000803F000000000000008000000000}
@@ -1043,6 +1056,7 @@ object fServiceDM: TfServiceDM
     object GLCameraCamView: TGLCamera
       DepthOfView = 1000.000000000000000000
       FocalLength = 100.000000000000000000
+      NearPlaneBias = 0.200000002980232200
       TargetObject = GLDummyCube1
       Position.Coordinates = {0000804000008040000080400000803F}
       Direction.Coordinates = {0000803F000000000000000000000000}

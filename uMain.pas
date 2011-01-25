@@ -23,14 +23,11 @@ type
     TabSheet1: TTabSheet;
     PageAnalize: TPageControl;
     TabSheet4: TTabSheet;
-    AnalPanel: T3DGradientPanel;
     TreeInfo: TVirtualStringTree;
     TabSheet5: TTabSheet;
     Tree3DTable: TVirtualStringTree;
-    Panel5: T3DGradientPanel;
+    PanelAnalHead: T3DGradientPanel;
     Label4: TLabel;
-    btn3dTable: TSpeedButton;
-    btn3dModel: TSpeedButton;
     Label1: TLabel;
     Image1: TImage;
     ComboTestList: TComboBox;
@@ -80,7 +77,6 @@ type
     EditCameraDegree2: TEdit;
     gbParams: TGroupBox;
     Label7: TLabel;
-    Label8: TLabel;
     Label9: TLabel;
     Label10: TLabel;
     Label11: TLabel;
@@ -96,7 +92,6 @@ type
     Label25: TLabel;
     Label26: TLabel;
     EditMass: TEdit;
-    EditColor: TEdit;
     EditInterval: TEdit;
     EditCamRadius: TEdit;
     EditCamHeight: TEdit;
@@ -157,9 +152,14 @@ type
     CheckBoxAnimation: TCheckBox;
     CheckBoxShowCamera: TCheckBox;
     CheckBoxEnablePerspective: TCheckBox;
-    Panel2: TPanel;
+    PanelAnalCount: TPanel;
     cbTrajectory: TComboBox;
     btnCountTrajectory: TButton;
+    CheckBoxShowGridAndAxes: TCheckBox;
+    Splitter1: TSplitter;
+    Splitter2: TSplitter;
+    procedure Tree3DTableClick(Sender: TObject);
+    procedure CheckBoxShowGridAndAxesClick(Sender: TObject);
     procedure btnCountTrajectoryClick(Sender: TObject);
     procedure trAnimationChange(Sender: TObject);
     procedure CheckBoxEnablePerspectiveClick(Sender: TObject);
@@ -178,7 +178,6 @@ type
     procedure CheckBox3DViewClick(Sender: TObject);
     procedure CheckBoxSyncCamSettingsClick(Sender: TObject);
     procedure EditMassChange(Sender: TObject);
-    procedure PanelColorClick(Sender: TObject);
     procedure CheckEditKeyPress(Sender: TObject; var Key: Char);
     procedure acStartTestExecute(Sender: TObject);
     procedure btnStartTestClick(Sender: TObject);
@@ -201,7 +200,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure ComboTestListDropDown(Sender: TObject);
     procedure btnPlayClick(Sender: TObject);
-    procedure AnalyzeButtonClick(Sender: TObject);
   protected
     procedure EnableCameraControls(const Index: String; const Enabled: Boolean);
   private
@@ -235,6 +233,8 @@ type
     procedure SceneAnimateClear;
     procedure SceneAnimateEnd;
     procedure SceneAnimateCountParameters;
+
+    procedure SceneTableSelectByIndex(const Index: Integer);
 
     procedure SceneAnimateBeginUpdate;
     procedure SceneAnimateEndUpdate;
@@ -281,13 +281,6 @@ begin
   btnStartTest.Click;
 end;
 
-procedure TfMain.AnalyzeButtonClick(Sender: TObject);
-begin
-  PageAnalize.ActivePageIndex := TComponent(Sender).Tag;
-  //if (TComponent(Sender).Tag = 1) and FNeedRebuildTable then
-  //  SceneMakeTable;
-end;
-
 procedure TfMain.trAnimationChange(Sender: TObject);
 begin
   PlayTimer.Interval := fServiceDM.MCFile.Options['Interval'].AsInteger;
@@ -299,8 +292,6 @@ end;
 procedure TfMain.btnCountTrajectoryClick(Sender: TObject);
 begin
   SceneMakeTable;
-  PageAnalize.ActivePageIndex := 1;
-  btn3dTable.Down := True;
 end;
 
 procedure TfMain.btnPlayClick(Sender: TObject);
@@ -423,6 +414,11 @@ begin
   Params['ShowCamera'].AsBoolean := TCheckBox(Sender).Checked;
 end;
 
+procedure TfMain.CheckBoxShowGridAndAxesClick(Sender: TObject);
+begin
+  fServiceDM.GLGrid.Visible := TCheckBox(Sender).Checked;
+end;
+
 procedure TfMain.CheckBoxSyncCamSettingsClick(Sender: TObject);
 begin
   Params['SyncCamSettings'].AsBoolean := TCheckBox(Sender).Checked;
@@ -476,9 +472,8 @@ end;
 
 procedure TfMain.ComboTestListChange(Sender: TObject);
 begin
-  AnalPanel.Enabled := TComboBox(Sender).ItemIndex <> -1;
-  pnl3dViewControls.Enabled := AnalPanel.Enabled;
-  if AnalPanel.Enabled then
+  pnl3dViewControls.Enabled := TComboBox(Sender).ItemIndex <> -1;
+  if pnl3dViewControls.Enabled then
     SceneAnimateEnd;
 end;
 
@@ -653,11 +648,12 @@ end;
 procedure TfMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint;
   var Handled: Boolean);
 begin
-  with fServiceDM do
-    case PageMain.ActivePageIndex of
-      0: GLCameraMain.AdjustDistanceToTarget(Power(1.02, -WheelDelta/120));
-      1: GLCameraCamView.AdjustDistanceToTarget(Power(1.02, -WheelDelta/120));
-    end;
+  if GLViewerMain.Focused then
+    with fServiceDM do
+      case PageMain.ActivePageIndex of
+        0: GLCameraMain.AdjustDistanceToTarget(Power(1.02, -WheelDelta/120));
+        1: GLCameraCamView.AdjustDistanceToTarget(Power(1.02, -WheelDelta/120));
+      end;
 end;
 
 procedure TfMain.GLViewerMainClick(Sender: TObject);
@@ -727,16 +723,6 @@ begin
   end;
 end;
 
-procedure TfMain.PanelColorClick(Sender: TObject);
-begin
-  fServiceDM.CD.Color := TPanel(Sender).Color;
-  if fServiceDM.CD.Execute then
-    begin
-      EditColor.Text := '#' + IntToHex(fServiceDM.CD.Color, 6);
-      TPanel(Sender).Color := fServiceDM.CD.Color;
-    end;
-end;
-
 procedure TfMain.PlayTimerTimer(Sender: TObject);
 begin
   SceneAnimateStepForvard;
@@ -766,6 +752,7 @@ begin
   SceneCreatePath;
   SceneMakeAnimateTable;
   SceneMakeTrajectoryList;
+  SceneMakeTable;
 //  FNeedRebuildTable := True;
 end;
 
@@ -878,6 +865,7 @@ begin
         Dec(FSceneAnimateLastStep);
       end;
     SceneAnimatePlaceCubes;
+    SceneTableSelectByIndex(FSceneAnimateLastStep);    
 //    SceneAnimateCountParameters;
   finally
     SceneAnimateEndUpdate
@@ -910,6 +898,8 @@ begin
             FSceneLines[J].Nodes.AddNode(PointsMetric[J].X, PointsMetric[J].Y, PointsMetric[J].Z);
         Inc(FSceneAnimateLastStep);
       end;
+
+    SceneTableSelectByIndex(FSceneAnimateLastStep);
 //    SceneAnimateCountParameters;
   finally
     SceneAnimateEndUpdate;
@@ -937,9 +927,9 @@ begin
       0: Cam := GLCameraMain;
       1: Cam := GLCameraCamView;
     end;
-  Cam.Position.X := 3;
-  Cam.Position.Y := 3;
-  Cam.Position.Z := 3;
+  Cam.Position.X := 1.2;
+  Cam.Position.Y := 1.2;
+  Cam.Position.Z := 1.2;
   Cam.TargetObject.Position.X := 0;
   Cam.TargetObject.Position.Y := fServiceDM.MCFile.Options['CameraHeight'].AsFloat / 1000;
   Cam.TargetObject.Position.Z := 0;
@@ -973,22 +963,22 @@ end;
 
 function TfMain.GetOptionCaption(const Name: String): String;
 begin
-  if Name = 'Mass'         then Result := 'Масса' else
-  if Name = 'LineColor'    then Result := 'Цвет линии' else
-  if Name = 'Interval'     then Result := 'Интервал' else
-  if Name = 'CameraRadius' then Result := 'Расстояние до камеры' else
-  if Name = 'PointCount'   then Result := 'Количество точек' else
-  if Name = 'CameraHeight' then Result := 'Высота камеры' else
-  if Name = 'TestName'     then Result := 'Название' else
-  if Name = 'X0'           then Result := 'X0' else
-  if Name = 'Y0'           then Result := 'Y0' else
-  if Name = 'Z0'           then Result := 'Z0' else
-  if Name = 'Cam1Degree'   then Result := 'Угол кам. №1' else
-  if Name = 'Cam2Degree'   then Result := 'Угол кам. №2' else
-  if Name = 'Cam1ResX'     then Result := 'Кам. №1 ширина' else
-  if Name = 'Cam1ResY'     then Result := 'Кам. №1 высота' else
-  if Name = 'Cam2ResX'     then Result := 'Кам. №2 ширина' else
-  if Name = 'Cam2ResY'     then Result := 'Кам. №2 высота'
+  if Name = 'Mass'              then Result := 'Масса' else
+  if Name = 'Interval'          then Result := 'Интервал' else
+  if Name = 'CameraRadius'      then Result := 'Расстояние до камеры' else
+  if Name = 'PointCount'        then Result := 'Количество траекторий' else
+  if Name = 'CameraHeight'      then Result := 'Высота камеры' else
+  if Name = 'TestName'          then Result := 'Название' else
+  if Name = 'X0'                then Result := 'X0' else
+  if Name = 'Y0'                then Result := 'Y0' else
+  if Name = 'Z0'                then Result := 'Z0' else
+  if Name = 'Cam1Degree'        then Result := 'Угол кам. №1' else
+  if Name = 'Cam2Degree'        then Result := 'Угол кам. №2' else
+  if Name = 'Cam1ResX'          then Result := 'Кам. №1 ширина' else
+  if Name = 'Cam1ResY'          then Result := 'Кам. №1 высота' else
+  if Name = 'Cam2ResX'          then Result := 'Кам. №2 ширина' else
+  if Name = 'Cam2ResY'          then Result := 'Кам. №2 высота' else
+  if Name = 'EnablePerspective' then Result := 'С перспективой'
   else Result := Name;
 end;
 
@@ -1001,15 +991,23 @@ begin
   TreeInfo.Clear;
   with fServiceDM.MCFile, TreeInfo do
     begin
+{
       Node := AddChild(nil);
       Data := GetNodeData(Node);
       Data.Caption := 'Параметры';
+}
       for I := 0 to OptionCount - 1 do
         begin
-          Data := GetNodeData(AddChild(Node));
+          if GetOptionByIndex(I).Name = 'TestName' then
+            Continue;
+
+          Data := GetNodeData(AddChild(nil));
           Data.Caption := GetOptionCaption(GetOptionByIndex(I).Name);
           Data.Value := GetOptionByIndex(I).AsString;
         end;
+      Data := GetNodeData(AddChild(nil));
+      Data.Caption := 'Количество точек';
+      Data.Value := IntToStr(CoordinateCount);
 
 {
       Node := AddChild(nil);
@@ -1062,6 +1060,12 @@ begin
             Width := 70;
           end;
 }
+        with Columns.Add do
+          begin
+            Text := '№ точки';
+            Width := 50;
+          end;
+
         with fServiceDM.MCCounter.GetNameWrapper(1) do
           for I := 0 to Count - 1 do
             with Columns.Add do
@@ -1121,6 +1125,8 @@ begin
   finally
     Tree3DTable.FullExpand;
     Tree3DTable.EndUpdate;
+
+    SceneTableSelectByIndex(fServiceDM.MCFile.CoordinateCount - 1);
   end;
 end;
 
@@ -1158,9 +1164,9 @@ begin
             FSceneLines[I].LineWidth := 1;
           FSceneLines[I].Division := 500;
           FSceneLines[I].NodesAspect := lnaInvisible;
-          FSceneLines[I].NodeSize := 0.2;
+          FSceneLines[I].NodeSize := 0.05;
           FSceneLines[I].Options := [loUseNodeColorForLines];
-          with fServiceDM.MCFile.Options['LineColor'] do
+          with Params['GLLineColor'] do
             begin
               FSceneLines[I].NodeColor.Red := fServiceDM.HexToInt(Copy(AsString, 2, 2)) / 255;
               FSceneLines[I].NodeColor.Green := fServiceDM.HexToInt(Copy(AsString, 4, 2)) / 255;
@@ -1169,9 +1175,9 @@ begin
           FSceneLines[I].SplineMode := lsmLines;
 
           FSceneCubes[I] := TGLDummyCube.Create(Self);
-          FSceneCubes[I].CubeSize := 0.2;
+          FSceneCubes[I].CubeSize := 0.05;
           FSceneCubes[I].VisibleAtRunTime := True;
-          with fServiceDM.MCFile.Options['LineColor'] do
+          with Params['GLLineColor'] do
             begin
               FSceneCubes[I].EdgeColor.Red := fServiceDM.HexToInt(Copy(AsString, 2, 2)) / 255;
               FSceneCubes[I].EdgeColor.Green := fServiceDM.HexToInt(Copy(AsString, 4, 2)) / 255;
@@ -1251,6 +1257,35 @@ begin
       GLGrid.XSamplingScale.Max := R;
       GLGrid.ZSamplingScale.Min := -R;
       GLGrid.ZSamplingScale.Max := R;
+    end;
+end;
+
+procedure TfMain.SceneTableSelectByIndex(const Index: Integer);
+var
+  I: Integer;
+  Node, SelectedNode: PVirtualNode;
+begin
+  I := 0;
+  with Tree3DTable do
+    begin
+      BeginUpdate;
+      try
+        Node := GetFirst;
+        while Node <> nil do
+          begin
+            Selected[Node] := False;
+            if Index = I then
+              begin
+                Selected[Node] := True;
+                SelectedNode := Node;
+              end;
+            Node := GetNext(Node);
+            Inc(I);
+          end;
+      finally
+        EndUpdate;
+        ScrollIntoView(SelectedNode, True);
+      end;
     end;
 end;
 
@@ -1415,6 +1450,28 @@ begin
 }
 end;
 
+procedure TfMain.Tree3DTableClick(Sender: TObject);
+var
+  Node: PVirtualNode;
+  I: Integer;
+begin
+  with TVirtualStringTree(Sender) do
+    begin
+      Node := GetFirst;
+      I := 0;
+      while Node <> nil do
+        begin
+          if Selected[Node] then
+            begin
+              SceneAnimateStepTo(I);
+              Break;
+            end;
+          Node := GetNext(Node);
+          Inc(I);
+        end;
+    end;
+end;
+
 procedure TfMain.Tree3DTableGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
 begin
   NodeDataSize := SizeOf(TSceneTableData);
@@ -1430,10 +1487,15 @@ begin
 //    0: CellText := Data.Caption;
 //    1: CellText := Data.Value;
 //    else
-      if (Length(Data.PointChars) > 0) and (Column { - 2} < Length(Data.PointChars)) then
-        CellText := Data.PointChars[Column] // - 2]
+      if Column = 0 then
+        CellText := Data.Value
       else
-        CellText := '';
+        begin
+          if (Length(Data.PointChars) > 0) and (Column - 1 < Length(Data.PointChars)) then
+            CellText := Data.PointChars[Column - 1]
+          else
+            CellText := '';
+        end;
 //  end;
 end;
 

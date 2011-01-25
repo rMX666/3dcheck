@@ -37,102 +37,65 @@ object fMain: TfMain
     Top = 0
     Width = 1004
     Height = 688
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
     object TabSheet1: TTabSheet
       Caption = #1040#1085#1072#1083#1080#1090#1080#1095#1077#1089#1082#1080#1081' '#1084#1086#1076#1091#1083#1100
+      object Splitter1: TSplitter
+        Left = 0
+        Top = 494
+        Width = 996
+        Height = 6
+        Cursor = crVSplit
+        Align = alBottom
+        Beveled = True
+        ResizeStyle = rsUpdate
+        ExplicitTop = 497
+      end
       object PageAnalize: TPageControl
         Left = 0
         Top = 98
         Width = 996
-        Height = 562
-        ActivePage = TabSheet5
+        Height = 396
+        ActivePage = TabSheet4
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
-        ExplicitTop = 73
-        ExplicitHeight = 587
         object TabSheet4: TTabSheet
           Caption = '3D-'#1084#1086#1076#1077#1083#1100
           TabVisible = False
-          ExplicitHeight = 577
-          object AnalPanel: T3DGradientPanel
-            AlignWithMargins = True
-            Left = 759
+          object Splitter2: TSplitter
+            Left = 753
             Top = 0
-            Width = 229
-            Height = 552
-            Margins.Top = 0
-            Margins.Right = 0
-            Margins.Bottom = 0
+            Width = 6
+            Height = 386
             Align = alRight
-            BevelOuter = bvNone
-            TabOrder = 0
-            Gradient.Active = False
-            Gradient.Orientation = fgdHorizontal
-            ExplicitHeight = 577
-            object TreeInfo: TVirtualStringTree
-              AlignWithMargins = True
-              Left = 3
-              Top = 3
-              Width = 223
-              Height = 546
-              Align = alClient
-              Header.AutoSizeIndex = 1
-              Header.DefaultHeight = 17
-              Header.Font.Charset = DEFAULT_CHARSET
-              Header.Font.Color = clWindowText
-              Header.Font.Height = -11
-              Header.Font.Name = 'Tahoma'
-              Header.Font.Style = []
-              Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoHotTrack, hoShowSortGlyphs, hoVisible]
-              Header.Style = hsFlatButtons
-              Indent = 4
-              TabOrder = 0
-              TextMargin = 2
-              TreeOptions.PaintOptions = [toShowDropmark, toShowHorzGridLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toFullVertGridLines, toUseBlendedSelection]
-              TreeOptions.SelectionOptions = [toFullRowSelect]
-              OnBeforeCellPaint = TreeInfoBeforeCellPaint
-              OnGetText = TreeInfoGetText
-              OnGetNodeDataSize = TreeInfoGetNodeDataSize
-              ExplicitHeight = 571
-              Columns = <
-                item
-                  Position = 0
-                  Width = 130
-                  WideText = #1055#1072#1088#1072#1084#1077#1090#1088
-                end
-                item
-                  Position = 1
-                  Width = 89
-                  WideText = #1047#1085#1072#1095#1077#1085#1080#1077
-                end>
-            end
+            Beveled = True
+            ResizeStyle = rsUpdate
+            ExplicitLeft = 756
           end
           object Panel1: TPanel
             Left = 0
             Top = 0
-            Width = 756
-            Height = 552
+            Width = 753
+            Height = 386
             Align = alClient
             BevelOuter = bvNone
             Caption = 'pnl3dView'
-            TabOrder = 1
-            ExplicitHeight = 577
+            TabOrder = 0
             object pnl3dViewControls: TPanel
               Left = 0
-              Top = 503
-              Width = 756
-              Height = 49
+              Top = 333
+              Width = 753
+              Height = 53
               Align = alBottom
               BevelOuter = bvNone
               TabOrder = 0
-              ExplicitTop = 528
               DesignSize = (
-                756
-                49)
+                753
+                53)
               object btnPlay: TSpeedButton
                 Left = 56
                 Top = 21
@@ -201,7 +164,6 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
-                ExplicitTop = 13
               end
               object btnPause: TSpeedButton
                 Tag = 2
@@ -272,7 +234,6 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
-                ExplicitTop = 13
               end
               object btnStop: TSpeedButton
                 Tag = 1
@@ -343,7 +304,6 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
-                ExplicitTop = 13
               end
               object btnStepForvard: TSpeedButton
                 Tag = 4
@@ -414,7 +374,6 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
-                ExplicitTop = 13
               end
               object btnStepBack: TSpeedButton
                 Tag = 3
@@ -485,7 +444,6 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
-                ExplicitTop = 13
               end
               object btnBack: TSpeedButton
                 Tag = 5
@@ -556,7 +514,6 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
-                ExplicitTop = 13
               end
               object btnForvard: TSpeedButton
                 Tag = 6
@@ -627,10 +584,9 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnClick = btnPlayClick
-                ExplicitTop = 13
               end
               object btnZoomIn: TSpeedButton
-                Left = 692
+                Left = 689
                 Top = 21
                 Width = 28
                 Height = 28
@@ -697,10 +653,11 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
+                ExplicitLeft = 692
               end
               object btnZoomOut: TSpeedButton
                 Tag = 1
-                Left = 720
+                Left = 717
                 Top = 21
                 Width = 28
                 Height = 28
@@ -767,10 +724,11 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
+                ExplicitLeft = 720
               end
               object btnRotateLeft: TSpeedButton
                 Tag = 3
-                Left = 581
+                Left = 578
                 Top = 21
                 Width = 28
                 Height = 28
@@ -837,10 +795,11 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
+                ExplicitLeft = 581
               end
               object btnRotateRight: TSpeedButton
                 Tag = 4
-                Left = 665
+                Left = 662
                 Top = 21
                 Width = 28
                 Height = 28
@@ -907,10 +866,11 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
+                ExplicitLeft = 665
               end
               object btnRotateUp: TSpeedButton
                 Tag = 2
-                Left = 609
+                Left = 606
                 Top = 21
                 Width = 28
                 Height = 28
@@ -977,10 +937,11 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
+                ExplicitLeft = 609
               end
               object btnRotateDown: TSpeedButton
                 Tag = 5
-                Left = 637
+                Left = 634
                 Top = 21
                 Width = 28
                 Height = 28
@@ -1047,11 +1008,12 @@ object fMain: TfMain
                 ParentShowHint = False
                 ShowHint = True
                 OnMouseDown = SceneControlButtonClick
+                ExplicitLeft = 637
               end
               object trAnimation: TTrackBar
                 Left = 0
                 Top = 0
-                Width = 753
+                Width = 750
                 Height = 15
                 Anchors = [akLeft, akTop, akRight]
                 TabOrder = 0
@@ -1060,8 +1022,8 @@ object fMain: TfMain
                 OnChange = trAnimationChange
               end
               object CheckBoxAnimation: TCheckBox
-                Left = 208
-                Top = 32
+                Left = 296
+                Top = 16
                 Width = 73
                 Height = 17
                 Caption = #1040#1085#1080#1084#1072#1094#1080#1103
@@ -1079,62 +1041,81 @@ object fMain: TfMain
                 TabOrder = 2
                 OnClick = CheckBoxShowCameraClick
               end
+              object CheckBoxShowGridAndAxes: TCheckBox
+                Left = 208
+                Top = 32
+                Width = 81
+                Height = 17
+                Caption = #1057#1077#1090#1082#1072' '#1080' '#1086#1089#1080
+                Checked = True
+                State = cbChecked
+                TabOrder = 3
+                OnClick = CheckBoxShowGridAndAxesClick
+              end
             end
             object GLViewerMain: TGLSceneViewer
               AlignWithMargins = True
               Left = 3
               Top = 3
-              Width = 750
-              Height = 497
+              Width = 747
+              Height = 327
               Camera = fServiceDM.GLCameraMain
               Buffer.BackgroundColor = cl3DDkShadow
-              FieldOfView = 136.158859252929700000
+              FieldOfView = 117.098350524902300000
               Align = alClient
               OnClick = GLViewerMainClick
               OnDblClick = GLViewerMainDblClick
               OnMouseMove = GLViewerMainMouseMove
             end
           end
-        end
-        object TabSheet5: TTabSheet
-          Caption = #1056#1072#1089#1095#1077#1090#1099
-          ImageIndex = 1
-          TabVisible = False
-          ExplicitHeight = 577
-          object Tree3DTable: TVirtualStringTree
-            Left = 0
-            Top = 0
-            Width = 988
-            Height = 552
-            Align = alClient
-            Font.Charset = RUSSIAN_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Arial'
-            Font.Style = []
-            Header.AutoSizeIndex = -1
+          object TreeInfo: TVirtualStringTree
+            AlignWithMargins = True
+            Left = 762
+            Top = 3
+            Width = 223
+            Height = 380
+            Align = alRight
+            Header.AutoSizeIndex = 1
             Header.DefaultHeight = 17
             Header.Font.Charset = DEFAULT_CHARSET
             Header.Font.Color = clWindowText
             Header.Font.Height = -11
             Header.Font.Name = 'Tahoma'
             Header.Font.Style = []
-            Header.MainColumn = -1
-            Header.Options = [hoColumnResize, hoDrag, hoHotTrack, hoVisible]
+            Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoHotTrack, hoShowSortGlyphs, hoVisible]
             Header.Style = hsFlatButtons
-            ParentFont = False
-            TabOrder = 0
-            TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
+            Indent = 4
+            TabOrder = 1
+            TextMargin = 2
+            TreeOptions.PaintOptions = [toShowDropmark, toShowHorzGridLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toFullVertGridLines, toUseBlendedSelection]
             TreeOptions.SelectionOptions = [toFullRowSelect]
-            OnBeforeCellPaint = Tree3DTableBeforeCellPaint
-            OnGetText = Tree3DTableGetText
-            OnGetNodeDataSize = Tree3DTableGetNodeDataSize
-            ExplicitHeight = 577
-            Columns = <>
+            OnBeforeCellPaint = TreeInfoBeforeCellPaint
+            OnGetText = TreeInfoGetText
+            OnGetNodeDataSize = TreeInfoGetNodeDataSize
+            Columns = <
+              item
+                Position = 0
+                Width = 130
+                WideText = #1055#1072#1088#1072#1084#1077#1090#1088
+              end
+              item
+                Position = 1
+                Width = 89
+                WideText = #1047#1085#1072#1095#1077#1085#1080#1077
+              end>
           end
         end
+        object TabSheet5: TTabSheet
+          Caption = #1056#1072#1089#1095#1077#1090#1099
+          ImageIndex = 1
+          TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 552
+        end
       end
-      object Panel5: T3DGradientPanel
+      object PanelAnalHead: T3DGradientPanel
         Left = 0
         Top = 0
         Width = 996
@@ -1167,248 +1148,12 @@ object fMain: TfMain
           ParentFont = False
           Transparent = True
         end
-        object btn3dTable: TSpeedButton
-          Tag = 1
-          AlignWithMargins = True
-          Left = 908
-          Top = 5
-          Width = 85
-          Height = 63
-          Margins.Top = 5
-          Margins.Bottom = 5
-          Align = alRight
-          GroupIndex = 5
-          Caption = #1056#1072#1089#1095#1077#1090#1099
-          Flat = True
-          Glyph.Data = {
-            360C0000424D360C000000000000360000002800000020000000200000000100
-            180000000000000C0000EF0A0000EF0A00000000000000000000FEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            A2A2A2A59F9FA5A0A0A49F9FA49F9FA49E9EA29D9DA29E9EA49E9E8E8C8D6E82
-            957083957082956F81936E80936D80926D7F92697D918886869D97969B949499
-            9292999292989191979090979090978E8E929191FEFEFEFEFEFEFEFEFEFEFEFE
-            A69F9FFEE4E4FDE4E4FDE3E3FDE3E3FEE4E4FDE4E4FDE5E5FFEAE9B5B2B63198
-            F5379DFD389DFD379DFD379DFD379DFD359CFD3097F5B7AFB2FFE0DFFDDADAFD
-            D8D8FDD7D7FDD5D5FDD4D4FDD3D3FED2D2958B8BFEFEFEFEFEFEFEFEFEFEFEFE
-            A8A3A3FFE8E8FFE7E7FFE7E7FFE7E7FFE8E8FFE8E8FFE8E8FFEDECB7B4B6319C
-            F738A0FF39A0FF38A0FF38A0FF389FFF369FFF309AF8B8B1B2FFE4E3FFDEDEFF
-            DCDCFFDADAFFD8D8FFD7D7FFD6D6FFD5D5978F8FFEFEFEFEFEFEFEFEFEFEFEFE
-            A8A3A3FFE9E9FFE8E8FFE8E8FFE8E8FFE9E9FFE9E9FFE9E9FFEFEEB7B4B7349D
-            F53BA2FF3CA2FF3BA1FF3BA1FF3BA1FF39A0FF339BF5B8B1B2FFE4E3FFDEDEFF
-            DCDCFFDBDBFFD9D9FFD7D7FFD6D6FFD5D5989090FEFEFEFEFEFEFEFEFEFEFEFE
-            A9A4A4FFEBEBFFEBEBFFEBEBFFECECFFECECFFEDEDFFEDEDFFF3F2B6B5B7379F
-            F53DA4FF3EA4FF3EA4FF3EA4FF3DA3FF3CA3FF359DF5B8B1B2FFE7E7FFE0E0FF
-            DEDEFFDDDDFFDBDBFFD9D9FFD8D8FFD7D7999191FEFEFEFEFEFEFEFEFEFEFEFE
-            AAA5A5FFEEEEFFEEEEFFEDEDFFEEEEFFEEEEFFEFEFFFEFEFFFF5F4B6B5B839A1
-            F53FA6FF40A6FF40A6FF40A6FF3FA5FF3EA5FF379FF5B9B2B3FFE9E9FFE2E2FF
-            E0E0FFDFDFFFDDDDFFDBDBFFDADAFFD9D9999292FEFEFEFEFEFEFEFEFEFEFEFE
-            AAA6A6FFF0F0FFF0F0FFF0F0FFF0F0FFF2F2FFF1F1FFF1F1FFF7F6B6B7B93CA4
-            F542A9FF43A9FF43A9FF42A8FF42A8FF41A7FF39A1F5B8B3B4FFECEBFFE4E4FF
-            E2E2FFE0E0FFDEDEFFDCDCFFDBDBFFDADA9A9292FEFEFEFEFEFEFEFEFEFEFEFE
-            AAA8A8FFF4F4FFF3F3FFF3F3FFF4F4FFF4F4FFF5F5FFF5F5FFFBFAB6B8BA3EA6
-            F445ABFF46ABFF46ABFF45ABFF45AAFF44AAFF3CA3F5B8B3B5FFEEEDFFE6E6FF
-            E4E4FFE2E2FFE0E0FFDEDEFFDDDDFFDBDB9A9393FEFEFEFEFEFEFEFEFEFEFEFE
-            ADAAAAFFF8F8FFF7F7FFF7F7FFF7F7FFF8F8FFF8F8FFF9F9FFFFFEB7BABD42AA
-            F648B1FF49B1FF49B1FF49B1FF48B0FF46AFFF40A9F6BAB7B9FFF5F4FFEBEBFF
-            EAEAFFE8E8FFE6E6FFE4E4FFE3E3FFE4E49C9696FEFEFEFEFEFEFEFEFEFEFEFE
-            9D9D9DBEBCBCBCBABABCBABABCBABABCBABABCBABABCBABAC0BDBC9FA3A71B7E
-            DC187FDD187FDD187FDD177FDD1880DD177EDD1B7EDCA2A2A4C0B9B8BCB5B5BC
-            B5B5BCB4B4BCB4B4BCB3B3BCB3B3BFB5B58F8E8EFEFEFEFEFEFEFEFEFEFEFEFE
-            ADACACF5F3F3F2EFEFF2EFEFF2EFEFF2F0F0F2F1F1F2F1F1F5F4F4B3B7B943A9
-            F048AFFA49AEFA49AEFA48AEFA47ADFA46ACFA40A6F0B4B4B5F5ECEBF2E4E4F2
-            E3E3F2E2E2F2E1E1F2DFDFF3DEDEF5E1E19C9898FEFEFEFEFEFEFEFEFEFEFEFE
-            ADACACFFFDFDFFFEFEFFFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB7BCBE48AE
-            F44EB5FF4FB5FF4FB5FF4EB4FF4DB3FF4BB2FF44ABF4B9B7B7FFF7F6FFEEEEFF
-            EBEBFFE8E8FFE6E6FFE4E4FFE3E3FFE1E19D9797FEFEFEFEFEFEFEFEFEFEFEFE
-            AEAEAEFFFEFEFFFFFFFFFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB7BCBE4AB1
-            F451B7FF51B7FF51B7FF50B6FF4FB5FF4DB4FF45ADF4B8B7B8FFF7F6FFEEEEFF
-            ECECFFE9E9FFE7E7FFE4E4FFE3E3FFE3E39D9898FEFEFEFEFEFEFEFEFEFEFEFE
-            AFAFAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB6BCBE4CB3
-            F453B9FF53B9FF53B9FF52B8FF51B7FF4FB6FF47AFF4B8B8B8FFF9F8FFF0F0FF
-            EEEEFFEBEBFFE8E8FFE6E6FFE5E5FFE4E49F9999FEFEFEFEFEFEFEFEFEFEFEFE
-            AFAFAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB8BCBE4EB5
-            F456BCFF56BCFF55BBFF55BBFF53B9FF51B8FF4AB0F4B8B8B9FFFAF9FFF1F1FF
-            EFEFFFECECFFEAEAFFE7E7FFE5E5FFE4E49F9A9AFEFEFEFEFEFEFEFEFEFEFEFE
-            B0B0B0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB7BCBE50B7
-            F458BEFF58BEFF57BDFF57BDFF55BBFF53BAFF4CB2F4B8B8B9FFFBFBFFF3F3FF
-            F0F0FFEDEDFFEBEBFFE8E8FFE6E6FFE5E5A09B9BFEFEFEFEFEFEFEFEFEFEFEFE
-            B1B1B1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB8BCBE53BA
-            F45BC1FF5CC2FF5BC1FF5AC0FF58BEFF55BCFF4DB4F4B8B9BAFFFDFCFFF4F4FF
-            F2F2FFEEEEFFECECFFE9E9FFE7E7FFE6E6A19B9BFEFEFEFEFEFEFEFEFEFEFEFE
-            B1B1B1F5F5F5F2F1F1F2F1F1F2F1F1F2F1F1F2F1F1F2F1F1F5F5F5B4B8B952B9
-            F058BEFA59BFFA58BEFA57BDFA55BBFA52B8FA4BB1F0B4B5B6F5F2F2F2EBEBF2
-            EAEAF2E8E8F2E6E6F2E4E4F2E4E4F5E6E6A09C9CFEFEFEFEFEFEFEFEFEFEFEFE
-            A4A3A3BFC0C0BEBFBFBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEC2C2C1A0A4A82388
-            DC218ADF228ADE238ADE238BDE218ADE2089DF2388DCA2A4A5C2BFBFBEBCBCBE
-            BBBBBEBBBBBEBABABEB9B9BEB9B9C0B9B9939393FEFEFEFEFEFEFEFEFEFEFEFE
-            B4B4B4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB9BEBF5CC3
-            F563CCFF64CCFF63CAFF61C9FF5FC7FF5BC4FF54BCF5BABCBCFFFFFFFFF9F9FF
-            F8F8FFF5F5FFF3F3FFF0F0FFEFEFFFEEEEA4A0A0FEFEFEFEFEFEFEFEFEFEFEFE
-            B3B3B3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB7BDBE5BC2
-            F465CBFF65CBFF63C8FF60C6FF5CC2FF59BFFF50B7F4B8B9BAFFFEFEFFF5F5FF
-            F3F3FFEFEFFFEDEDFFE9E9FFE8E8FFE7E7A39E9EFEFEFEFEFEFEFEFEFEFEFEFE
-            B4B4B4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB7BDBE5AC0
-            F463C9FF63C9FF61C7FF5EC4FF5BC1FF58BFFF50B7F4B8B9BAFFFEFEFFF5F5FF
-            F3F3FFEFEFFFEDEDFFE9E9FFE8E8FFE7E7A49F9FFEFEFEFEFEFEFEFEFEFEFEFE
-            B4B4B4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB7BDBE58BF
-            F460C6FF61C7FF5FC5FF5DC3FF5BC1FF58BFFF4FB6F4B9B9BAFFFEFDFFF5F5FF
-            F3F3FFEFEFFFEDEDFFE9E9FFE8E8FFE7E7A59F9FFEFEFEFEFEFEFEFEFEFEFEFE
-            B5B5B5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB8BDBE57BE
-            F45EC4FF5FC5FF5DC3FF5BC1FF59BFFF57BEFF4EB5F4B9B9BAFFFEFDFFF4F4FF
-            F2F2FFEEEEFFECECFFEAEAFFE8E8FFE6E6A5A0A0FEFEFEFEFEFEFEFEFEFEFEFE
-            B6B6B6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB8BCBE55BB
-            F45BC2FF5CC2FF5BC1FF5AC0FF58BEFF56BDFF4DB4F4B8B9BAFFFDFCFFF4F4FF
-            F2F2FFEEEEFFEBEBFFE9E9FFE8E8FFE6E6A5A1A1FEFEFEFEFEFEFEFEFEFEFEFE
-            B7B7B7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB8BDBF50B9
-            F558C0FF59C0FF58BFFF57BFFF55BDFF53BCFF4BB4F5B9BABAFFFEFDFFF5F5FF
-            F3F3FFEFEFFFEDEDFFEAEAFFE9E9FFE7E7A7A1A1FEFEFEFEFEFEFEFEFEFEFEFE
-            B7B7B7FEFEFEFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFFFFFFB6BCBE50B7
-            F457BEFD58BDFD57BDFD56BCFD54BAFD52B9FE4BB1F4B8BABCFFFBFAFDF2F2FD
-            EFEFFDEDEDFDEBEBFDE7E7FEE6E6FEE5E5A7A0A0FEFEFEFEFEFEFEFEFEFEFEFE
-            B4B4B4B5B5B5B4B4B4B4B4B4B4B4B4B3B3B3B3B3B3B1B1B1B3B3B39FA0A0879B
-            A9899CA8899BA8889AA7889AA68698A68698A68295A49A9B9CADA9AAAAA7A7AA
-            A6A6A9A5A5A7A4A4A7A2A2A6A2A2A5A1A1A2A2A2FEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE}
-          Layout = blGlyphTop
-          OnClick = AnalyzebuttonClick
-          ExplicitLeft = 717
-          ExplicitTop = 4
-          ExplicitHeight = 65
-        end
-        object btn3dModel: TSpeedButton
-          AlignWithMargins = True
-          Left = 817
-          Top = 5
-          Width = 85
-          Height = 63
-          Margins.Top = 5
-          Margins.Bottom = 5
-          Align = alRight
-          GroupIndex = 5
-          Down = True
-          Caption = '3D-'#1084#1086#1076#1077#1083#1100
-          Flat = True
-          Glyph.Data = {
-            360C0000424D360C000000000000360000002800000020000000200000000100
-            180000000000000C0000110B0000110B00000000000000000000FEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEF0F0F0B1B1B19C9C9CAAAAAAE1E1E1FEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEBDBDBDC8C8C8C9C9C9919191A5A5A5FEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEAFAFAFF8F8F8DADADA999999919191FBFBFBFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEAFAFAFF7F7F7D7D7D7979797919191FBFBFBFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFBFBFBFAFAFAFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEACACACF8F8F8D6D6D6969696909090FAFAFAFEFEFEFEFEFEFE
-            FEFEFEFEFED7D7D79C9C9C939393D1D1D1FEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEB0B0B0F8F8F8D6D6D6979797919191FAFAFAFEFEFEFEFEFEFE
-            FEFEC1C1C1A8A8A8A0A0A0959595808080DBDBDBFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFDFDFDDDDDDDDDDDDDF8F8F8FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEB6B5B5F7F7F6D6D6D5969696919191FAFAFAFEFEFEEFEFEFB5
-            B5B5C7C7C7F8F8F8A5A5A5999999939393A1A1A1FEFEFEFEFEFEFEFEFEFEFEFE
-            F9F9F9DBDBDBB5B5B59E9E9E9E9E9EC6C6C6E5E5E5FBFBFBFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEB6B7B9F8FCFDD8E1E9949CA38B8F93FCFCFCE7E7E7A7A7A7E1
-            E1E1F6F6F6E2E2E2BABABA9696969B9B9B888888FEFEFEFEFEFEFEFEFEFEFEFE
-            DFDFDFBCBCBCCDCDCDAAAAAA919191909090979797B0B0B0D3D3D3F3F3F3FEFE
-            FEFDFDFDCFD1D4A69686E1AE7CCE8E55AE7644927661ACA9A9B6B6B7F1F1F1EE
-            EEEED8D8D8CBCBCBBEBEBEA6A6A6939393999999FEFEFEFEFEFEFEFEFEFEFEFE
-            C5C5C5B7B7B7CCCCCCBCBCBCB1B1B1A8A8A89F9F9F9797979494949B9B9BC0C1
-            C2BBB7B3BB7D3CD66E00D46800D16500CF6100CA6511D8BEA8F3F7FAE5E5E5D2
-            D2D2C5C5C5B8B8B8AAAAAA929292A3A3A3E9E9E9FEFEFEFEFEFEFEFEFEFEFEFE
-            BFBFBFBABABAD8D8D8DADADACDCDCDC3C3C3BBBBBBB3B3B3AAAAAAA2A2A1989B
-            9FA3907ADF7C09E77E00E57E00E17A00DA7100E9C7A0F0F7FFDCDCDBCCCCCCC0
-            C0C0B3B3B3A2A2A2959595CFCFCFFCFCFCFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            DADADAC6C6C6D3D3D3E0E0E0E9E9E9E6E6E6D9D9D9CFCFCFC6C6C6BEBEBEB5B5
-            B5AAAEB3D7973EFA8E00F68F00F18A00EB8400E2D0BAD4DBE4C6C7C7B9BBBDAB
-            ACAC999998ADADADF1F1F1FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFAFAFAEAEAEAD6D6D6C7C7C7CDCDCDE5E5E5EBEBEBE6E6E6DDDDDED0D1
-            D4C6CACEF2A42FFF9F10FFA015FE9C09F98E00E3A14DBFC4CCB1B6BDA99C90A2
-            9E9BE2E2E3FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFCFCFCECECECD0D0D0C6C6C6D3D3D3E3E3E2EBEF
-            F3ECD1AAFFA931FFB14BFFB14BFFAA34FF9F11F88F00D7943FC5894BC36812AE
-            A59CEEEEEFFDFDFDFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFAFAFAEBEBECC3C3C4E6AF
-            5BFFB140FFB75EFFC380FFC27DFFB75EFFA930FD9905F28600E47400CA6E1397
-            8C81919597AAAAAACFCFCFF1F1F1FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFAFAFAC1C4C7E4B0
-            61FFAB34FFC380FFCD9DFFCC9BFFC078FFAE41FF9D0DF28C00E37700CD7F33B2
-            B4B7A6A7A89C9C9C939393919191B1B1B1EAEAEAFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEF1F1F1C5C5C5E4E8EEF2E3
-            CDFBB046FFC076FFCC9BFFC993FFBE6DFFAD3AFE9D0CF28B00E47800DFBC96DB
-            E1E8CCCBCBBFBFBFB4B4B4AAAAAA9B9B9BB4B4B4FEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEECECECCFCFCFF1F1F1E6E6E6C7CC
-            D3D2B185FEB350FFBE6CFEC481F4BC70F0A63BFE9804F48400C28641C4C9CED7
-            D8D8E4E4E4EBEBEBDCDCDCD0D0D0BABABAB7B7B7FEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEE2E2E2D2D2D2DDDDDDC2C1C1AAAB
-            AB9CA1A6C1A884F2B666FCEFDED2D1D0A09D97C68935C39053CCCCCEF0F1F1DD
-            DDDDC7C7C7BFBFBFD6D6D6E7E7E7B3B3B3D1D1D1FEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEF7F7F7C2C2C2B6B6B6A5A5A5ABAA
-            AADADADBF0F0F1C2C3C3F9F9FAD1D2D5979A9F888A8FE0E1E3FEFEFEFEFEFEFE
-            FEFEFEFEFEF8F8F8DCDCDCCACACAD5D5D5FDFDFDFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEEFEFEFC6C6C6C8C8C8EEEE
-            EEFEFEFEFBFBFBCDCDCDF9F9F9D2D2D29A9A9A909091F2F2F2FEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFDFDFDFDFDFDFEFE
-            FEFEFEFEF8F8F8CDCDCDF9F9F9D2D2D29A9A9A919191EFEFEFFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEF7F7F7CFCFCFFAFAFAD2D2D29A9A9A919191EEEEEEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEF6F6F6D3D3D3FAFAFAD2D2D29A9A9A919191EDEDEDFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEF5F5F5D5D5D5FAFAFAD2D2D29A9A9A909090ECECECFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEF4F4F4D6D6D6FBFBFBD2D2D29A9A9A919191EBEBEBFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEF3F3F3DADADAFCFCFCD2D2D29898988F8F8FEBEBEBFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEF1F1F1DCDCDCF6F6F6D1D1D1A3A3A3949494E8E8E8FEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEF9F9F9D0D0D0C9C9C9C7C7C7C3C3C3B6B6B6F2F2F2FEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEEEEEEECBCBCBC5C5C5C9C9C9E5E5E5FEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
-            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE}
-          Layout = blGlyphTop
-          OnClick = AnalyzebuttonClick
-          ExplicitLeft = 628
-          ExplicitTop = 4
-          ExplicitHeight = 65
-        end
         object Label1: TLabel
           Left = 328
           Top = 12
           Width = 60
           Height = 13
-          Caption = #1048#1089#1087#1099#1090#1072#1085#1080#1103':'
+          Caption = #1048#1089#1087#1099#1090#1072#1085#1080#1077':'
           Transparent = True
         end
         object Image1: TImage
@@ -1641,7 +1386,7 @@ object fMain: TfMain
         object ComboTestList: TComboBox
           Left = 328
           Top = 27
-          Width = 479
+          Width = 657
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           ItemHeight = 13
@@ -1650,7 +1395,7 @@ object fMain: TfMain
           OnDropDown = ComboTestListDropDown
         end
       end
-      object Panel2: TPanel
+      object PanelAnalCount: TPanel
         Left = 0
         Top = 73
         Width = 996
@@ -1659,7 +1404,6 @@ object fMain: TfMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 2
-        ExplicitTop = 96
         object cbTrajectory: TComboBox
           Left = 8
           Top = 3
@@ -1678,6 +1422,37 @@ object fMain: TfMain
           TabOrder = 1
           OnClick = btnCountTrajectoryClick
         end
+      end
+      object Tree3DTable: TVirtualStringTree
+        Left = 0
+        Top = 500
+        Width = 996
+        Height = 160
+        Align = alBottom
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        Header.AutoSizeIndex = -1
+        Header.DefaultHeight = 17
+        Header.Font.Charset = DEFAULT_CHARSET
+        Header.Font.Color = clWindowText
+        Header.Font.Height = -11
+        Header.Font.Name = 'Tahoma'
+        Header.Font.Style = []
+        Header.MainColumn = -1
+        Header.Options = [hoColumnResize, hoDrag, hoHotTrack, hoVisible]
+        Header.Style = hsFlatButtons
+        ParentFont = False
+        TabOrder = 3
+        TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
+        TreeOptions.SelectionOptions = [toFullRowSelect]
+        OnBeforeCellPaint = Tree3DTableBeforeCellPaint
+        OnClick = Tree3DTableClick
+        OnGetText = Tree3DTableGetText
+        OnGetNodeDataSize = Tree3DTableGetNodeDataSize
+        Columns = <>
       end
     end
     object TabSheet2: TTabSheet
@@ -2671,7 +2446,7 @@ object fMain: TfMain
           Left = 696
           Top = 0
           Width = 290
-          Height = 281
+          Height = 257
           Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099
           TabOrder = 2
           object Label7: TLabel
@@ -2682,17 +2457,9 @@ object fMain: TfMain
             Alignment = taRightJustify
             Caption = #1052#1072#1089#1089#1072' '#1086#1073#1098#1077#1082#1090#1072
           end
-          object Label8: TLabel
-            Left = 35
-            Top = 67
-            Width = 89
-            Height = 13
-            Alignment = taRightJustify
-            Caption = #1062#1074#1077#1090' '#1090#1088#1072#1077#1082#1090#1086#1088#1080#1080
-          end
           object Label9: TLabel
             Left = 29
-            Top = 91
+            Top = 67
             Width = 94
             Height = 13
             Alignment = taRightJustify
@@ -2700,7 +2467,7 @@ object fMain: TfMain
           end
           object Label10: TLabel
             Left = 4
-            Top = 115
+            Top = 91
             Width = 120
             Height = 13
             Alignment = taRightJustify
@@ -2708,7 +2475,7 @@ object fMain: TfMain
           end
           object Label11: TLabel
             Left = 53
-            Top = 139
+            Top = 115
             Width = 70
             Height = 13
             Alignment = taRightJustify
@@ -2752,7 +2519,7 @@ object fMain: TfMain
           end
           object Label16: TLabel
             Left = 111
-            Top = 163
+            Top = 139
             Width = 12
             Height = 13
             Alignment = taRightJustify
@@ -2767,7 +2534,7 @@ object fMain: TfMain
           end
           object Label20: TLabel
             Left = 111
-            Top = 187
+            Top = 163
             Width = 12
             Height = 13
             Alignment = taRightJustify
@@ -2782,7 +2549,7 @@ object fMain: TfMain
           end
           object Label25: TLabel
             Left = 111
-            Top = 211
+            Top = 187
             Width = 12
             Height = 13
             Alignment = taRightJustify
@@ -2797,7 +2564,7 @@ object fMain: TfMain
           end
           object Label29: TLabel
             Left = 32
-            Top = 235
+            Top = 211
             Width = 93
             Height = 13
             Alignment = taRightJustify
@@ -2814,27 +2581,14 @@ object fMain: TfMain
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
           end
-          object EditColor: TEdit
-            Tag = 1
+          object EditInterval: TEdit
+            Tag = 2
             Left = 128
             Top = 64
             Width = 129
             Height = 21
-            Hint = 'LineColor'
-            ReadOnly = True
-            TabOrder = 2
-            Text = '#FFFFFF'
-            OnChange = EditMassChange
-            OnKeyPress = CheckEditKeyPress
-          end
-          object EditInterval: TEdit
-            Tag = 2
-            Left = 128
-            Top = 88
-            Width = 129
-            Height = 21
             Hint = 'Interval'
-            TabOrder = 3
+            TabOrder = 2
             Text = '100'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2842,11 +2596,11 @@ object fMain: TfMain
           object EditCamRadius: TEdit
             Tag = 3
             Left = 128
-            Top = 112
+            Top = 88
             Width = 129
             Height = 21
             Hint = 'CameraRadius'
-            TabOrder = 4
+            TabOrder = 3
             Text = '1000'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2854,11 +2608,11 @@ object fMain: TfMain
           object EditCamHeight: TEdit
             Tag = 4
             Left = 128
-            Top = 136
+            Top = 112
             Width = 129
             Height = 21
             Hint = 'CameraHeight'
-            TabOrder = 5
+            TabOrder = 4
             Text = '1000'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2870,8 +2624,7 @@ object fMain: TfMain
             Height = 21
             Color = clWhite
             ParentBackground = False
-            TabOrder = 6
-            OnClick = PanelColorClick
+            TabOrder = 5
           end
           object EditTestName: TEdit
             Left = 128
@@ -2884,11 +2637,11 @@ object fMain: TfMain
           object EditX0: TEdit
             Tag = 5
             Left = 128
-            Top = 160
+            Top = 136
             Width = 129
             Height = 21
             Hint = 'X0'
-            TabOrder = 7
+            TabOrder = 6
             Text = '0'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2896,11 +2649,11 @@ object fMain: TfMain
           object EditY0: TEdit
             Tag = 6
             Left = 128
-            Top = 184
+            Top = 160
             Width = 129
             Height = 21
             Hint = 'Y0'
-            TabOrder = 8
+            TabOrder = 7
             Text = '0'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2908,24 +2661,24 @@ object fMain: TfMain
           object EditZ0: TEdit
             Tag = 7
             Left = 128
-            Top = 208
+            Top = 184
             Width = 129
             Height = 21
             Hint = 'Z0'
-            TabOrder = 9
+            TabOrder = 8
             Text = '0'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
           end
           object ComboPointCount: TComboBox
             Left = 128
-            Top = 232
+            Top = 208
             Width = 129
             Height = 21
             Style = csDropDownList
             ItemHeight = 13
             ItemIndex = 0
-            TabOrder = 10
+            TabOrder = 9
             Text = '1'
             OnChange = FilterPropertyChange
             Items.Strings = (
@@ -2937,17 +2690,17 @@ object fMain: TfMain
           end
           object CheckBoxEnablePerspective: TCheckBox
             Left = 112
-            Top = 256
+            Top = 232
             Width = 153
             Height = 17
             Caption = #1059#1095#1080#1090#1099#1074#1072#1090#1100' '#1087#1077#1088#1089#1087#1077#1082#1090#1080#1074#1091
-            TabOrder = 11
+            TabOrder = 10
             OnClick = CheckBoxEnablePerspectiveClick
           end
         end
         object CheckBoxSyncCamSettings: TCheckBox
           Left = 697
-          Top = 321
+          Top = 297
           Width = 217
           Height = 17
           Caption = #1057#1080#1085#1093#1088#1086#1085#1080#1079#1080#1088#1086#1074#1072#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080' '#1082#1072#1084#1077#1088
@@ -2958,7 +2711,7 @@ object fMain: TfMain
         end
         object CheckBoxMouseMove: TCheckBox
           Left = 697
-          Top = 288
+          Top = 264
           Width = 144
           Height = 17
           Caption = #1059#1087#1088#1072#1074#1083#1077#1085#1080#1077' '#1084#1099#1096#1100#1102' (F3)'
@@ -2967,7 +2720,7 @@ object fMain: TfMain
         end
         object CheckBox3DView: TCheckBox
           Left = 697
-          Top = 304
+          Top = 280
           Width = 120
           Height = 17
           Caption = #1055#1088#1086#1089#1084#1086#1090#1088' '#1074' 3D (F2)'

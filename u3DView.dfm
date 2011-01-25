@@ -47,7 +47,7 @@ object f3DView: Tf3DView
     Camera = fServiceDM.GLCameraCamView
     Buffer.BackgroundColor = cl3DDkShadow
     Buffer.AntiAliasing = aa2xHQ
-    FieldOfView = 137.851013183593700000
+    FieldOfView = 137.851013183593800000
     Align = alClient
     OnDblClick = GLViewerCamsFormDblClick
     OnMouseMove = GLViewerCamsFormMouseMove
