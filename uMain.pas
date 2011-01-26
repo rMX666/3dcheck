@@ -132,7 +132,7 @@ type
     Label28: TLabel;
     Label29: TLabel;
     ComboPointCount: TComboBox;
-    Panel1: TPanel;
+    pnl3dView: TPanel;
     pnl3dViewControls: TPanel;
     GLViewerMain: TGLSceneViewer;
     btnPlay: TSpeedButton;
@@ -644,6 +644,8 @@ begin
       fServiceDM.GLGrid.LineColor.Blue := Blue;
       Free;
     end;
+
+  pnl3dView.Width := Screen.Width - 240;
 end;
 
 procedure TfMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint;
@@ -1268,6 +1270,9 @@ var
   I: Integer;
   Node, SelectedNode: PVirtualNode;
 begin
+  if not cbNeedCountTrajectory.Checked then
+    Exit;
+
   I := 0;
   with Tree3DTable do
     begin
