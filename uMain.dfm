@@ -3,7 +3,7 @@ object fMain: TfMain
   Top = 0
   Caption = 'fMain'
   ClientHeight = 707
-  ClientWidth = 927
+  ClientWidth = 1127
   Color = clBtnFace
   Constraints.MinHeight = 600
   Constraints.MinWidth = 800
@@ -22,7 +22,7 @@ object fMain: TfMain
   object StBar: TStatusBar
     Left = 0
     Top = 688
-    Width = 927
+    Width = 1127
     Height = 19
     Panels = <
       item
@@ -31,22 +31,25 @@ object fMain: TfMain
       item
         Width = 400
       end>
+    ExplicitWidth = 927
   end
   object PageMain: TPageControl
     Left = 0
     Top = 0
-    Width = 927
+    Width = 1127
     Height = 688
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
+    ExplicitWidth = 927
     object TabSheet1: TTabSheet
       Caption = #1040#1085#1072#1083#1080#1090#1080#1095#1077#1089#1082#1080#1081' '#1084#1086#1076#1091#1083#1100
+      ExplicitWidth = 919
       object Splitter3DTable: TSplitter
         Left = 0
         Top = 494
-        Width = 919
+        Width = 1119
         Height = 6
         Cursor = crVSplit
         Align = alBottom
@@ -59,15 +62,17 @@ object fMain: TfMain
       object PageAnalize: TPageControl
         Left = 0
         Top = 73
-        Width = 919
+        Width = 1119
         Height = 421
         ActivePage = TabSheet4
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
+        ExplicitWidth = 919
         object TabSheet4: TTabSheet
           Caption = '3D-'#1084#1086#1076#1077#1083#1100
           TabVisible = False
+          ExplicitWidth = 911
           object Splitter2: TSplitter
             Left = 669
             Top = 0
@@ -1104,7 +1109,7 @@ object fMain: TfMain
           object TreeInfo: TVirtualStringTree
             Left = 675
             Top = 0
-            Width = 236
+            Width = 436
             Height = 411
             Align = alClient
             Header.AutoSizeIndex = 1
@@ -1124,6 +1129,7 @@ object fMain: TfMain
             OnBeforeCellPaint = TreeInfoBeforeCellPaint
             OnGetText = TreeInfoGetText
             OnGetNodeDataSize = TreeInfoGetNodeDataSize
+            ExplicitWidth = 236
             Columns = <
               item
                 Position = 0
@@ -1132,7 +1138,7 @@ object fMain: TfMain
               end
               item
                 Position = 1
-                Width = 102
+                Width = 302
                 WideText = #1047#1085#1072#1095#1077#1085#1080#1077
               end>
           end
@@ -1150,7 +1156,7 @@ object fMain: TfMain
       object PanelAnalHead: T3DGradientPanel
         Left = 0
         Top = 0
-        Width = 919
+        Width = 1119
         Height = 73
         Margins.Left = 4
         Margins.Top = 0
@@ -1163,8 +1169,9 @@ object fMain: TfMain
         Gradient.ToColor = clBtnFace
         Gradient.Active = True
         Gradient.Orientation = fgdHorizontal
+        ExplicitWidth = 919
         DesignSize = (
-          919
+          1119
           73)
         object Label4: TLabel
           Left = 80
@@ -1181,8 +1188,8 @@ object fMain: TfMain
           Transparent = True
         end
         object Label1: TLabel
-          Left = 328
-          Top = 12
+          Left = 344
+          Top = 31
           Width = 60
           Height = 13
           Caption = #1048#1089#1087#1099#1090#1072#1085#1080#1077':'
@@ -1416,10 +1423,11 @@ object fMain: TfMain
           Transparent = True
         end
         object ComboTestList: TComboBox
-          Left = 328
+          Left = 408
           Top = 27
-          Width = 580
+          Width = 700
           Height = 21
+          Style = csDropDownList
           Anchors = [akLeft, akTop, akRight]
           ItemHeight = 13
           TabOrder = 0
@@ -1430,7 +1438,7 @@ object fMain: TfMain
       object Tree3DTable: TVirtualStringTree
         Left = 0
         Top = 500
-        Width = 919
+        Width = 1119
         Height = 160
         Align = alBottom
         Font.Charset = RUSSIAN_CHARSET
@@ -1457,16 +1465,18 @@ object fMain: TfMain
         OnClick = Tree3DTableClick
         OnGetText = Tree3DTableGetText
         OnGetNodeDataSize = Tree3DTableGetNodeDataSize
+        ExplicitWidth = 919
         Columns = <>
       end
     end
     object TabSheet2: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
       ImageIndex = 1
+      ExplicitWidth = 919
       object Panel4: T3DGradientPanel
         Left = 0
         Top = 0
-        Width = 919
+        Width = 1119
         Height = 73
         Align = alTop
         BevelOuter = bvNone
@@ -1837,13 +1847,14 @@ object fMain: TfMain
       object ScrollBox1: TScrollBox
         Left = 0
         Top = 73
-        Width = 919
+        Width = 1119
         Height = 587
         Align = alClient
         BevelInner = bvNone
         BevelOuter = bvNone
         BorderStyle = bsNone
         TabOrder = 1
+        ExplicitWidth = 919
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
@@ -2891,10 +2902,11 @@ object fMain: TfMain
     object TabSheet3: TTabSheet
       Caption = #1057#1087#1088#1072#1074#1082#1072
       ImageIndex = 2
+      ExplicitWidth = 919
       object Panel3: T3DGradientPanel
         Left = 0
         Top = 0
-        Width = 919
+        Width = 1119
         Height = 73
         Align = alTop
         BevelOuter = bvNone
@@ -3267,12 +3279,13 @@ object fMain: TfMain
       object PageHelp: TPageControl
         Left = 0
         Top = 73
-        Width = 919
+        Width = 1119
         Height = 587
         ActivePage = TabAbout
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 1
+        ExplicitWidth = 919
         object TabHelp: TTabSheet
           Caption = 'TabHelp'
           ImageIndex = 1
