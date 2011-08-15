@@ -318,6 +318,12 @@ procedure TfCameraDM.DoOnStopCature(Sender: TObject);
 var
   FileName: String;
 begin
+  if FCaptureFile.CoordinateCount = 0 then
+    begin
+      Application.MessageBox(PChar(cSaveWithoutPoints), nil, MB_OK or MB_ICONWARNING);
+      Exit;
+    end;
+
   FileName := ChangeFileExt(fMain.TestsDir + fMain.EditTestName.Text, '.xml');
   try
     FCaptureFile.SaveFile(FileName);
