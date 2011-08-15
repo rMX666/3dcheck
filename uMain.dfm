@@ -31,21 +31,18 @@ object fMain: TfMain
       item
         Width = 400
       end>
-    ExplicitWidth = 927
   end
   object PageMain: TPageControl
     Left = 0
     Top = 0
     Width = 1127
     Height = 688
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
-    ExplicitWidth = 927
     object TabSheet1: TTabSheet
       Caption = #1040#1085#1072#1083#1080#1090#1080#1095#1077#1089#1082#1080#1081' '#1084#1086#1076#1091#1083#1100
-      ExplicitWidth = 919
       object Splitter3DTable: TSplitter
         Left = 0
         Top = 494
@@ -68,11 +65,9 @@ object fMain: TfMain
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
-        ExplicitWidth = 919
         object TabSheet4: TTabSheet
           Caption = '3D-'#1084#1086#1076#1077#1083#1100
           TabVisible = False
-          ExplicitWidth = 911
           object Splitter2: TSplitter
             Left = 669
             Top = 0
@@ -1129,7 +1124,6 @@ object fMain: TfMain
             OnBeforeCellPaint = TreeInfoBeforeCellPaint
             OnGetText = TreeInfoGetText
             OnGetNodeDataSize = TreeInfoGetNodeDataSize
-            ExplicitWidth = 236
             Columns = <
               item
                 Position = 0
@@ -1169,7 +1163,6 @@ object fMain: TfMain
         Gradient.ToColor = clBtnFace
         Gradient.Active = True
         Gradient.Orientation = fgdHorizontal
-        ExplicitWidth = 919
         DesignSize = (
           1119
           73)
@@ -1465,14 +1458,12 @@ object fMain: TfMain
         OnClick = Tree3DTableClick
         OnGetText = Tree3DTableGetText
         OnGetNodeDataSize = Tree3DTableGetNodeDataSize
-        ExplicitWidth = 919
         Columns = <>
       end
     end
     object TabSheet2: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
       ImageIndex = 1
-      ExplicitWidth = 919
       object Panel4: T3DGradientPanel
         Left = 0
         Top = 0
@@ -1485,7 +1476,6 @@ object fMain: TfMain
         Gradient.ToColor = clBtnFace
         Gradient.Active = True
         Gradient.Orientation = fgdHorizontal
-        ExplicitWidth = 996
         object Label3: TLabel
           Left = 80
           Top = 24
@@ -1729,7 +1719,7 @@ object fMain: TfMain
         end
         object btnStartTest: TSpeedButton
           AlignWithMargins = True
-          Left = 908
+          Left = 1031
           Top = 5
           Width = 85
           Height = 63
@@ -1854,7 +1844,6 @@ object fMain: TfMain
         BevelOuter = bvNone
         BorderStyle = bsNone
         TabOrder = 1
-        ExplicitWidth = 919
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
@@ -1974,11 +1963,11 @@ object fMain: TfMain
             Caption = #1059#1075#1086#1083' '#1086#1073#1079#1086#1088#1072
           end
           object Label28: TLabel
-            Left = 8
+            Left = 38
             Top = 52
-            Width = 61
+            Width = 32
             Height = 13
-            Caption = #1056#1072#1079#1088#1077#1096#1077#1085#1080#1077
+            Caption = #1056#1077#1078#1080#1084
           end
           object ComboSource1: TComboBox
             Tag = 1
@@ -2274,11 +2263,11 @@ object fMain: TfMain
             Caption = #1059#1075#1086#1083' '#1086#1073#1079#1086#1088#1072
           end
           object Label27: TLabel
-            Left = 8
+            Left = 38
             Top = 52
-            Width = 61
+            Width = 32
             Height = 13
-            Caption = #1056#1072#1079#1088#1077#1096#1077#1085#1080#1077
+            Caption = #1056#1077#1078#1080#1084
           end
           object ComboSource2: TComboBox
             Tag = 2
@@ -2902,7 +2891,6 @@ object fMain: TfMain
     object TabSheet3: TTabSheet
       Caption = #1057#1087#1088#1072#1074#1082#1072
       ImageIndex = 2
-      ExplicitWidth = 919
       object Panel3: T3DGradientPanel
         Left = 0
         Top = 0
@@ -3285,7 +3273,6 @@ object fMain: TfMain
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 1
-        ExplicitWidth = 919
         object TabHelp: TTabSheet
           Caption = 'TabHelp'
           ImageIndex = 1
