@@ -31,7 +31,6 @@ object fMain: TfMain
       item
         Width = 400
       end>
-    ExplicitWidth = 1004
   end
   object PageMain: TPageControl
     Left = 0
@@ -42,11 +41,9 @@ object fMain: TfMain
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
-    ExplicitWidth = 1004
     object TabSheet1: TTabSheet
       Caption = #1040#1085#1072#1083#1080#1090#1080#1095#1077#1089#1082#1080#1081' '#1084#1086#1076#1091#1083#1100
-      ExplicitWidth = 996
-      object Splitter1: TSplitter
+      object Splitter3DTable: TSplitter
         Left = 0
         Top = 494
         Width = 919
@@ -55,6 +52,7 @@ object fMain: TfMain
         Align = alBottom
         Beveled = True
         ResizeStyle = rsUpdate
+        Visible = False
         ExplicitTop = 497
         ExplicitWidth = 996
       end
@@ -67,11 +65,9 @@ object fMain: TfMain
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
-        ExplicitWidth = 996
         object TabSheet4: TTabSheet
           Caption = '3D-'#1084#1086#1076#1077#1083#1100
           TabVisible = False
-          ExplicitWidth = 988
           object Splitter2: TSplitter
             Left = 669
             Top = 0
@@ -91,7 +87,6 @@ object fMain: TfMain
             BevelOuter = bvNone
             Caption = 'pnl3dView'
             TabOrder = 0
-            ExplicitWidth = 767
             object pnl3dViewControls: TPanel
               Left = 0
               Top = 344
@@ -100,7 +95,6 @@ object fMain: TfMain
               Align = alBottom
               BevelOuter = bvNone
               TabOrder = 0
-              ExplicitWidth = 753
               DesignSize = (
                 669
                 67)
@@ -1041,7 +1035,6 @@ object fMain: TfMain
                 ThumbLength = 14
                 TickStyle = tsNone
                 OnChange = trAnimationChange
-                ExplicitWidth = 750
               end
               object CheckBoxAnimation: TCheckBox
                 Left = 160
@@ -1170,15 +1163,14 @@ object fMain: TfMain
         Gradient.ToColor = clBtnFace
         Gradient.Active = True
         Gradient.Orientation = fgdHorizontal
-        ExplicitWidth = 996
         DesignSize = (
           919
           73)
         object Label4: TLabel
           Left = 80
           Top = 24
-          Width = 210
-          Height = 29
+          Width = 257
+          Height = 27
           Caption = #1040#1085#1072#1083#1080#1090#1080#1095#1077#1089#1082#1080#1081' '#1084#1086#1076#1091#1083#1100
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clGray
@@ -1433,7 +1425,6 @@ object fMain: TfMain
           TabOrder = 0
           OnChange = ComboTestListChange
           OnDropDown = ComboTestListDropDown
-          ExplicitWidth = 657
         end
       end
       object Tree3DTable: TVirtualStringTree
@@ -1461,18 +1452,17 @@ object fMain: TfMain
         TabOrder = 2
         TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
         TreeOptions.SelectionOptions = [toFullRowSelect]
+        Visible = False
         OnBeforeCellPaint = Tree3DTableBeforeCellPaint
         OnClick = Tree3DTableClick
         OnGetText = Tree3DTableGetText
         OnGetNodeDataSize = Tree3DTableGetNodeDataSize
-        ExplicitWidth = 996
         Columns = <>
       end
     end
     object TabSheet2: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
       ImageIndex = 1
-      ExplicitWidth = 996
       object Panel4: T3DGradientPanel
         Left = 0
         Top = 0
@@ -1489,8 +1479,8 @@ object fMain: TfMain
         object Label3: TLabel
           Left = 80
           Top = 24
-          Width = 217
-          Height = 29
+          Width = 261
+          Height = 27
           Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clGray
@@ -1854,7 +1844,6 @@ object fMain: TfMain
         BevelOuter = bvNone
         BorderStyle = bsNone
         TabOrder = 1
-        ExplicitWidth = 996
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
@@ -2768,8 +2757,8 @@ object fMain: TfMain
         object Label18: TLabel
           Left = 80
           Top = 24
-          Width = 145
-          Height = 29
+          Width = 176
+          Height = 27
           Caption = #1057#1082#1088#1080#1087#1090'-'#1082#1086#1085#1089#1086#1083#1100
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clGray
@@ -2902,11 +2891,10 @@ object fMain: TfMain
     object TabSheet3: TTabSheet
       Caption = #1057#1087#1088#1072#1074#1082#1072
       ImageIndex = 2
-      ExplicitWidth = 996
       object Panel3: T3DGradientPanel
         Left = 0
         Top = 0
-        Width = 996
+        Width = 919
         Height = 73
         Align = alTop
         BevelOuter = bvNone
@@ -2915,11 +2903,12 @@ object fMain: TfMain
         Gradient.ToColor = clBtnFace
         Gradient.Active = True
         Gradient.Orientation = fgdHorizontal
+        ExplicitWidth = 996
         object Label2: TLabel
           Left = 80
           Top = 24
-          Width = 77
-          Height = 29
+          Width = 94
+          Height = 27
           Caption = #1057#1087#1088#1072#1074#1082#1072
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clGray
@@ -3278,7 +3267,7 @@ object fMain: TfMain
       object PageHelp: TPageControl
         Left = 0
         Top = 73
-        Width = 996
+        Width = 919
         Height = 587
         ActivePage = TabAbout
         Align = alClient
@@ -3558,8 +3547,8 @@ object fMain: TfMain
             object LabelName: TLabel
               Left = 152
               Top = 16
-              Width = 163
-              Height = 23
+              Width = 201
+              Height = 22
               Caption = '3D Motion Check v1.0'
               Font.Charset = RUSSIAN_CHARSET
               Font.Color = clGray
@@ -3572,7 +3561,7 @@ object fMain: TfMain
             object LabelVersion: TLabel
               Left = 152
               Top = 48
-              Width = 36
+              Width = 44
               Height = 16
               Caption = #1042#1077#1088#1089#1080#1103
               Font.Charset = RUSSIAN_CHARSET
@@ -3586,7 +3575,7 @@ object fMain: TfMain
             object Label21: TLabel
               Left = 152
               Top = 64
-              Width = 219
+              Width = 257
               Height = 16
               Caption = #1056#1072#1079#1088#1072#1073#1086#1090#1095#1080#1082#1080': '#1057#1086#1083#1076#1072#1090#1086#1074' '#1042'.'#1043'., '#1057#1090#1072#1085#1080#1085' '#1052'.'#1055'.'
               Font.Charset = RUSSIAN_CHARSET
@@ -3600,7 +3589,7 @@ object fMain: TfMain
             object Label22: TLabel
               Left = 152
               Top = 80
-              Width = 378
+              Width = 443
               Height = 16
               Caption = 
                 #1055#1088#1072#1074#1086#1086#1073#1083#1072#1076#1072#1090#1077#1083#1100': '#1054#1088#1077#1085#1073#1091#1088#1075#1089#1082#1080#1081' '#1075#1086#1089#1091#1076#1072#1088#1089#1090#1074#1077#1085#1085#1099#1081' '#1072#1075#1088#1072#1088#1085#1099#1081' '#1091#1085#1080#1074#1077#1088#1089#1080#1090 +
@@ -3616,7 +3605,7 @@ object fMain: TfMain
             object Label23: TLabel
               Left = 152
               Top = 96
-              Width = 52
+              Width = 58
               Height = 16
               Caption = #1050#1086#1085#1090#1072#1082#1090#1099':'
               Font.Charset = RUSSIAN_CHARSET

@@ -153,7 +153,7 @@ type
     CheckBoxShowCamera: TCheckBox;
     CheckBoxEnablePerspective: TCheckBox;
     CheckBoxShowGridAndAxes: TCheckBox;
-    Splitter1: TSplitter;
+    Splitter3DTable: TSplitter;
     Splitter2: TSplitter;
     cbTrajectory: TComboBox;
     cbNeedCountTrajectory: TCheckBox;
@@ -365,6 +365,8 @@ end;
 
 procedure TfMain.cbNeedCountTrajectoryClick(Sender: TObject);
 begin
+  Tree3DTable.Visible := TCheckBox(Sender).Checked;
+  Splitter3DTable.Visible := TCheckBox(Sender).Checked;
   if TCheckBox(Sender).Checked then
     SceneMakeTable;
 end;
@@ -512,101 +514,104 @@ type
   // Odd index is for second camera
 begin
   with CameraManager do
-    case SenderType of
-      stCheckBox:
-        case TCheckBox(Sender).Tag of
-          0:
-            begin
-              FirstCamera.Filter.Active := not TCheckBox(Sender).Checked;
-              Params['DisableFilter1'].AsBoolean := TCheckBox(Sender).Checked;
+    if HasCameras then
+      begin
+        case SenderType of
+          stCheckBox:
+            case TCheckBox(Sender).Tag of
+              0:
+                begin
+                  FirstCamera.Filter.Active := not TCheckBox(Sender).Checked;
+                  Params['DisableFilter1'].AsBoolean := TCheckBox(Sender).Checked;
+                end;
+              1:
+                begin
+                  SecondCamera.Filter.Active := not TCheckBox(Sender).Checked;
+                  Params['DisableFilter2'].AsBoolean := TCheckBox(Sender).Checked;
+                end;
             end;
-          1:
+          stTrackBar:
+            case TTrackBar(Sender).Tag of
+              0:
+                begin
+                  FirstCamera.Filter.Treshhold := TTrackBar(Sender).Position;
+                  Treshhold1Edit.Text := IntToStr(TTrackBar(Sender).Position);
+                  if CheckBoxSyncCamSettings.Checked then
+                    if TTrackBar(Sender).Position <> Treshhold2.Position then
+                      Treshhold2.Position := TTrackBar(Sender).Position;
+                  Params['Treshhold1'].AsInteger := TTrackBar(Sender).Position;
+                end;
+              1:
+                begin
+                  SecondCamera.Filter.Treshhold := TTrackBar(Sender).Position;
+                  Treshhold2Edit.Text := IntToStr(TTrackBar(Sender).Position);
+                  if CheckBoxSyncCamSettings.Checked then
+                    if TTrackBar(Sender).Position <> Treshhold1.Position then
+                      Treshhold1.Position := TTrackBar(Sender).Position;
+                  Params['Treshhold2'].AsInteger := TTrackBar(Sender).Position;
+                end;
+              2:
+                begin
+                  FirstCamera.Filter.MinPointSize := TTrackBar(Sender).Position;
+                  MinPointSize1Edit.Text := IntToStr(TTrackBar(Sender).Position);
+                  if CheckBoxSyncCamSettings.Checked then
+                    if TTrackBar(Sender).Position <> MinPointSize2.Position then
+                      MinPointSize2.Position := TTrackBar(Sender).Position;
+                  if TTrackBar(Sender).Position >= MaxPointSize1.Position then
+                    MaxPointSize1.Position := TTrackBar(Sender).Position + 1;
+                  Params['MinPointSize1'].AsInteger := TTrackBar(Sender).Position;
+                end;
+              3:
+                begin
+                  SecondCamera.Filter.MinPointSize := TTrackBar(Sender).Position;
+                  MinPointSize2Edit.Text := IntToStr(TTrackBar(Sender).Position);
+                  if CheckBoxSyncCamSettings.Checked then
+                    if TTrackBar(Sender).Position <> MinPointSize1.Position then
+                      MinPointSize1.Position := TTrackBar(Sender).Position;
+                  if TTrackBar(Sender).Position >= MaxPointSize2.Position then
+                    MaxPointSize2.Position := TTrackBar(Sender).Position + 1;
+                  Params['MinPointSize2'].AsInteger := TTrackBar(Sender).Position;
+                end;
+              4:
+                begin
+                  FirstCamera.Filter.MaxPointSize := TTrackBar(Sender).Position;
+                  MaxPointSize1Edit.Text := IntToStr(TTrackBar(Sender).Position);
+                  if CheckBoxSyncCamSettings.Checked then
+                    if TTrackBar(Sender).Position <> MaxPointSize2.Position then
+                      MaxPointSize2.Position := TTrackBar(Sender).Position;
+                  if TTrackBar(Sender).Position <= MinPointSize1.Position then
+                    MinPointSize1.Position := TTrackBar(Sender).Position - 1;
+                  Params['MaxPointSize1'].AsInteger := TTrackBar(Sender).Position;
+                end;
+              5:
+                begin
+                  SecondCamera.Filter.MaxPointSize := TTrackBar(Sender).Position;
+                  MaxPointSize2Edit.Text := IntToStr(TTrackBar(Sender).Position);
+                  if CheckBoxSyncCamSettings.Checked then
+                    if TTrackBar(Sender).Position <> MaxPointSize1.Position then
+                      MaxPointSize1.Position := TTrackBar(Sender).Position;
+                  if TTrackBar(Sender).Position <= MinPointSize2.Position then
+                    MinPointSize2.Position := TTrackBar(Sender).Position - 1;
+                  Params['MaxPointSize2'].AsInteger := TTrackBar(Sender).Position;
+                end;
+            end;
+          stComboBox:
             begin
-              SecondCamera.Filter.Active := not TCheckBox(Sender).Checked;
-              Params['DisableFilter2'].AsBoolean := TCheckBox(Sender).Checked;
+              FirstCamera.Filter.PointCount := StrToInt(TComboBox(Sender).Items[TComboBox(Sender).ItemIndex]);
+              SecondCamera.Filter.PointCount := StrToInt(TComboBox(Sender).Items[TComboBox(Sender).ItemIndex]);
+              Params['PointCount'].AsInteger := TComboBox(Sender).ItemIndex + 1;
+            end;
+          stEdit:
+            case TEdit(Sender).Tag of
+              0: Treshhold1.Position := StrToInt(TEdit(Sender).Text);
+              1: Treshhold2.Position := StrToInt(TEdit(Sender).Text);
+              2: MinPointSize1.Position := StrToInt(TEdit(Sender).Text);
+              3: MinPointSize2.Position := StrToInt(TEdit(Sender).Text);
+              4: MaxPointSize1.Position := StrToInt(TEdit(Sender).Text);
+              5: MaxPointSize2.Position := StrToInt(TEdit(Sender).Text);
             end;
         end;
-      stTrackBar:
-        case TTrackBar(Sender).Tag of
-          0:
-            begin
-              FirstCamera.Filter.Treshhold := TTrackBar(Sender).Position;
-              Treshhold1Edit.Text := IntToStr(TTrackBar(Sender).Position);
-              if CheckBoxSyncCamSettings.Checked then
-                if TTrackBar(Sender).Position <> Treshhold2.Position then
-                  Treshhold2.Position := TTrackBar(Sender).Position;
-              Params['Treshhold1'].AsInteger := TTrackBar(Sender).Position;
-            end;
-          1:
-            begin
-              SecondCamera.Filter.Treshhold := TTrackBar(Sender).Position;
-              Treshhold2Edit.Text := IntToStr(TTrackBar(Sender).Position);
-              if CheckBoxSyncCamSettings.Checked then
-                if TTrackBar(Sender).Position <> Treshhold1.Position then
-                  Treshhold1.Position := TTrackBar(Sender).Position;
-              Params['Treshhold2'].AsInteger := TTrackBar(Sender).Position;
-            end;
-          2:
-            begin
-              FirstCamera.Filter.MinPointSize := TTrackBar(Sender).Position;
-              MinPointSize1Edit.Text := IntToStr(TTrackBar(Sender).Position);
-              if CheckBoxSyncCamSettings.Checked then
-                if TTrackBar(Sender).Position <> MinPointSize2.Position then
-                  MinPointSize2.Position := TTrackBar(Sender).Position;
-              if TTrackBar(Sender).Position >= MaxPointSize1.Position then
-                MaxPointSize1.Position := TTrackBar(Sender).Position + 1;
-              Params['MinPointSize1'].AsInteger := TTrackBar(Sender).Position;
-            end;
-          3:
-            begin
-              SecondCamera.Filter.MinPointSize := TTrackBar(Sender).Position;
-              MinPointSize2Edit.Text := IntToStr(TTrackBar(Sender).Position);
-              if CheckBoxSyncCamSettings.Checked then
-                if TTrackBar(Sender).Position <> MinPointSize1.Position then
-                  MinPointSize1.Position := TTrackBar(Sender).Position;
-              if TTrackBar(Sender).Position >= MaxPointSize2.Position then
-                MaxPointSize2.Position := TTrackBar(Sender).Position + 1;
-              Params['MinPointSize2'].AsInteger := TTrackBar(Sender).Position;
-            end;
-          4:
-            begin
-              FirstCamera.Filter.MaxPointSize := TTrackBar(Sender).Position;
-              MaxPointSize1Edit.Text := IntToStr(TTrackBar(Sender).Position);
-              if CheckBoxSyncCamSettings.Checked then
-                if TTrackBar(Sender).Position <> MaxPointSize2.Position then
-                  MaxPointSize2.Position := TTrackBar(Sender).Position;
-              if TTrackBar(Sender).Position <= MinPointSize1.Position then
-                MinPointSize1.Position := TTrackBar(Sender).Position - 1;
-              Params['MaxPointSize1'].AsInteger := TTrackBar(Sender).Position;
-            end;
-          5:
-            begin
-              SecondCamera.Filter.MaxPointSize := TTrackBar(Sender).Position;
-              MaxPointSize2Edit.Text := IntToStr(TTrackBar(Sender).Position);
-              if CheckBoxSyncCamSettings.Checked then
-                if TTrackBar(Sender).Position <> MaxPointSize1.Position then
-                  MaxPointSize1.Position := TTrackBar(Sender).Position;
-              if TTrackBar(Sender).Position <= MinPointSize2.Position then
-                MinPointSize2.Position := TTrackBar(Sender).Position - 1;
-              Params['MaxPointSize2'].AsInteger := TTrackBar(Sender).Position;
-            end;
-        end;
-      stComboBox:
-        begin
-          FirstCamera.Filter.PointCount := StrToInt(TComboBox(Sender).Items[TComboBox(Sender).ItemIndex]);
-          SecondCamera.Filter.PointCount := StrToInt(TComboBox(Sender).Items[TComboBox(Sender).ItemIndex]);
-          Params['PointCount'].AsInteger := TComboBox(Sender).ItemIndex + 1;
-        end;
-      stEdit:
-        case TEdit(Sender).Tag of
-          0: Treshhold1.Position := StrToInt(TEdit(Sender).Text);
-          1: Treshhold2.Position := StrToInt(TEdit(Sender).Text);
-          2: MinPointSize1.Position := StrToInt(TEdit(Sender).Text);
-          3: MinPointSize2.Position := StrToInt(TEdit(Sender).Text);
-          4: MaxPointSize1.Position := StrToInt(TEdit(Sender).Text);
-          5: MaxPointSize2.Position := StrToInt(TEdit(Sender).Text);
-        end;
-    end;
+      end;
 end;
 
 procedure TfMain.FormClose(Sender: TObject; var Action: TCloseAction);

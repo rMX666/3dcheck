@@ -126,6 +126,7 @@ type
     FOnGetPoint: TGetPointsEvent;
     FOnStopCapture: TNotifyEvent;
     FOnStartCapture: TNotifyEvent;
+    function GetHasCameras: Boolean;
     function GetFirstCamera: TCapturePack;
     function GetSecondCamera: TCapturePack;
     function GetEnumCameras: TStrings;
@@ -147,6 +148,7 @@ type
     property EnumCameras: TStrings read GetEnumCameras;
     property FirstCamera: TCapturePack read GetFirstCamera;
     property SecondCamera: TCapturePack read GetSecondCamera;
+    property HasCameras: Boolean read GetHasCameras;
     property OnSetMediaType: TSetMediaTypeEvent read FOnSetMediaType write FOnSetMediaType;
     property OnBeforeStartCapture: TBeforeStartCaptureEvent read FOnBeforeStartCapture write FOnBeforeStartCapture;
     property OnStartCapture: TNotifyEvent read FOnStartCapture write FOnStartCapture;
@@ -1101,6 +1103,11 @@ begin
   Result := FCams[0];
 end;
 
+function TCameraManager.GetHasCameras: Boolean;
+begin
+  Result := FCameraEnum.CountFilters > 0; 
+end;
+
 function TCameraManager.GetSecondCamera: TCapturePack;
 begin
   Result := FCams[1];
@@ -1112,11 +1119,14 @@ var
   Res: Boolean;
 begin
   DoEnumCameras;
-  InitFilter;
-  Res := FCams[0].Initialize(ACamera1, AFilter1, AGraph1, AVideoWindow1);
-  Res := Res and FCams[1].Initialize(ACamera2, AFilter2, AGraph2, AVideoWindow2);
-  if not Res then
-    raise ECameraManagerError.Create(cFilterLoadError);
+  if HasCameras then
+    begin
+      InitFilter;
+      Res := FCams[0].Initialize(ACamera1, AFilter1, AGraph1, AVideoWindow1);
+      Res := Res and FCams[1].Initialize(ACamera2, AFilter2, AGraph2, AVideoWindow2);
+      if not Res then
+        raise ECameraManagerError.Create(cFilterLoadError);
+    end;
 end;
 
 procedure TCameraManager.DoOnGetPoint(const List: T3DPointList);
