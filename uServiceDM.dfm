@@ -932,6 +932,7 @@ object fServiceDM: TfServiceDM
       end
     end
     object GLCam2: TGLDummyCube
+      Direction.Coordinates = {0000000000000000000080BF00000000}
       Position.Coordinates = {0000004000000000000040400000803F}
       Scale.Coordinates = {CDCCCC3DCDCCCC3DCDCCCC3D00000000}
       CubeSize = 1.000000000000000000

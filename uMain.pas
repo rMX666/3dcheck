@@ -1128,7 +1128,7 @@ begin
       GLCam1.Position.Y := H;
       GLCam1.Position.Z := R;
 
-      GLCam2.Position.X := R;
+      GLCam2.Position.X := -R;
       GLCam2.Position.Y := H;
       GLCam2.Position.Z := 0;
 
@@ -1136,7 +1136,7 @@ begin
       GLTripod1.Position.Y := H / 2;
       GLTripod1.Position.Z := R;
 
-      GLTripod2.Position.X := R;
+      GLTripod2.Position.X := -R;
       GLTripod2.Position.Y := H / 2;
       GLTripod2.Position.Z := 0;
 
