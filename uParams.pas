@@ -95,7 +95,7 @@ end;
 
 function TParam.GetAsInteger: Integer;
 begin
-  Result := StrToIntDef(FOwner.FParams.Values[FName], 0);
+  Result := StrToIntDef(FOwner.FParams.Values[FName], 1);
 end;
 
 function TParam.GetAsString: String;

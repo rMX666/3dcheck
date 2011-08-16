@@ -739,6 +739,7 @@ end;
 procedure TfMain.PlayTimerTimer(Sender: TObject);
 begin
   SceneAnimateStepForvard;
+  TTimer(Sender).Interval := fServiceDM.MCFile.Coordinates[FSceneAnimateLastStep].Time;
 end;
 
 // Event handlers end
@@ -774,7 +775,7 @@ end;
 procedure TfMain.SceneAnimateBegin;
 begin
   ScenePrepare;
-  PlayTimer.Interval := fServiceDM.MCFile.Options['Interval'].AsInteger;
+  PlayTimer.Interval := fServiceDM.MCFile.Coordinates[FSceneAnimateLastStep].Time;
   PlayTimer.Enabled := True;
 end;
 
@@ -979,7 +980,7 @@ end;
 function TfMain.GetOptionCaption(const Name: String): String;
 begin
   if Name = 'Mass'              then Result := 'Масса' else
-  if Name = 'Interval'          then Result := 'Интервал' else
+  if Name = 'Interval'          then Result := 'Кадровая частота' else
   if Name = 'CameraRadius'      then Result := 'Расстояние до камеры' else
   if Name = 'PointCount'        then Result := 'Количество траекторий' else
   if Name = 'CameraHeight'      then Result := 'Высота камеры' else
