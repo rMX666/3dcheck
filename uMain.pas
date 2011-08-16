@@ -168,8 +168,6 @@ type
     procedure TreeInfoGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
       TextType: TVSTTextType; var CellText: WideString);
     procedure TreeInfoGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
-    procedure Tree3DTableBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
-      Column: TColumnIndex; CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
     procedure Tree3DTableGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
       TextType: TVSTTextType; var CellText: WideString);
     procedure Tree3DTableGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
@@ -202,7 +200,6 @@ type
   protected
     procedure EnableCameraControls(const Index: String; const Enabled: Boolean);
   private
-//    FNeedRebuildTable: Boolean;
     FSceneLines: array of TGLLines;
     FSceneCubes: array of TGLDummyCube;
     FSceneAnimateLastStep: Integer;
@@ -230,7 +227,6 @@ type
     procedure SceneAnimatePlaceCubes;
     procedure SceneAnimateClear;
     procedure SceneAnimateEnd;
-    procedure SceneAnimateCountParameters;
 
     procedure SceneTableSelectByIndex(const Index: Integer);
 
@@ -729,7 +725,6 @@ begin
     1:
       begin
         FillCameraComboBoxes;
-//        EditTestName.Text := fServiceDM.GetLastFile(Params['TestsDir'].AsString + 'Испытание *.xml');
         EditTestName.Text := fServiceDM.GetFileNameByMask;
         ClearScene;
         SceneShowCameras(True, StrToFloat(EditCamRadius.Text), StrToFloat(EditCamHeight.Text));
@@ -772,7 +767,6 @@ begin
   if cbNeedCountTrajectory.Checked then
     SceneMakeTable;
   FSceneAnimatePaused := False;
-//  FNeedRebuildTable := True;
 end;
 
 procedure TfMain.SceneAnimateBegin;
@@ -800,40 +794,6 @@ begin
   SetLength(FSceneCubes, 0);
 end;
 
-procedure TfMain.SceneAnimateCountParameters;
-var
-  Run: PVirtualNode;
-  Data, ParentData: PSceneInfoData;
-begin
-  with fServiceDM.MCCounter, TreeInfo do
-    begin
-      BeginUpdate;
-      try
-        Run := GetFirst;
-        while Run <> nil do
-          begin
-            Data := GetNodeData(Run);
-            if NodeParent[Run] <> nil then
-              begin
-                ParentData := GetNodeData(Run.Parent);
-                if Data.CountMetaType <> cpatNone then
-                  begin
-                    Data.Value := FloatToStr(RoundTo(Value[Integer(Data.CountType), FSceneAnimateLastStep, StrToInt(ParentData.Value) - 1], -3));
-                    if Run = GetFirstChild(NodeParent[Run]) then
-                      begin
-                        ParentData := GetNodeData(NodeParent[NodeParent[Run]]);
-                        ParentData.Value := IntToStr(FSceneAnimateLastStep + 1);
-                      end;
-                  end;
-              end;
-            Run := GetNext(Run);
-          end;
-      finally
-        EndUpdate;
-      end;
-    end;
-end;
-
 procedure TfMain.SceneAnimateEnd;
 begin
   CreateScene;
@@ -857,7 +817,6 @@ begin
   for I := 0 to Length(FSceneCubes) - 1 do
     with fServiceDM.MCFile.Coordinates[FSceneAnimateLastStep] do
       FSceneCubes[I].Position.SetPoint(PointsMetric[I].X, PointsMetric[I].Y, PointsMetric[I].Z);
-//  SceneAnimateCountParameters;
 end;
 
 procedure TfMain.SceneAnimateStepBack(StepCount: Integer);
@@ -885,7 +844,6 @@ begin
       end;
     SceneAnimatePlaceCubes;
     SceneTableSelectByIndex(FSceneAnimateLastStep);    
-//    SceneAnimateCountParameters;
   finally
     SceneAnimateEndUpdate
   end;
@@ -919,7 +877,6 @@ begin
       end;
 
     SceneTableSelectByIndex(FSceneAnimateLastStep);
-//    SceneAnimateCountParameters;
   finally
     SceneAnimateEndUpdate;
   end;
@@ -1003,18 +960,12 @@ end;
 
 procedure TfMain.SceneMakeAnimateTable;
 var
-  Node, ChildNode: PVirtualNode;
   Data: PSceneInfoData;
-  I, J: Integer;
+  I: Integer;
 begin
   TreeInfo.Clear;
   with fServiceDM.MCFile, TreeInfo do
     begin
-{
-      Node := AddChild(nil);
-      Data := GetNodeData(Node);
-      Data.Caption := 'Параметры';
-}
       for I := 0 to OptionCount - 1 do
         begin
           if GetOptionByIndex(I).Name = 'TestName' then
@@ -1028,35 +979,13 @@ begin
       Data.Caption := 'Количество точек';
       Data.Value := IntToStr(CoordinateCount);
 
-{
-      Node := AddChild(nil);
-      Data := GetNodeData(Node);
-      Data.Caption := 'Координата';
-      Data.Value := IntToStr(FSceneAnimateLastStep + 1);
-      for I := 0 to Options['PointCount'].AsInteger - 1 do
-        begin
-          ChildNode := AddChild(Node);
-          Data := GetNodeData(ChildNode);
-          Data.Caption := 'Точка №';
-          Data.Value := IntToStr(I + 1);
-          with fServiceDM.MCCounter do
-            for J := 0 to TypeCount - 1 do
-              begin
-                Data := GetNodeData(AddChild(ChildNode));
-                Data.Caption := GetNameWrapper(1).Name[J];
-                Data.Value := FloatToStr(RoundTo(Value[J, FSceneAnimateLastStep, I], -3));
-                Data.CountMetaType := CountParameterMeta[TCountParameterType(J)];
-                Data.CountType := TCountParameterType(J);
-              end;
-        end;
-}
       FullExpand;
     end;
 end;
 
 procedure TfMain.SceneMakeTable;
 var
-  I, J, CountCnt, PtCnt: Integer;
+  I, J, CountCnt: Integer;
   Data: PSceneTableData;
   TrajectoryIndex: Integer;
 begin
@@ -1067,18 +996,6 @@ begin
     with Tree3DTable.Header do
       begin
         Columns.Clear;
-{
-        with Columns.Add do
-          begin
-            Text := 'Название';
-            Width := 230;
-          end;
-        with Columns.Add do
-          begin
-            Text := 'Значение';
-            Width := 70;
-          end;
-}
         with Columns.Add do
           begin
             Text := '№ точки';
@@ -1113,34 +1030,6 @@ begin
               Data.PointChars[J] := FloatToStr(RoundTo(fServiceDM.MCCounter.Value[J, I, TrajectoryIndex], -3));
           end;
       end;
-{
-    with fServiceDM.MCFile, Tree3DTable do
-      begin
-        Node := AddChild(nil);
-        Data := GetNodeData(Node);
-        Data.Caption := 'Координаты';
-        PtCnt := Options['PointCount'].AsInteger;
-        CountCnt := fServiceDM.MCCounter.TypeCount;
-        for I := 0 to CoordinateCount - 1 do
-          begin
-            ChildNode := AddChild(Node);
-            Data := GetNodeData(ChildNode);
-            Data.Caption := 'Координата';
-            Data.Value := IntToStr(I + 1);
-            for J := 0 to PtCnt - 1 do
-              begin
-                Data := GetNodeData(AddChild(ChildNode));
-                Data.Caption := 'Точка';
-                Data.Value := IntToStr(J + 1);
-                SetLength(Data.PointChars, CountCnt);
-                for K := 0 to CountCnt - 1 do
-                  Data.PointChars[K] := FloatToStr(RoundTo(fServiceDM.MCCounter.Value[K, I, J], -3));
-              end;
-          end;
-        FullExpand;
-      end;
-    FNeedRebuildTable := False;
-}
   finally
     Tree3DTable.FullExpand;
     Tree3DTable.EndUpdate;
@@ -1448,30 +1337,6 @@ begin
     f3DView.Hide;
 end;
 
-procedure TfMain.Tree3DTableBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
-  Column: TColumnIndex; CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
-//var
-//  Data: PSceneTableData;
-begin
-{
-  if CellPaintMode = cpmPaint then
-    begin
-      Data := Sender.GetNodeData(Node);
-      if Data.Caption = 'Координата' then
-        begin
-          TargetCanvas.Brush.Color := RGB(240, 255, 240);
-          TargetCanvas.FillRect(CellRect);
-        end
-      else
-        if Data.Caption = 'Точка' then
-          begin
-            TargetCanvas.Brush.Color := RGB(250 - StrToInt(Data.Value) * 5, 250 - StrToInt(Data.Value) * 5, 255);
-            TargetCanvas.FillRect(CellRect);
-          end;
-    end;
-}
-end;
-
 procedure TfMain.Tree3DTableClick(Sender: TObject);
 var
   Node: PVirtualNode;
@@ -1505,20 +1370,15 @@ var
   Data: PSceneTableData;
 begin
   Data := Sender.GetNodeData(Node);
-//  case Column of
-//    0: CellText := Data.Caption;
-//    1: CellText := Data.Value;
-//    else
-      if Column = 0 then
-        CellText := Data.Value
+  if Column = 0 then
+    CellText := Data.Value
+  else
+    begin
+      if (Length(Data.PointChars) > 0) and (Column - 1 < Length(Data.PointChars)) then
+        CellText := Data.PointChars[Column - 1]
       else
-        begin
-          if (Length(Data.PointChars) > 0) and (Column - 1 < Length(Data.PointChars)) then
-            CellText := Data.PointChars[Column - 1]
-          else
-            CellText := '';
-        end;
-//  end;
+        CellText := '';
+    end;
 end;
 
 procedure TfMain.TreeInfoBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;

@@ -1132,7 +1132,7 @@ object fMain: TfMain
               end
               item
                 Position = 1
-                Width = 302
+                Width = 306
                 WideText = #1047#1085#1072#1095#1077#1085#1080#1077
               end>
           end
@@ -1454,7 +1454,6 @@ object fMain: TfMain
         TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
         TreeOptions.SelectionOptions = [toFullRowSelect]
         Visible = False
-        OnBeforeCellPaint = Tree3DTableBeforeCellPaint
         OnClick = Tree3DTableClick
         OnGetText = Tree3DTableGetText
         OnGetNodeDataSize = Tree3DTableGetNodeDataSize
@@ -1464,6 +1463,10 @@ object fMain: TfMain
     object TabSheet2: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel4: T3DGradientPanel
         Left = 0
         Top = 0

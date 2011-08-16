@@ -136,11 +136,8 @@ begin
 end;
 
 function TfServiceDM.HexToGlColor(Hex: String): TGLColor;
-var
-  I, Len, Value: Integer;
 begin
   Hex := StringReplace(AnsiUpperCase(Hex), '#', '', [rfReplaceAll]);
-  Len := Length(Hex);
   Result := TGLColor.Create(nil);
   Result.Red := HexToInt(Copy(Hex, 1, 2)) / 255;
   Result.Green := HexToInt(Copy(Hex, 3, 2)) / 255;
