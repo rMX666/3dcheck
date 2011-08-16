@@ -174,6 +174,7 @@ type
     procedure DoOnStartCature(Sender: TObject);
     procedure DoOnStopCature(Sender: TObject);
     procedure DoOnSetMediaType(Sender: TObject; const CameraIndex: Integer; Width, Height: Integer);
+    procedure DoBeepOnStart;
   protected
     FCaptureFile: TMCFile;
     FCam1Width: Integer;
@@ -298,6 +299,11 @@ begin
   end;
 end;
 
+procedure TfCameraDM.DoBeepOnStart;
+begin
+  Beep(1720, 50);
+end;
+
 procedure TfCameraDM.DoOnBeforeStartCapture(Sender: TObject; const CameraIndex: Integer; var AllowStart: Boolean);
 begin
   case CameraIndex of
@@ -312,6 +318,7 @@ begin
   ApplyCameraParams;
   FLastStep := 0;
   FCurStep := 0;
+  DoBeepOnStart;
 end;
 
 procedure TfCameraDM.DoOnStopCature(Sender: TObject);
