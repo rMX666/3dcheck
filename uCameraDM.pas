@@ -143,8 +143,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure StartCapture;
-    procedure StopCapture;
+    function StartCapture: Boolean;
+    function StopCapture: Boolean;
     property EnumCameras: TStrings read GetEnumCameras;
     property FirstCamera: TCapturePack read GetFirstCamera;
     property SecondCamera: TCapturePack read GetSecondCamera;
@@ -1147,20 +1147,25 @@ begin
     FOnSetMediaType(Self, CameraIndex, Width, Height);
 end;
 
-procedure TCameraManager.StartCapture;
+function TCameraManager.StartCapture: Boolean;
 var
   I: Integer;
   VideoWindow: IBaseFilter;
   AllowStart: Boolean;
 begin
-  if FCams[0].Active and FCams[1].Active then
+  Result := True;
+  if FCams[0].Active and FCams[1].Active and FCams[0].Filter.Active and FCams[1].Filter.Active then
     FCamSync.FCaptureMode := cmBoth
-  else if FCams[0].Active then
+  else if FCams[0].Active and FCams[0].Filter.Active then
     FCamSync.FCaptureMode := cmSingleFirst
-  else if FCams[1].Active then
+  else if FCams[1].Active and FCams[1].Filter.Active then
     FCamSync.FCaptureMode := cmSingleSecond
   else
-    Exit;
+    begin
+      Application.MessageBox(PChar(cStartCaptureWithoutFilter), nil, MB_OK or MB_ICONWARNING);
+      Result := False;
+      Exit;
+    end;
 
   for I := 0 to 1 do
     begin
@@ -1179,12 +1184,16 @@ begin
   FCamSync.FPrevSyncTime := Now;
 end;
 
-procedure TCameraManager.StopCapture;
+function TCameraManager.StopCapture: Boolean;
 var
   I: Integer;
 begin
+  Result := True;
   if not FCapturing then
-    Exit;
+    begin
+      Result := False;
+      Exit;
+    end;
 
   for I := 0 to 1 do
     FCams[I].StopCapture;

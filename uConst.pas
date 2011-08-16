@@ -18,6 +18,7 @@ const
   cStartCaptureNotReadyError = 'Приложение не готово с запуску видео';
   cSynchronizeNoneModeError = 'Критическая ошибка синхронизации камер. Невозможно установить источник';
   cSaveWithoutPoints = 'За время проведения испытания не сохранено ни одной точки. Невозможно сохранить испытание.';
+  cStartCaptureWithoutFilter = 'Невозможно запустить испытания с выключенным фильтром на камерах';
 
   cOutOfRangeCoordinate = 'Out of range. %d is not in range [0, %d] OR %d is not in range [0, %d]';
   cOutOfRangeWrappers = 'Out of range. %d is not in range [0, %d]';  

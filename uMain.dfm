@@ -2623,15 +2623,6 @@ object fMain: TfMain
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
           end
-          object PanelColor: TPanel
-            Left = 260
-            Top = 64
-            Width = 21
-            Height = 21
-            Color = clWhite
-            ParentBackground = False
-            TabOrder = 5
-          end
           object EditTestName: TEdit
             Left = 128
             Top = 16
@@ -2647,7 +2638,7 @@ object fMain: TfMain
             Width = 129
             Height = 21
             Hint = 'X0'
-            TabOrder = 6
+            TabOrder = 5
             Text = '0'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2659,7 +2650,7 @@ object fMain: TfMain
             Width = 129
             Height = 21
             Hint = 'Y0'
-            TabOrder = 7
+            TabOrder = 6
             Text = '0'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2671,7 +2662,7 @@ object fMain: TfMain
             Width = 129
             Height = 21
             Hint = 'Z0'
-            TabOrder = 8
+            TabOrder = 7
             Text = '0'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2684,7 +2675,7 @@ object fMain: TfMain
             Style = csDropDownList
             ItemHeight = 13
             ItemIndex = 0
-            TabOrder = 9
+            TabOrder = 8
             Text = '1'
             OnChange = FilterPropertyChange
             Items.Strings = (
@@ -2700,7 +2691,7 @@ object fMain: TfMain
             Width = 153
             Height = 17
             Caption = #1059#1095#1080#1090#1099#1074#1072#1090#1100' '#1087#1077#1088#1089#1087#1077#1082#1090#1080#1074#1091
-            TabOrder = 10
+            TabOrder = 9
             OnClick = CheckBoxEnablePerspectiveClick
           end
         end

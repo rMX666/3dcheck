@@ -95,7 +95,6 @@ type
     EditInterval: TEdit;
     EditCamRadius: TEdit;
     EditCamHeight: TEdit;
-    PanelColor: TPanel;
     EditTestName: TEdit;
     EditX0: TEdit;
     EditY0: TEdit;
@@ -246,8 +245,8 @@ type
     procedure StartPreview(const Index: Integer);
     procedure StopPreview(const Index: Integer);
 
-    procedure StartTest;
-    procedure StopTest;
+    function StartTest: Boolean;
+    function StopTest: Boolean;
 
     procedure TestMouseMove;
     procedure TestWatch3D;
@@ -355,9 +354,15 @@ procedure TfMain.btnStartTestClick(Sender: TObject);
 begin
   try
     if TSpeedButton(Sender).Down then
-      StartTest
+      begin
+        if not StartTest then
+          TSpeedButton(Sender).Down := False;
+      end
     else
-      StopTest;
+      begin
+        if not StopTest then
+          TSpeedButton(Sender).Down := True;
+      end;
   finally
     ChangeStartButtonImage(TSpeedButton(Sender));
   end;
@@ -1408,9 +1413,9 @@ begin
   end;
 end;
 
-procedure TfMain.StartTest;
+function TfMain.StartTest: Boolean;
 begin
-  CameraManager.StartCapture;
+  Result := CameraManager.StartCapture;
 end;
 
 procedure TfMain.StopPreview(const Index: Integer);
@@ -1421,9 +1426,9 @@ begin
   end;
 end;
 
-procedure TfMain.StopTest;
+function TfMain.StopTest: Boolean;
 begin
-  CameraManager.StopCapture;
+  Result := CameraManager.StopCapture;
 end;
 
 procedure TfMain.TestMouseMove;
