@@ -324,14 +324,15 @@ begin
       Exit;
     end;
 
-  FileName := ChangeFileExt(fMain.TestsDir + fMain.EditTestName.Text, '.xml');
+  FileName := ChangeFileExt(Params['TestsDir'].AsString + fMain.EditTestName.Text, '.xml');
   try
     FCaptureFile.SaveFile(FileName);
   finally
     FreeAndNil(FCaptureFile);
   end;
   fMain.StBar.Panels[1].Text := 'Испытание сохранено в файл: ' + FileName;
-  fMain.EditTestName.Text := fServiceDM.GetLastFile(fMain.TestsDir + 'Испытание *.xml');
+  fMain.EditTestName.Text := fServiceDM.GetFileNameByMask;
+  Params['LastTest'].AsInteger := Params['LastTest'].AsInteger + 1;
 end;
 
 procedure TfCameraDM.LoadParamsToGui;

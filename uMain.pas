@@ -156,6 +156,7 @@ type
     Splitter2: TSplitter;
     cbTrajectory: TComboBox;
     cbNeedCountTrajectory: TCheckBox;
+    procedure EditTestNameChange(Sender: TObject);
     procedure cbNeedCountTrajectoryClick(Sender: TObject);
     procedure Tree3DTableClick(Sender: TObject);
     procedure CheckBoxShowGridAndAxesClick(Sender: TObject);
@@ -202,7 +203,6 @@ type
     procedure EnableCameraControls(const Index: String; const Enabled: Boolean);
   private
 //    FNeedRebuildTable: Boolean;
-    FTestsDir: String;
     FSceneLines: array of TGLLines;
     FSceneCubes: array of TGLDummyCube;
     FSceneAnimateLastStep: Integer;
@@ -256,7 +256,6 @@ type
     procedure LoadHelp;
   public
     procedure LoadFile(const Name: String);
-    property TestsDir: String read FTestsDir;
   end;
 
 var
@@ -466,6 +465,11 @@ begin
   Params[ParName].AsString := TEdit(Sender).Text;
 end;
 
+procedure TfMain.EditTestNameChange(Sender: TObject);
+begin
+  Caption := PROGRAM_NAME + ' v' + VERSION + ' [ ' + EditTestName.Text + ' ]';
+end;
+
 procedure TfMain.EnableCameraControls(const Index: String; const Enabled: Boolean);
 var
   Panel: TGroupBox;
@@ -492,7 +496,7 @@ end;
 
 procedure TfMain.FillComboTestList;
 begin
-  with fServiceDM.GetFileList(FTestsDir, '*.xml') do
+  with fServiceDM.GetFileList(Params['TestsDir'].AsString, '*.xml') do
     begin
       ComboTestList.Items.Text := Text;
       Free;
@@ -637,7 +641,6 @@ begin
   LabelName.Caption := PROGRAM_NAME + ' v.' + VERSION;
   LabelVersion.Caption := LabelVersion.Caption + ' ' + VERSION;
 
-  FTestsDir := IncludeTrailingPathDelimiter(ExpandFileName('.\Tests'));
   FillComboTestList;
   if ComboTestList.Items.Count > 0 then
     begin
@@ -726,8 +729,8 @@ begin
     1:
       begin
         FillCameraComboBoxes;
-        EditTestName.Text := fServiceDM.GetLastFile(FTestsDir + 'Испытание *.xml');
-        Caption := PROGRAM_NAME + ' v' + VERSION + ' [ ' + EditTestName.Text + ' ]';          
+//        EditTestName.Text := fServiceDM.GetLastFile(Params['TestsDir'].AsString + 'Испытание *.xml');
+        EditTestName.Text := fServiceDM.GetFileNameByMask;
         ClearScene;
         SceneShowCameras(True, StrToFloat(EditCamRadius.Text), StrToFloat(EditCamHeight.Text));
       end;
@@ -760,7 +763,7 @@ procedure TfMain.CreateScene;
 begin
   Caption := PROGRAM_NAME + ' v' + VERSION + ' [ ' + ComboTestList.Items[ComboTestList.Items.Count - 1] + ' ]';
   ClearScene;
-  LoadFile(FTestsDir + ComboTestList.Items[ComboTestList.ItemIndex]);
+  LoadFile(Params['TestsDir'].AsString + ComboTestList.Items[ComboTestList.ItemIndex]);
   SceneShowCameras(CheckBoxShowCamera.Checked, fServiceDM.MCFile.Options['CameraRadius'].AsFloat, fServiceDM.MCFile.Options['CameraHeight'].AsFloat);
   SceneCenterCamera;
   SceneCreatePath;

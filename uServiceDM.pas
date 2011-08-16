@@ -50,7 +50,7 @@ type
     procedure DoOnLoadMCFile(Sender: TObject);
   public
     function GetFileList(const Path, Mask: String): TStrings;
-    function GetLastFile(Mask: String): String;
+    function GetFileNameByMask: String;
     function HexToInt(Hex: String): Integer;
     function HexToGlColor(Hex: String): TGLColor;
     function IsDigit(const C: Char): Boolean;
@@ -70,7 +70,8 @@ const
 implementation
 
 uses
-  Math, IFPS3CompExec, Forms;
+  Math, IFPS3CompExec, Forms,
+  uParams;
 
 {$R *.dfm}
 
@@ -178,23 +179,12 @@ begin
   Result := (C in ['0'..'9', '-', #8]) or ((C = ',') and (Pos(',', S) = -1));
 end;
 
-function TfServiceDM.GetLastFile(Mask: String): String;
-var F: TSearchRec;
-  MaxVal: String;
+function TfServiceDM.GetFileNameByMask: String;
 begin
-  if FindFirst(Mask, faAnyFile and not faDirectory, F) = 0 then
-    begin
-      Mask := ExtractFileName(Mask);
-      MaxVal := '0';
-      repeat
-        Result := F.Name;
-        if StrToInt(Copy(Result, Pos('*', Mask), Pos('.', F.Name) - Pos('*', Mask))) > StrToInt(MaxVal) then
-          MaxVal := Copy(Result, Pos('*', Mask), Pos('.', F.Name) - Pos('*', Mask));
-      until FindNext(F) <> 0;
-      FindClose(F);
-      Result := Copy(Result, 1, Pos('*', Mask) - 1) + IntToStr(StrToInt(MaxVal) + 1);
-    end
-  else Result := Copy(ExtractFileName(Mask), 1, Pos('*', ExtractFileName(Mask)) - 1) + '1';
+  Result:= Params['TestName'].AsString;
+  Result := StringReplace(Result, '%NUM%', Params['LastTest'].AsString, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result, '%DATE%', FormatDateTime('dd-mm-yyyy', Now), [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result, '%TIME%', FormatDateTime('hh-nn-ss', Now), [rfReplaceAll, rfIgnoreCase]);
 end;
 
 end.

@@ -2630,6 +2630,7 @@ object fMain: TfMain
             Height = 21
             Hint = 'TestName'
             TabOrder = 0
+            OnChange = EditTestNameChange
           end
           object EditX0: TEdit
             Tag = 5

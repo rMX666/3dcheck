@@ -36,7 +36,6 @@ type
     FSaveOnDestroy: Boolean;
     FSaveOnWrite: Boolean;
     function GetCount: Integer;
-
     function GetParam(const Name: String): TParam;
   public
     constructor Create(AIniName: String; const ReadOnCreate: Boolean = True);
@@ -200,6 +199,7 @@ begin
   finally
     FreeAndNil(Section);
   end;
+  Self['TestsDir'].AsString := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)) + 'Tests');
 end;
 
 procedure TParams.SaveParams;
