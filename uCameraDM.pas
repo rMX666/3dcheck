@@ -22,6 +22,7 @@ type
     FMaxPointSize: Byte;
     FActive: Boolean;
     FCallback: TOnLedDetectedCB;
+    procedure SetCallback(const Value: TOnLedDetectedCB);
     procedure SetActive(const Value: Boolean);
     procedure SetMaxPointSize(const Value: Byte);
     procedure SetMinPointSize(const Value: Byte);
@@ -31,7 +32,7 @@ type
     constructor Create(const AOwner: TCapturePack; const AFilter: TFilter);
     destructor Destroy; override;
     procedure Apply;
-    property Callback: TOnLedDetectedCB read FCallback write FCallback;
+    property Callback: TOnLedDetectedCB read FCallback write SetCallback;
   public
     property Active: Boolean    read FActive       write SetActive;
     property MinPointSize: Byte read FMinPointSize write SetMinPointSize;
@@ -153,6 +154,7 @@ type
     destructor Destroy; override;
     function StartCapture: Boolean;
     function StopCapture: Boolean;
+    property Capturing: Boolean read FCapturing;
     property EnumCameras: TStrings read GetEnumCameras;
     property FirstCamera: TCapturePack read GetFirstCamera;
     property SecondCamera: TCapturePack read GetSecondCamera;
@@ -494,6 +496,13 @@ end;
 procedure TFilterProperties.SetActive(const Value: Boolean);
 begin
   FActive := Value;
+  if FOwner.IsCapturing then
+    Apply;
+end;
+
+procedure TFilterProperties.SetCallback(const Value: TOnLedDetectedCB);
+begin
+  FCallback := Value;
   if FOwner.IsCapturing then
     Apply;
 end;
@@ -927,8 +936,9 @@ begin
     FFilter.QueryInterface(IID_ISeuil, Seuil);
     if Assigned(Seuil) then
       begin
-        Seuil.SetActive(False);
+        Filter.Callback := nil;
         Seuil.SetCallback(nil);
+        Seuil.SetActive(False);
       end;
     FGraph.ClearGraph;
     FGraph.Active := False;
@@ -960,18 +970,22 @@ end;
 
 procedure TCameraSynchronizer.DoOnCamera1GetPoints(Points: TListPoint);
 begin
-  FCamera1Points := Points;
-  FCamera1Time := Time;
-
-  DoSynchronize;
+  if FOwner.Capturing then
+    begin
+      FCamera1Points := Points;
+      FCamera1Time := Time;
+      DoSynchronize;
+    end;
 end;
 
 procedure TCameraSynchronizer.DoOnCamera2GetPoints(Points: TListPoint);
 begin
-  FCamera2Points := Points;
-  FCamera2Time := Time;
-
-  DoSynchronize;
+  if FOwner.Capturing then
+    begin
+      FCamera2Points := Points;
+      FCamera2Time := Time;
+      DoSynchronize;
+    end;
 end;
 
 procedure TCameraSynchronizer.DoSynchronize;
