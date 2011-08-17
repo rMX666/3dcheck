@@ -478,7 +478,7 @@ begin
   Result[1,1] := I[1,2] - I[1,1];
   Result[1,2] := I[2,2] - I[2,1];
 
-  // 2 string
+  // 3 string
   Result[2,0] := (I[1,0] - I[1,1]) * (I[2,0] - I[2,2]) - (I[1,0] - I[1,2]) * (I[2,0] - I[2,1]);
   Result[2,1] := (I[0,0] - I[0,2]) * (I[2,0] - I[2,1]) - (I[0,0] - I[0,1]) * (I[2,0] - I[2,2]);
   Result[2,2] := (I[0,0] - I[0,1]) * (I[1,0] - I[1,2]) - (I[0,0] - I[0,2]) * (I[1,0] - I[1,1]);
@@ -576,6 +576,7 @@ begin
   Result := FCache.Value[cpaCircleRadius, Index, PointIndex];
 end;
 // Find circle radius END!!
+//______________________________________________________________________________________________________________________
 
 function TDefaultHandler.GetSmod(AOwner: TCounter; const Index: Integer; const PointIndex: Integer): Real;
 var

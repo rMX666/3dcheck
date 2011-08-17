@@ -342,7 +342,6 @@ begin
     StartPreview(TSpeedButton(Sender).Tag)
   else
     StopPreview(TSpeedButton(Sender).Tag);
-//  ChangePreviewButtonImage(TSpeedButton(Sender));
 end;
 
 procedure TfMain.btnStartTestClick(Sender: TObject);

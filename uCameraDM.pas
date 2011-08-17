@@ -72,13 +72,13 @@ type
     procedure ChangeMediaType;
     function Initialize(const ACamera, AFilter: TFilter; const AGraph: TFilterGraph; const AVideoWindow: TVideoWindow): Boolean;
     procedure ResetGraph;
-    property IsCapturing: Boolean read FIsCapturing;
     property CameraNumber: Integer read FCameraNumber write FCameraNumber;
     property OnStartCapture: TNotifyEvent read FOnStartCapture write FOnStartCapture;
     property OnStopCapture: TNotifyEvent read FOnStopCapture write FOnStopCapture;
   public
     procedure StartCapture;
     procedure StopCapture;
+    property IsCapturing: Boolean read FIsCapturing;
     property CameraIndex: Integer read FCameraIndex write SetCameraIndex;
     property MediaTypeIndex: Integer read GetMediaTypeIndex write SetMediaTypeIndex;
     property Filter: TFilterProperties read FFilterProperties;
@@ -126,7 +126,7 @@ type
 
   TCameraManager = class
   private
-    FCapturing: Boolean;
+    FIsCapturing: Boolean;
     FCameraEnum: TSysDevEnum;
     FCams: TTwoCapturePack;
     FOnSetMediaType: TSetMediaTypeEvent;
@@ -154,7 +154,7 @@ type
     destructor Destroy; override;
     function StartCapture: Boolean;
     function StopCapture: Boolean;
-    property Capturing: Boolean read FCapturing;
+    property IsCapturing: Boolean read FIsCapturing;
     property EnumCameras: TStrings read GetEnumCameras;
     property FirstCamera: TCapturePack read GetFirstCamera;
     property SecondCamera: TCapturePack read GetSecondCamera;
@@ -970,7 +970,7 @@ end;
 
 procedure TCameraSynchronizer.DoOnCamera1GetPoints(Points: TListPoint);
 begin
-  if FOwner.Capturing then
+  if FOwner.IsCapturing then
     begin
       FCamera1Points := Points;
       FCamera1Time := Time;
@@ -980,7 +980,7 @@ end;
 
 procedure TCameraSynchronizer.DoOnCamera2GetPoints(Points: TListPoint);
 begin
-  if FOwner.Capturing then
+  if FOwner.IsCapturing then
     begin
       FCamera2Points := Points;
       FCamera2Time := Time;
@@ -1144,7 +1144,7 @@ begin
   for I := 0 to 1 do
     FCams[I] := TCapturePack.Create(Self, I);
 
-  FCapturing := False;
+  FIsCapturing := False;
 end;
 
 destructor TCameraManager.Destroy;
@@ -1273,7 +1273,7 @@ begin
         end;
     end;
   DoOnStartCapture;
-  FCapturing := True;
+  FIsCapturing := True;
   FCamSync.FPrevSyncTime := Now;
 end;
 
@@ -1282,7 +1282,7 @@ var
   I: Integer;
 begin
   Result := True;
-  if not FCapturing then
+  if not FIsCapturing then
     begin
       Result := False;
       Exit;
@@ -1291,7 +1291,7 @@ begin
   for I := 0 to 1 do
     FCams[I].StopCapture;
   DoOnStopCapture;
-  FCapturing := False;
+  FIsCapturing := False;
 end;
 
 initialization
