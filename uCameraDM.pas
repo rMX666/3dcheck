@@ -52,14 +52,19 @@ type
     FMediaTypeIndex: Integer;
     FFilterProperties: TFilterProperties;
     FIsCapturing: Boolean;
+    FOnStopCapture: TNotifyEvent;
+    FOnStartCapture: TNotifyEvent;
+    FCameraNumber: Integer;
     function GetActive: Boolean;
     function GetIsReady: Boolean;
     function GetEnumMediaTypes: TStrings;
     function GetMediaTypeIndex: Integer;
     procedure SetCameraIndex(const Value: Integer);
     procedure SetMediaTypeIndex(const Value: Integer);
+    procedure DoOnStartCapture;
+    procedure DoOnStopCapture;
   protected
-    constructor Create(const AOwner: TCameraManager);
+    constructor Create(const AOwner: TCameraManager; const ACameraNumber: Integer);
     destructor Destroy; override;
     function InitFilter: Boolean;
     procedure InitEnumMediaTypes;
@@ -67,6 +72,9 @@ type
     function Initialize(const ACamera, AFilter: TFilter; const AGraph: TFilterGraph; const AVideoWindow: TVideoWindow): Boolean;
     procedure ResetGraph;
     property IsCapturing: Boolean read FIsCapturing;
+    property CameraNumber: Integer read FCameraNumber write FCameraNumber;
+    property OnStartCapture: TNotifyEvent read FOnStartCapture write FOnStartCapture;
+    property OnStopCapture: TNotifyEvent read FOnStopCapture write FOnStopCapture;
   public
     procedure StartCapture;
     procedure StopCapture;
@@ -175,6 +183,9 @@ type
     procedure DoOnStopCature(Sender: TObject);
     procedure DoOnSetMediaType(Sender: TObject; const CameraIndex: Integer; Width, Height: Integer);
     procedure DoBeepOnStart;
+    procedure DoLightsOnStartStop(const Num: Integer; const Value: Boolean);
+    procedure DoOnStartCatureCamera(Sender: TObject);
+    procedure DoOnStopCatureCamera(Sender: TObject);
   protected
     FCaptureFile: TMCFile;
     FCam1Width: Integer;
@@ -199,7 +210,8 @@ var
 implementation
 
 uses
-  Forms, Registry, DateUtils, uParams, uMain, u3DView, uServiceDM;
+  Forms, Registry, DateUtils, Buttons,
+  uParams, uMain, u3DView, uServiceDM;
 
 const
   KEY_FREETRACKFILTER = 'CLSID\{0A99F2CA-79C9-4312-B78E-ED6CB3829275}\InprocServer32';
@@ -258,6 +270,11 @@ begin
   CameraManager.OnStartCapture := DoOnStartCature;
   CameraManager.OnStopCapture := DoOnStopCature;
 
+  CameraManager.FirstCamera.OnStartCapture := DoOnStartCatureCamera;
+  CameraManager.SecondCamera.OnStartCapture := DoOnStartCatureCamera;
+  CameraManager.FirstCamera.OnStopCapture := DoOnStopCatureCamera;
+  CameraManager.SecondCamera.OnStopCapture := DoOnStopCatureCamera;
+
   LoadParamsToGui;
 end;
 
@@ -304,6 +321,25 @@ begin
   Beep(1720, 50);
 end;
 
+procedure TfCameraDM.DoLightsOnStartStop(const Num: Integer; const Value: Boolean);
+var
+  btn: TSpeedButton;
+  oldOnClick: TNotifyEvent;
+begin
+  with fMain do
+    begin
+      btn := TSpeedButton(FindComponent('btnPreview' + IntToStr(Num + 1)));
+      oldOnClick := btn.OnClick;
+      btn.OnClick := nil;
+      try
+        btn.Down := Value;
+        ChangePreviewButtonImage(btn);
+      finally
+        btn.OnClick := oldOnClick;
+      end;
+    end;
+end;
+
 procedure TfCameraDM.DoOnBeforeStartCapture(Sender: TObject; const CameraIndex: Integer; var AllowStart: Boolean);
 begin
   case CameraIndex of
@@ -319,6 +355,11 @@ begin
   FLastStep := 0;
   FCurStep := 0;
   DoBeepOnStart;
+end;
+
+procedure TfCameraDM.DoOnStartCatureCamera(Sender: TObject);
+begin
+  DoLightsOnStartStop(TCapturePack(Sender).CameraNumber, True);
 end;
 
 procedure TfCameraDM.DoOnStopCature(Sender: TObject);
@@ -340,6 +381,11 @@ begin
   fMain.StBar.Panels[1].Text := 'Испытание сохранено в файл: ' + FileName;
   fMain.EditTestName.Text := fServiceDM.GetFileNameByMask;
   Params['LastTest'].AsInteger := Params['LastTest'].AsInteger + 1;
+end;
+
+procedure TfCameraDM.DoOnStopCatureCamera(Sender: TObject);
+begin
+  DoLightsOnStartStop(TCapturePack(Sender).CameraNumber, False);
 end;
 
 procedure TfCameraDM.LoadParamsToGui;
@@ -643,12 +689,13 @@ begin
     raise ECameraManagerError.CreateFmt(cUnableToGetCaptureVideoPin, [FCameraIndex + 1]);
 end;
 
-constructor TCapturePack.Create(const AOwner: TCameraManager);
+constructor TCapturePack.Create(const AOwner: TCameraManager; const ACameraNumber: Integer);
 begin
   FOwner := AOwner;
   FCameraIndex := -1;
   FMediaTypeIndex := -1;
   FFilterProperties := nil;
+  FCameraNumber := ACameraNumber;
 end;
 
 destructor TCapturePack.Destroy;
@@ -662,6 +709,18 @@ begin
   if Assigned(FFilterProperties) then
     FreeAndNil(FFilterProperties);
   inherited;
+end;
+
+procedure TCapturePack.DoOnStartCapture;
+begin
+  if Assigned(FOnStartCapture) then
+    FOnStartCapture(Self);
+end;
+
+procedure TCapturePack.DoOnStopCapture;
+begin
+  if Assigned(FOnStopCapture) then
+    FOnStopCapture(Self);
 end;
 
 function TCapturePack.GetActive: Boolean;
@@ -836,6 +895,7 @@ begin
     Exit;
 
   ResetGraph;
+  FIsCapturing := False;
 
   with FGraph as ICaptureGraphBuilder2 do
     if FCamera.BaseFilter.DataLength > 0 then
@@ -843,7 +903,14 @@ begin
         HR := RenderStream(@PIN_CATEGORY_CAPTURE, @MEDIATYPE_Video, FCamera as IBaseFilter,
           FFilter as IBaseFilter, FVideoWindow as IBaseFilter);
         if HR = S_OK then
-          FIsCapturing := FGraph.Play
+          begin
+            try
+              FIsCapturing := FGraph.Play;
+            finally
+              if FIsCapturing then
+                DoOnStartCapture;
+            end;
+          end
         else
           raise ECameraManagerError.CreateFmt(cStartVideoError, [FCameraIndex, IntToHex(HR, 8)]);
       end;
@@ -856,15 +923,19 @@ begin
   if not FIsCapturing then
     Exit;
 
-  FFilter.QueryInterface(IID_ISeuil, Seuil);
-  if Assigned(Seuil) then
-    begin
-      Seuil.SetActive(False);
-      Seuil.SetCallback(nil);
-    end;
-  FIsCapturing := False;
-  FGraph.ClearGraph;
-  FGraph.Active := False;
+  try
+    FFilter.QueryInterface(IID_ISeuil, Seuil);
+    if Assigned(Seuil) then
+      begin
+        Seuil.SetActive(False);
+        Seuil.SetCallback(nil);
+      end;
+    FGraph.ClearGraph;
+    FGraph.Active := False;
+  finally
+    FIsCapturing := False;
+    DoOnStopCapture;
+  end;
 end;
 
 { ================================================================================================ }
@@ -1057,7 +1128,7 @@ begin
   FCameraEnum := nil;
   FCamSync := TCameraSynchronizer.Create(Self);
   for I := 0 to 1 do
-    FCams[I] := TCapturePack.Create(Self);
+    FCams[I] := TCapturePack.Create(Self, I);
 
   FCapturing := False;
 end;

@@ -247,10 +247,10 @@ type
     procedure TestMouseMove;
     procedure TestWatch3D;
 
-    procedure ChangePreviewButtonImage(var btn: TSpeedButton);
     procedure ChangeStartButtonImage(var btn: TSpeedButton);
     procedure LoadHelp;
   public
+    procedure ChangePreviewButtonImage(var btn: TSpeedButton);
     procedure LoadFile(const Name: String);
   end;
 
@@ -342,7 +342,7 @@ begin
     StartPreview(TSpeedButton(Sender).Tag)
   else
     StopPreview(TSpeedButton(Sender).Tag);
-  ChangePreviewButtonImage(TSpeedButton(Sender));
+//  ChangePreviewButtonImage(TSpeedButton(Sender));
 end;
 
 procedure TfMain.btnStartTestClick(Sender: TObject);
