@@ -621,7 +621,21 @@ end;
 
 procedure TfMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  CameraManager.StopCapture;
+  if CameraManager.IsCapturing then
+    begin
+      CameraManager.StopCapture;
+      // Give filter a chance to free itself
+      Sleep(3000);
+    end
+  else
+    begin
+      if CameraManager.FirstCamera.IsCapturing then
+        CameraManager.FirstCamera.StopCapture;
+      if CameraManager.SecondCamera.IsCapturing then
+        CameraManager.SecondCamera.StopCapture;
+      // Give filter a chance to free itself
+      Sleep(3000);
+    end;
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);
