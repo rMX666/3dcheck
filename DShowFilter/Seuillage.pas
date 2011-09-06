@@ -137,6 +137,7 @@ begin
       fSeuillageProcessor.SetCallback(FOnLedDetected);
       fSeuillageProcessor.SetMaxPointSize(MaxPointSize);
       fSeuillageProcessor.SetMinPointSize(MinPointSize);
+      fSeuillageProcessor.MaxPointCount := FMaxPointCount;
       Result := True;
     end else
       Result := False;
