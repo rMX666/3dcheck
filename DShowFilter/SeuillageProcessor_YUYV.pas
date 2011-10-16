@@ -10,6 +10,7 @@ type
   TSeuillageProcessor_YUYV = class (TSeuillageProcessor_CbCr)
   protected
     procedure DrawCenterCross; override;
+    procedure DrawGrid; override;
     procedure DrawCross(aPoint : TPoint); override;
     procedure Find(pPixel : Pointer); override;
     function PointCenterWeightedMean: TPoint; override;
@@ -49,10 +50,41 @@ begin
       pPixelHor^.Y := X_CENTER_COL;
     if (Longint(pPixelVert) >= FAddrStart) and (Longint(pPixelVert) <= FAddrEnd) then
       pPixelVert^.Y := X_CENTER_COL;
-  
+
     pPixelHor  := PYUYVDouble(Longint(pPixelHor) + iPixelSize);
     pPixelVert := PYUYVDouble(Longint(pPixelVert) + iPixelSizeXSampleWidth);
   end;
+end;
+
+procedure TSeuillageProcessor_YUYV.DrawGrid;
+var
+  pPixelVert, pPixelHor: array of PYUYVDouble;
+  i, j: Integer;
+  iPixelSizeXSampleWidth: Integer;
+begin
+  SetLength(pPixelHor, GridSize);
+  SetLength(pPixelVert, GridSize);
+  for j := 0 to GridSize - 1 do
+    begin
+      pPixelHor[j] := PYUYVDouble(FAddrStart + iPixelSize*(round((1 / GridSize) * j * SampleHeight)) * SampleWidth);
+      pPixelVert[j] := PYUYVDouble(FAddrStart + iPixelSize*(round((1 / GridSize) * j * SampleWidth)));
+    end;
+  iPixelSizeXSampleWidth := iPixelSize*SampleWidth;
+
+  for i := 0 to SampleWidth do
+    for j := 0 to GridSize - 1 do
+      begin
+        if (Longint(pPixelHor[j]) >= FAddrStart) and (Longint(pPixelHor[j]) <= FAddrEnd) then
+          (pPixelHor[j])^.Y := X_CENTER_COL;
+        if (Longint(pPixelVert[j]) >= FAddrStart) and (Longint(pPixelVert[j]) <= FAddrEnd) then
+          (pPixelVert[j])^.Y := X_CENTER_COL;
+
+        pPixelHor[j]  := PYUYVDouble(Longint(pPixelHor[j]) + iPixelSize);
+        pPixelVert[j] := PYUYVDouble(Longint(pPixelVert[j]) + iPixelSizeXSampleWidth);
+      end;
+
+  SetLength(pPixelHor, 0);
+  SetLength(pPixelVert, 0);
 end;
 
 procedure TSeuillageProcessor_YUYV.DrawCross(aPoint : TPoint);
@@ -243,21 +275,11 @@ begin
   GreyMask[6] := PIX_LIGHT;
   {$endif}
   Result := S_OK;
-
-
 end;
 
 function TSeuillageProcessor_YUYV.TestPixel(pPixel: Pointer): Boolean;
 begin
   Result := YUYVDouble(pPixel^).Y = PIX_LIGHT;
 end;
-
-
-
-
-
-
-
-
 
 end.

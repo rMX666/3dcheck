@@ -96,6 +96,12 @@ type
 
     function SetMaxPointCount(Count: Byte): HResult; stdcall;
     function GetMaxPointCount(pbCount: PByte): HResult; stdcall;
+
+    function SetNeedGrid(Need: Boolean): HRESULT; stdcall;
+    function GetNeedGrid(pNeed: PBoolean): HRESULT; stdcall;
+
+    function SetGridSize(Size: Byte): HRESULT; stdcall;
+    function GetGridSize(pSize: PByte): HResult; stdcall;
   end;
 
 

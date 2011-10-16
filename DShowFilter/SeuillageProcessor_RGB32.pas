@@ -10,6 +10,7 @@ type
   TSeuillageProcessor_RGB32 = class (TSeuillageProcessor)
   protected
     procedure DrawCenterCross; override;
+    procedure DrawGrid; override;
     procedure DrawCross(aPoint : TPoint); override;
     procedure Find(pPixel : Pointer); override;
     function PointCenterWeightedMean: TPoint; override;
@@ -53,7 +54,36 @@ begin
   end;
 end;
 
+procedure TSeuillageProcessor_RGB32.DrawGrid;
+var
+  pPixelVert, pPixelHor: array of PRGBQuad;
+  i, j: Integer;
+  iPixelSizeXSampleWidth: Integer;
+begin
+  SetLength(pPixelHor, GridSize);
+  SetLength(pPixelVert, GridSize);
+  for j := 0 to GridSize - 1 do
+    begin
+      pPixelHor[j] := PRGBQuad(FAddrStart + iPixelSize*(round((1 / GridSize) * j * SampleHeight)) * SampleWidth);
+      pPixelVert[j] := PRGBQuad(FAddrStart + iPixelSize*(round((1 / GridSize) * j * SampleWidth)));
+    end;
+  iPixelSizeXSampleWidth := iPixelSize*SampleWidth;
 
+  for i := 0 to SampleWidth do
+    for j := 0 to GridSize - 1 do
+      begin
+        if (Longint(pPixelHor[j]) >= FAddrStart) and (Longint(pPixelHor[j]) <= FAddrEnd) then
+          FillChar((pPixelHor[j])^, iPixelSize, X_CENTER_COL);
+        if (Longint(pPixelVert[j]) >= FAddrStart) and (Longint(pPixelVert[j]) <= FAddrEnd) then
+          FillChar((pPixelVert[j])^, iPixelSize, X_CENTER_COL);
+
+        pPixelHor[j]  := PRGBQuad(Longint(pPixelHor[j]) + iPixelSize);
+        pPixelVert[j] := PRGBQuad(Longint(pPixelVert[j]) + iPixelSizeXSampleWidth);
+      end;
+
+  SetLength(pPixelHor, 0);
+  SetLength(pPixelVert, 0);
+end;
 
 procedure TSeuillageProcessor_RGB32.DrawCross(aPoint : TPoint);
 var
@@ -84,8 +114,6 @@ begin
     pPixelDown := PRGBQuad(Longint(pPixelDown) - iPixelSizeXSampleWidth);
   end;
 end;
-
-
 
 procedure TSeuillageProcessor_RGB32.Find(pPixel : Pointer);
 var

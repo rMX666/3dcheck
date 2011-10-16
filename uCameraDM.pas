@@ -22,6 +22,10 @@ type
     FMaxPointSize: Byte;
     FActive: Boolean;
     FCallback: TOnLedDetectedCB;
+    FGridSize: Byte;
+    FNeedGrid: Byte;
+    procedure SetGridSize(const Value: Byte);
+    procedure SetNeedGrid(const Value: Byte);
     procedure SetCallback(const Value: TOnLedDetectedCB);
     procedure SetActive(const Value: Boolean);
     procedure SetMaxPointSize(const Value: Byte);
@@ -39,6 +43,8 @@ type
     property MaxPointSize: Byte read FMaxPointSize write SetMaxPointSize;
     property Treshhold: Byte    read FTreshhold    write SetTreshhold;
     property PointCount: Byte   read FPointCount   write SetPointCount;
+    property NeedGrid: Byte     read FNeedGrid     write SetNeedGrid;
+    property GridSize: Byte     read FGridSize     write SetGridSize;
   end;
 
   TCapturePack = class
@@ -507,6 +513,13 @@ begin
     Apply;
 end;
 
+procedure TFilterProperties.SetGridSize(const Value: Byte);
+begin
+  FGridSize := Value;
+  if FOwner.IsCapturing then
+    Apply;
+end;
+
 procedure TFilterProperties.SetMaxPointSize(const Value: Byte);
 begin
   FMaxPointSize := Value;
@@ -517,6 +530,13 @@ end;
 procedure TFilterProperties.SetMinPointSize(const Value: Byte);
 begin
   FMinPointSize := Value;
+  if FOwner.IsCapturing then
+    Apply;
+end;
+
+procedure TFilterProperties.SetNeedGrid(const Value: Byte);
+begin
+  FNeedGrid := Value;
   if FOwner.IsCapturing then
     Apply;
 end;

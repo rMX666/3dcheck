@@ -10,6 +10,7 @@ type
   TSeuillageProcessor_UYVY = class (TSeuillageProcessor_CbCr)
   protected
     procedure DrawCenterCross; override;
+    procedure DrawGrid; override;
     procedure DrawCross(aPoint : TPoint); override;
     procedure Find(pPixel : Pointer); override;
     function PointCenterWeightedMean: TPoint; override;
@@ -55,7 +56,36 @@ begin
   end;
 end;
 
+procedure TSeuillageProcessor_UYVY.DrawGrid;
+var
+  pPixelVert, pPixelHor: array of PUYVYDouble;
+  i, j: Integer;
+  iPixelSizeXSampleWidth: Integer;
+begin
+  SetLength(pPixelHor, GridSize);
+  SetLength(pPixelVert, GridSize);
+  for j := 0 to GridSize - 1 do
+    begin
+      pPixelHor[j] := PUYVYDouble(FAddrStart + iPixelSize*(round((1 / GridSize) * j * SampleHeight)) * SampleWidth);
+      pPixelVert[j] := PUYVYDouble(FAddrStart + iPixelSize*(round((1 / GridSize) * j * SampleWidth)));
+    end;
+  iPixelSizeXSampleWidth := iPixelSize*SampleWidth;
+  
+  for i := 0 to SampleWidth do
+    for j := 0 to GridSize - 1 do
+      begin
+        if (Longint(pPixelHor[j]) >= FAddrStart) and (Longint(pPixelHor[j]) <= FAddrEnd) then
+          (pPixelHor[j])^.Y := X_CENTER_COL;
+        if (Longint(pPixelVert[j]) >= FAddrStart) and (Longint(pPixelVert[j]) <= FAddrEnd) then
+          (pPixelVert[j])^.Y := X_CENTER_COL;
 
+        pPixelHor[j]  := PUYVYDouble(Longint(pPixelHor[j]) + iPixelSize);
+        pPixelVert[j] := PUYVYDouble(Longint(pPixelVert[j]) + iPixelSizeXSampleWidth);
+      end;
+
+  SetLength(pPixelHor, 0);
+  SetLength(pPixelVert, 0);
+end;
 
 procedure TSeuillageProcessor_UYVY.DrawCross(aPoint : TPoint);
 var
@@ -230,7 +260,6 @@ begin
   GreyMask[13] := PIX_LIGHT;
   GreyMask[15] := PIX_LIGHT;
 
-
   {$else}
   Mask1[1] := bSeuil - $80;
   Mask1[3] := bSeuil - $80;
@@ -254,17 +283,6 @@ function TSeuillageProcessor_UYVY.TestPixel(pPixel: Pointer): Boolean;
 begin
   Result := UYVYDouble(pPixel^).Y = PIX_LIGHT;
 end;
-
-
-
-
-
-
-
-
-
-
-
 
 end.
 

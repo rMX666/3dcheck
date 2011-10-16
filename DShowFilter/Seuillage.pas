@@ -48,6 +48,8 @@ type
     MaxPointSize  : Integer;
     fOnLedDetected : TOnLedDetectedCB;
     FMaxPointCount: Byte;
+    FNeedGrid: Boolean;
+    FGridSize: Byte;
 
     fSeuillageProcessor : TSeuillageProcessor;
     function CanPerformTransform(const pMediaType : PAMMediaType) : boolean;
@@ -80,6 +82,12 @@ type
 
     function SetMaxPointCount(Count: Byte): HResult; stdcall;
     function GetMaxPointCount(pbCount: PByte): HResult; stdcall;
+
+    function SetNeedGrid(Need: Boolean): HRESULT; stdcall;
+    function GetNeedGrid(pNeed: PBoolean): HRESULT; stdcall;
+
+    function SetGridSize(Size: Byte): HRESULT; stdcall;
+    function GetGridSize(pSize: PByte): HResult; stdcall;
   end;
 
 
@@ -107,8 +115,6 @@ begin
   MaxPointSize := 119;
 end;
 
-
-
 Destructor TSeuillage.Destroy;
 begin
   {$ifdef DEBUG}
@@ -118,8 +124,6 @@ begin
 
   inherited;
 end;
-
-
 
 ///////////////////////////////////////////////////////////////////////
 // canPerformTransform: We support RGB24 and RGB32 input
@@ -144,8 +148,6 @@ begin
   end;
 end;
 
-
-
 function TSeuillage.CheckInputType(mtIn: PAMMediaType): HRESULT;
 begin
   {$ifdef DEBUG}
@@ -156,9 +158,6 @@ begin
   else
     Result := VFW_E_TYPE_NOT_ACCEPTED;
 end;
-
-
-
 
 function TSeuillage.GetPages(out pages: TCAGUID): HResult;
 begin
@@ -175,8 +174,6 @@ begin
   Result := S_OK;
 end;
 
-
-
 function TSeuillage.SetMinPointSize(Size : Byte): HResult;
 begin
   MinPointSize := Size - 1;
@@ -185,8 +182,6 @@ begin
   if Assigned(fSeuillageProcessor) then
     Result := fSeuillageProcessor.SetMinPointSize(MinPointSize);   // 0 point size is diameter 1
 end;
-
-
 
 function TSeuillage.SetMaxPointCount(Count: Byte): HResult;
 begin
@@ -206,15 +201,11 @@ begin
     Result := fSeuillageProcessor.SetMaxPointSize(MaxPointSize);  // 0 point size is diameter 1
 end;
 
-
-
 function TSeuillage.GetSeuil( pbSeuil : PByte): HResult;
 begin
   pbSeuil^ := fSeuil;
   Result := S_OK;
 end;
-
-
 
 function TSeuillage.SetSeuil(bSeuil : Byte): HResult;
 begin
@@ -225,7 +216,14 @@ begin
     Result := fSeuillageProcessor.SetSeuil(bSeuil);
 end;
 
+function TSeuillage.SetNeedGrid(Need: Boolean): HRESULT;
+begin
+  FNeedGrid := Need;
+  Result := S_OK;
 
+  if Assigned(fSeuillageProcessor) then
+    fSeuillageProcessor.NeedGrid := FNeedGrid;
+end;
 
 function TSeuillage.SetNoise(noise1, noise2 : Byte): HResult;
 begin
@@ -235,23 +233,17 @@ begin
     Result := fSeuillageProcessor.SetNoise(noise1, noise2);
 end;
 
-
-
 function TSeuillage.GetActive(pIsActive: PBoolean): HResult;
 begin
   pIsActive^ := fIsActive;
   Result := S_OK;
 end;
 
-
-
 function TSeuillage.SetActive(isActive: Boolean): HResult;
 begin
   fIsActive := isActive;
   Result := S_OK;
 end;
-
-
 
 function TSeuillage.SetCallback(pCallback: TOnLedDetectedCB): HResult;
 begin
@@ -262,7 +254,14 @@ begin
     Result := S_OK;
 end;
 
+function TSeuillage.SetGridSize(Size: Byte): HRESULT;
+begin
+  FGridSize := Size;
+  Result := S_OK;
 
+  if Assigned(fSeuillageProcessor) then
+    fSeuillageProcessor.GridSize := FGridSize;
+end;
 
 function TSeuillage.GetCallBack(var pCallback: TOnLedDetectedCB): HResult;
 begin
@@ -270,7 +269,11 @@ begin
   Result := S_OK;
 end;
 
-
+function TSeuillage.GetGridSize(pSize: PByte): HResult;
+begin
+  pSize^ := FGridSize;
+  Result := S_OK;
+end;
 
 function TSeuillage.Transform(Sample: IMediaSample): HRESULT;
 var
@@ -293,7 +296,6 @@ begin
   Result := S_OK;
 end;
 
-
 function TSeuillage.GetMaxPointCount(pbCount: PByte): HResult;
 begin
   pbCount^ := FMaxPointCount;
@@ -306,19 +308,19 @@ begin
   Result := S_OK;
 end;
 
-
-
 function TSeuillage.GetMinPointSize(pSize: PByte): HResult;
 begin
   pSize^ := MinPointSize + 1;
   Result := S_OK;
 end;
 
-
+function TSeuillage.GetNeedGrid(pNeed: PBoolean): HRESULT;
+begin
+  pNeed^ := FNeedGrid;
+  Result := S_OK;
+end;
 
 initialization
   TBCClassFactory.CreateFilter(TSeuillage, 'FreeTrackFilter', CLSID_Seuillage,
                                CLSID_LegacyAmFilterCategory, MERIT_DO_NOT_USE, 0, nil);
-
-
 end.

@@ -21,6 +21,8 @@ type
   TSeuillageProcessor = class (TObject)
   private
     FMaxPointCount: Byte;
+    FNeedGrid: Boolean;
+    FGridSize: Byte;
   protected
     aLed: TRect;
     FAddrEnd: LongInt;
@@ -41,6 +43,7 @@ type
     SampleSize: LongInt;
     SampleWidth: LongInt;
     procedure DrawCenterCross; virtual; abstract;
+    procedure DrawGrid; virtual; abstract;
     procedure DrawCross(aPoint : TPoint); virtual; abstract;
     procedure Find(pPixel : Pointer); dynamic; abstract;  // dynamic: required to avoid exception errors
     function Inside(aPixAddr: LongInt): Boolean; virtual;
@@ -59,9 +62,9 @@ type
     procedure Threshold(pData : pByte); virtual;
     property AddrStart: LongInt read FAddrStart write SetAddrStart;
     property MaxPointCount: Byte read FMaxPointCount write FMaxPointCount;
+    property NeedGrid: Boolean read FNeedGrid write FNeedGrid;
+    property GridSize: Byte read FGridSize write FGridSize;
   end;
-  
-
 
   TSeuillageProcessorFactory = class (TObject)
     class function CreateSeuillageProcessor(pMediaType : PAMMediaType): 
@@ -78,6 +81,8 @@ const
   PIX_TRACKED = $FF;
 
   POINT_MAX_DIM = 100;
+
+  DEFAULT_GRID_SIZE = 4;
 
   {$ifdef SSE2}
   SignOffset : TMaskSeuil = ($80, $80, $80, $80, $80, $80, $80, $80,
@@ -110,6 +115,8 @@ begin
   SampleWidth := pvi.bmiHeader.biWidth;
   SampleHeight := abs(pvi.bmiHeader.biHeight);
   SampleSize   := pvi.bmiHeader.biSizeImage;
+  FNeedGrid := True;
+  FGridSize := DEFAULT_GRID_SIZE;
 
   ListPoint := TListPoint.Create;
 
@@ -171,7 +178,9 @@ begin
     end;
     pPixel := Pointer(Longint(pPixel) + iPixelSize shl 1 );   //on test un pixel sur deux // Par le vu france?
   end;
-  DrawCenterCross;
+  if FNeedGrid then
+    DrawGrid
+  else DrawCenterCross;
 
   ListPoint.ReferenceClock := aClock;
   if Assigned(FOnLedDetected) then
