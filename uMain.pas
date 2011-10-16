@@ -655,6 +655,7 @@ begin
     begin
       ComboTestList.ItemIndex := 0;
       CreateScene;
+      SceneCenterCamera;
     end;
   ScriptConsole1.SourcePath := ExpandFileName('.\Source\');
 
@@ -773,7 +774,7 @@ begin
   ClearScene;
   LoadFile(Params['TestsDir'].AsString + ComboTestList.Items[ComboTestList.ItemIndex]);
   SceneShowCameras(CheckBoxShowCamera.Checked, fServiceDM.MCFile.Options['CameraRadius'].AsFloat, fServiceDM.MCFile.Options['CameraHeight'].AsFloat);
-  SceneCenterCamera;
+//  SceneCenterCamera;
   SceneCreatePath;
   SceneMakeAnimateTable;
   SceneMakeTrajectoryList;
