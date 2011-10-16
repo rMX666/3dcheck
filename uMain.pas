@@ -916,7 +916,7 @@ begin
       0: Cam := GLCameraMain;
       1: Cam := GLCameraCamView;
     end;
-  Cam.Position.X := 1.2;
+  Cam.Position.X := -1.2;
   Cam.Position.Y := 1.2;
   Cam.Position.Z := 1.2;
   Cam.TargetObject.Position.X := 0;

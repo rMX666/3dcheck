@@ -1169,8 +1169,8 @@ object fMain: TfMain
         object Label4: TLabel
           Left = 80
           Top = 24
-          Width = 257
-          Height = 27
+          Width = 210
+          Height = 29
           Caption = #1040#1085#1072#1083#1080#1090#1080#1095#1077#1089#1082#1080#1081' '#1084#1086#1076#1091#1083#1100
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clGray
@@ -1478,8 +1478,8 @@ object fMain: TfMain
         object Label3: TLabel
           Left = 80
           Top = 24
-          Width = 261
-          Height = 27
+          Width = 217
+          Height = 29
           Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clGray
@@ -2748,8 +2748,8 @@ object fMain: TfMain
         object Label18: TLabel
           Left = 80
           Top = 24
-          Width = 176
-          Height = 27
+          Width = 145
+          Height = 29
           Caption = #1057#1082#1088#1080#1087#1090'-'#1082#1086#1085#1089#1086#1083#1100
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clGray
@@ -2898,8 +2898,8 @@ object fMain: TfMain
         object Label2: TLabel
           Left = 80
           Top = 24
-          Width = 94
-          Height = 27
+          Width = 77
+          Height = 29
           Caption = #1057#1087#1088#1072#1074#1082#1072
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clGray
@@ -3538,8 +3538,8 @@ object fMain: TfMain
             object LabelName: TLabel
               Left = 152
               Top = 16
-              Width = 201
-              Height = 22
+              Width = 163
+              Height = 23
               Caption = '3D Motion Check v1.0'
               Font.Charset = RUSSIAN_CHARSET
               Font.Color = clGray
@@ -3552,7 +3552,7 @@ object fMain: TfMain
             object LabelVersion: TLabel
               Left = 152
               Top = 48
-              Width = 44
+              Width = 36
               Height = 16
               Caption = #1042#1077#1088#1089#1080#1103
               Font.Charset = RUSSIAN_CHARSET
@@ -3566,7 +3566,7 @@ object fMain: TfMain
             object Label21: TLabel
               Left = 152
               Top = 64
-              Width = 257
+              Width = 219
               Height = 16
               Caption = #1056#1072#1079#1088#1072#1073#1086#1090#1095#1080#1082#1080': '#1057#1086#1083#1076#1072#1090#1086#1074' '#1042'.'#1043'., '#1057#1090#1072#1085#1080#1085' '#1052'.'#1055'.'
               Font.Charset = RUSSIAN_CHARSET
@@ -3580,7 +3580,7 @@ object fMain: TfMain
             object Label22: TLabel
               Left = 152
               Top = 80
-              Width = 443
+              Width = 378
               Height = 16
               Caption = 
                 #1055#1088#1072#1074#1086#1086#1073#1083#1072#1076#1072#1090#1077#1083#1100': '#1054#1088#1077#1085#1073#1091#1088#1075#1089#1082#1080#1081' '#1075#1086#1089#1091#1076#1072#1088#1089#1090#1074#1077#1085#1085#1099#1081' '#1072#1075#1088#1072#1088#1085#1099#1081' '#1091#1085#1080#1074#1077#1088#1089#1080#1090 +
@@ -3596,7 +3596,7 @@ object fMain: TfMain
             object Label23: TLabel
               Left = 152
               Top = 96
-              Width = 58
+              Width = 52
               Height = 16
               Caption = #1050#1086#1085#1090#1072#1082#1090#1099':'
               Font.Charset = RUSSIAN_CHARSET
