@@ -1073,7 +1073,7 @@ object fMain: TfMain
                 Width = 129
                 Height = 21
                 Style = csDropDownList
-                ItemHeight = 0
+                ItemHeight = 13
                 TabOrder = 4
               end
               object cbNeedCountTrajectory: TCheckBox
@@ -1422,7 +1422,7 @@ object fMain: TfMain
           Height = 21
           Style = csDropDownList
           Anchors = [akLeft, akTop, akRight]
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
           OnChange = ComboTestListChange
           OnDropDown = ComboTestListDropDown
@@ -1989,7 +1989,7 @@ object fMain: TfMain
             Max = 255
             Position = 100
             ShowSelRange = False
-            TabOrder = 2
+            TabOrder = 4
             ThumbLength = 15
             TickStyle = tsNone
             OnChange = FilterPropertyChange
@@ -2016,7 +2016,7 @@ object fMain: TfMain
             Max = 254
             Position = 3
             ShowSelRange = False
-            TabOrder = 5
+            TabOrder = 7
             ThumbLength = 15
             TickStyle = tsNone
             OnChange = FilterPropertyChange
@@ -2033,7 +2033,7 @@ object fMain: TfMain
             Min = 1
             Position = 7
             ShowSelRange = False
-            TabOrder = 8
+            TabOrder = 10
             ThumbLength = 15
             TickStyle = tsNone
             OnChange = FilterPropertyChange
@@ -2045,7 +2045,7 @@ object fMain: TfMain
             Height = 21
             Anchors = [akLeft, akBottom]
             Enabled = False
-            TabOrder = 3
+            TabOrder = 5
             Text = '200'
             OnChange = FilterPropertyChange
           end
@@ -2059,7 +2059,7 @@ object fMain: TfMain
             Enabled = False
             Max = 255
             Position = 200
-            TabOrder = 4
+            TabOrder = 6
           end
           object MinPointSize1Edit: TEdit
             Tag = 2
@@ -2069,7 +2069,7 @@ object fMain: TfMain
             Height = 21
             Anchors = [akLeft, akBottom]
             Enabled = False
-            TabOrder = 6
+            TabOrder = 8
             Text = '2'
             OnChange = FilterPropertyChange
           end
@@ -2083,7 +2083,7 @@ object fMain: TfMain
             Enabled = False
             Max = 254
             Position = 2
-            TabOrder = 7
+            TabOrder = 9
           end
           object MaxPointSize1Edit: TEdit
             Tag = 4
@@ -2093,7 +2093,7 @@ object fMain: TfMain
             Height = 21
             Anchors = [akLeft, akBottom]
             Enabled = False
-            TabOrder = 9
+            TabOrder = 11
             Text = '50'
             OnChange = FilterPropertyChange
           end
@@ -2108,7 +2108,7 @@ object fMain: TfMain
             Min = 1
             Max = 255
             Position = 50
-            TabOrder = 10
+            TabOrder = 12
           end
           object CheckBoxDisableFilter1: TCheckBox
             Left = 8
@@ -2117,7 +2117,7 @@ object fMain: TfMain
             Height = 17
             Anchors = [akLeft, akBottom]
             Caption = #1054#1090#1082#1083#1102#1095#1080#1090#1100' '#1092#1080#1083#1100#1090#1088
-            TabOrder = 1
+            TabOrder = 3
             OnClick = FilterPropertyChange
           end
           object EditCameraDegree1: TEdit
@@ -2126,7 +2126,7 @@ object fMain: TfMain
             Top = 75
             Width = 257
             Height = 21
-            TabOrder = 12
+            TabOrder = 2
             Text = '60'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2139,7 +2139,7 @@ object fMain: TfMain
             Height = 21
             Style = csDropDownList
             ItemHeight = 13
-            TabOrder = 13
+            TabOrder = 1
             OnChange = ComboMediaTypesChange
           end
         end
@@ -2290,7 +2290,7 @@ object fMain: TfMain
             Max = 255
             Position = 100
             ShowSelRange = False
-            TabOrder = 2
+            TabOrder = 4
             ThumbLength = 15
             TickStyle = tsNone
             OnChange = FilterPropertyChange
@@ -2318,7 +2318,7 @@ object fMain: TfMain
             Max = 254
             Position = 3
             ShowSelRange = False
-            TabOrder = 5
+            TabOrder = 7
             ThumbLength = 15
             TickStyle = tsNone
             OnChange = FilterPropertyChange
@@ -2335,7 +2335,7 @@ object fMain: TfMain
             Min = 1
             Position = 7
             ShowSelRange = False
-            TabOrder = 8
+            TabOrder = 10
             ThumbLength = 15
             TickStyle = tsNone
             OnChange = FilterPropertyChange
@@ -2348,7 +2348,7 @@ object fMain: TfMain
             Height = 21
             Anchors = [akLeft, akBottom]
             Enabled = False
-            TabOrder = 3
+            TabOrder = 5
             Text = '200'
             OnChange = FilterPropertyChange
           end
@@ -2362,7 +2362,7 @@ object fMain: TfMain
             Enabled = False
             Max = 255
             Position = 200
-            TabOrder = 4
+            TabOrder = 6
           end
           object MinPointSize2UpDown: TUpDown
             Left = 310
@@ -2374,7 +2374,7 @@ object fMain: TfMain
             Enabled = False
             Max = 254
             Position = 2
-            TabOrder = 7
+            TabOrder = 9
           end
           object MaxPointSize2UpDown: TUpDown
             Left = 310
@@ -2387,7 +2387,7 @@ object fMain: TfMain
             Min = 1
             Max = 255
             Position = 50
-            TabOrder = 10
+            TabOrder = 12
           end
           object MaxPointSize2Edit: TEdit
             Tag = 5
@@ -2397,7 +2397,7 @@ object fMain: TfMain
             Height = 21
             Anchors = [akLeft, akBottom]
             Enabled = False
-            TabOrder = 9
+            TabOrder = 11
             Text = '50'
             OnChange = FilterPropertyChange
           end
@@ -2409,7 +2409,7 @@ object fMain: TfMain
             Height = 21
             Anchors = [akLeft, akBottom]
             Enabled = False
-            TabOrder = 6
+            TabOrder = 8
             Text = '2'
             OnChange = FilterPropertyChange
           end
@@ -2421,7 +2421,7 @@ object fMain: TfMain
             Height = 17
             Anchors = [akLeft, akBottom]
             Caption = #1054#1090#1082#1083#1102#1095#1080#1090#1100' '#1092#1080#1083#1100#1090#1088
-            TabOrder = 1
+            TabOrder = 3
             OnClick = FilterPropertyChange
           end
           object EditCameraDegree2: TEdit
@@ -2430,7 +2430,7 @@ object fMain: TfMain
             Top = 75
             Width = 257
             Height = 21
-            TabOrder = 12
+            TabOrder = 2
             Text = '60'
             OnChange = EditMassChange
             OnKeyPress = CheckEditKeyPress
@@ -2443,7 +2443,7 @@ object fMain: TfMain
             Height = 21
             Style = csDropDownList
             ItemHeight = 13
-            TabOrder = 13
+            TabOrder = 1
             OnChange = ComboMediaTypesChange
           end
         end
@@ -2703,7 +2703,7 @@ object fMain: TfMain
           Caption = #1057#1080#1085#1093#1088#1086#1085#1080#1079#1080#1088#1086#1074#1072#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080' '#1082#1072#1084#1077#1088
           Checked = True
           State = cbChecked
-          TabOrder = 3
+          TabOrder = 5
           OnClick = CheckBoxSyncCamSettingsClick
         end
         object CheckBoxMouseMove: TCheckBox
@@ -2712,7 +2712,7 @@ object fMain: TfMain
           Width = 144
           Height = 17
           Caption = #1059#1087#1088#1072#1074#1083#1077#1085#1080#1077' '#1084#1099#1096#1100#1102' (F3)'
-          TabOrder = 4
+          TabOrder = 3
           OnClick = CheckBoxMouseMoveClick
         end
         object CheckBox3DView: TCheckBox
@@ -2721,7 +2721,7 @@ object fMain: TfMain
           Width = 120
           Height = 17
           Caption = #1055#1088#1086#1089#1084#1086#1090#1088' '#1074' 3D (F2)'
-          TabOrder = 5
+          TabOrder = 4
           OnClick = CheckBox3DViewClick
         end
       end
