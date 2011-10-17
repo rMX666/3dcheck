@@ -156,6 +156,8 @@ type
     Splitter2: TSplitter;
     cbTrajectory: TComboBox;
     cbNeedCountTrajectory: TCheckBox;
+    btnTestDebug: TButton;
+    procedure btnTestDebugClick(Sender: TObject);
     procedure EditTestNameChange(Sender: TObject);
     procedure cbNeedCountTrajectoryClick(Sender: TObject);
     procedure Tree3DTableClick(Sender: TObject);
@@ -260,7 +262,7 @@ var
 implementation
 
 uses
-  uDebug, Math, uMCPoint, uParams, u3DView, uVTData, uMCCounter;
+  uDebug, Math, uMCPoint, uParams, u3DView, uVTData, uMCCounter, uTestDebug;
 
 {$R *.dfm}
 
@@ -1472,6 +1474,13 @@ begin
     btn.Caption := 'Остановить'#13#10'испытание'
   else
     btn.Caption := 'Начать'#13#10'испытание';
+end;
+
+procedure TfMain.btnTestDebugClick(Sender: TObject);
+begin
+  if not fTestDebug.IsActive then
+    fTestDebug.Show
+  else fTestDebug.Hide;
 end;
 
 end.

@@ -13,7 +13,8 @@ uses
   ifpii_MCFile in 'ifpii_MCFile.pas',
   ifpiir_MCFile in 'ifpiir_MCFile.pas',
   uVTData in 'uVTData.pas',
-  uMCCounter in 'uMCCounter.pas';
+  uMCCounter in 'uMCCounter.pas',
+  uTestDebug in 'uTestDebug.pas' {fTestDebug};
 
 {$R *.res}
 
@@ -23,5 +24,6 @@ begin
   Application.CreateForm(TfMain, fMain);
   Application.CreateForm(TfCameraDM, fCameraDM);
   Application.CreateForm(Tf3DView, f3DView);
+  Application.CreateForm(TfTestDebug, fTestDebug);
   Application.Run;
 end.

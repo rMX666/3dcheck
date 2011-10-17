@@ -2,7 +2,7 @@ object fMain: TfMain
   Left = 0
   Top = 0
   Caption = 'fMain'
-  ClientHeight = 707
+  ClientHeight = 795
   ClientWidth = 1127
   Color = clBtnFace
   Constraints.MinHeight = 600
@@ -21,7 +21,7 @@ object fMain: TfMain
   TextHeight = 13
   object StBar: TStatusBar
     Left = 0
-    Top = 688
+    Top = 776
     Width = 1127
     Height = 19
     Panels = <
@@ -31,21 +31,24 @@ object fMain: TfMain
       item
         Width = 400
       end>
+    ExplicitTop = 688
   end
   object PageMain: TPageControl
     Left = 0
     Top = 0
     Width = 1127
-    Height = 688
+    Height = 776
     ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
+    ExplicitHeight = 688
     object TabSheet1: TTabSheet
       Caption = #1040#1085#1072#1083#1080#1090#1080#1095#1077#1089#1082#1080#1081' '#1084#1086#1076#1091#1083#1100
+      ExplicitHeight = 660
       object Splitter3DTable: TSplitter
         Left = 0
-        Top = 494
+        Top = 582
         Width = 1119
         Height = 6
         Cursor = crVSplit
@@ -60,19 +63,21 @@ object fMain: TfMain
         Left = 0
         Top = 73
         Width = 1119
-        Height = 421
+        Height = 509
         ActivePage = TabSheet4
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
+        ExplicitHeight = 421
         object TabSheet4: TTabSheet
           Caption = '3D-'#1084#1086#1076#1077#1083#1100
           TabVisible = False
+          ExplicitHeight = 411
           object Splitter2: TSplitter
             Left = 669
             Top = 0
             Width = 6
-            Height = 411
+            Height = 499
             Beveled = True
             ResizeStyle = rsUpdate
             ExplicitLeft = 756
@@ -82,19 +87,21 @@ object fMain: TfMain
             Left = 0
             Top = 0
             Width = 669
-            Height = 411
+            Height = 499
             Align = alLeft
             BevelOuter = bvNone
             Caption = 'pnl3dView'
             TabOrder = 0
+            ExplicitHeight = 411
             object pnl3dViewControls: TPanel
               Left = 0
-              Top = 344
+              Top = 432
               Width = 669
               Height = 67
               Align = alBottom
               BevelOuter = bvNone
               TabOrder = 0
+              ExplicitTop = 344
               DesignSize = (
                 669
                 67)
@@ -1091,21 +1098,22 @@ object fMain: TfMain
               Left = 3
               Top = 3
               Width = 663
-              Height = 338
+              Height = 426
               Camera = fServiceDM.GLCameraMain
               Buffer.BackgroundColor = cl3DDkShadow
-              FieldOfView = 118.773040771484400000
+              FieldOfView = 129.701431274414100000
               Align = alClient
               OnClick = GLViewerMainClick
               OnDblClick = GLViewerMainDblClick
               OnMouseMove = GLViewerMainMouseMove
+              ExplicitHeight = 338
             end
           end
           object TreeInfo: TVirtualStringTree
             Left = 675
             Top = 0
             Width = 436
-            Height = 411
+            Height = 499
             Align = alClient
             Header.AutoSizeIndex = 1
             Header.DefaultHeight = 17
@@ -1124,6 +1132,7 @@ object fMain: TfMain
             OnBeforeCellPaint = TreeInfoBeforeCellPaint
             OnGetText = TreeInfoGetText
             OnGetNodeDataSize = TreeInfoGetNodeDataSize
+            ExplicitHeight = 411
             Columns = <
               item
                 Position = 0
@@ -1430,7 +1439,7 @@ object fMain: TfMain
       end
       object Tree3DTable: TVirtualStringTree
         Left = 0
-        Top = 500
+        Top = 588
         Width = 1119
         Height = 160
         Align = alBottom
@@ -1457,12 +1466,14 @@ object fMain: TfMain
         OnClick = Tree3DTableClick
         OnGetText = Tree3DTableGetText
         OnGetNodeDataSize = Tree3DTableGetNodeDataSize
+        ExplicitTop = 500
         Columns = <>
       end
     end
     object TabSheet2: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
       ImageIndex = 1
+      ExplicitHeight = 660
       object Panel4: T3DGradientPanel
         Left = 0
         Top = 0
@@ -1837,12 +1848,13 @@ object fMain: TfMain
         Left = 0
         Top = 73
         Width = 1119
-        Height = 587
+        Height = 675
         Align = alClient
         BevelInner = bvNone
         BevelOuter = bvNone
         BorderStyle = bsNone
         TabOrder = 1
+        ExplicitHeight = 587
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
@@ -2724,6 +2736,15 @@ object fMain: TfMain
           TabOrder = 4
           OnClick = CheckBox3DViewClick
         end
+        object btnTestDebug: TButton
+          Left = 696
+          Top = 320
+          Width = 289
+          Height = 25
+          Caption = #1054#1090#1082#1088#1099#1090#1100' '#1086#1082#1085#1086' '#1086#1090#1083#1072#1076#1082#1080
+          TabOrder = 6
+          OnClick = btnTestDebugClick
+        end
       end
     end
     object TabScripts: TTabSheet
@@ -2882,6 +2903,7 @@ object fMain: TfMain
     object TabSheet3: TTabSheet
       Caption = #1057#1087#1088#1072#1074#1082#1072
       ImageIndex = 2
+      ExplicitHeight = 660
       object Panel3: T3DGradientPanel
         Left = 0
         Top = 0
@@ -3259,11 +3281,12 @@ object fMain: TfMain
         Left = 0
         Top = 73
         Width = 1119
-        Height = 587
+        Height = 675
         ActivePage = TabAbout
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 1
+        ExplicitHeight = 587
         object TabHelp: TTabSheet
           Caption = 'TabHelp'
           ImageIndex = 1
