@@ -420,6 +420,7 @@ begin
       CheckBoxAnimation.Checked := Params['Animation'].AsBoolean;
       CheckBoxShowCamera.Checked := Params['ShowCamera'].AsBoolean;
       ComboPointCount.ItemIndex := Params['PointCount'].AsInteger - 1;
+      ComboPointCount.OnChange(ComboPointCount);
 
       MinPointSize1.OnChange := nil;
       MinPointSize2.OnChange := nil;

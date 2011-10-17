@@ -2745,6 +2745,15 @@ object fMain: TfMain
           TabOrder = 6
           OnClick = btnTestDebugClick
         end
+        object btnSaveSettings: TButton
+          Left = 696
+          Top = 352
+          Width = 289
+          Height = 25
+          Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
+          TabOrder = 7
+          OnClick = btnSaveSettingsClick
+        end
       end
     end
     object TabScripts: TTabSheet
@@ -3661,7 +3670,7 @@ object fMain: TfMain
   object PlayTimer: TTimer
     Enabled = False
     OnTimer = PlayTimerTimer
-    Left = 752
-    Top = 456
+    Left = 728
+    Top = 496
   end
 end

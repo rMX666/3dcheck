@@ -157,6 +157,8 @@ type
     cbTrajectory: TComboBox;
     cbNeedCountTrajectory: TCheckBox;
     btnTestDebug: TButton;
+    btnSaveSettings: TButton;
+    procedure btnSaveSettingsClick(Sender: TObject);
     procedure btnTestDebugClick(Sender: TObject);
     procedure EditTestNameChange(Sender: TObject);
     procedure cbNeedCountTrajectoryClick(Sender: TObject);
@@ -344,6 +346,11 @@ begin
     StartPreview(TSpeedButton(Sender).Tag)
   else
     StopPreview(TSpeedButton(Sender).Tag);
+end;
+
+procedure TfMain.btnSaveSettingsClick(Sender: TObject);
+begin
+  Params.SaveParams;
 end;
 
 procedure TfMain.btnStartTestClick(Sender: TObject);
