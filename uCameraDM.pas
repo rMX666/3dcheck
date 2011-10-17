@@ -128,7 +128,7 @@ type
   TSetMediaTypeEvent = procedure(Sender: TObject; const CameraIndex: Integer; Width, Height: Integer) of object;
   TBeforeStartCaptureEvent = procedure (Sender: TObject; const CameraIndex: Integer; var AllowStart: Boolean) of object;
   // When you get the point
-  TGetPointsEvent = procedure (Sender: TObject; const List: T3DPointList) of object;
+  TGetPointsEvent = procedure (Sender: TObject; var List: T3DPointList) of object;
 
   TCameraManager = class
   private
@@ -152,7 +152,7 @@ type
     procedure Initialize(const ACamera1, ACamera2, AFilter1, AFilter2: TFilter; const AGraph1, AGraph2: TFilterGraph;
       const AVideoWindow1, AVideoWindow2: TVideoWindow);
     procedure DoOnBeforeStartCapture(const CameraIndex: Integer; var AllowStart: Boolean);
-    procedure DoOnGetPoint(const List: T3DPointList);
+    procedure DoOnGetPoint(var List: T3DPointList);
     procedure DoOnStartCapture;
     procedure DoOnStopCapture;
   public
@@ -185,7 +185,7 @@ type
     Graph2: TFilterGraph;
     procedure DataModuleCreate(Sender: TObject);
   private
-    procedure DoOnGetPoints(Sender: TObject; const List: T3DPointList);
+    procedure DoOnGetPoints(Sender: TObject; var List: T3DPointList);
     procedure DoOnBeforeStartCapture(Sender: TObject; const CameraIndex: Integer; var AllowStart: Boolean);
     procedure DoOnStartCature(Sender: TObject);
     procedure DoOnStopCature(Sender: TObject);
@@ -219,7 +219,7 @@ implementation
 
 uses
   Forms, Registry, DateUtils, Buttons,
-  uParams, uMain, u3DView, uServiceDM;
+  uParams, uMain, u3DView, uServiceDM, uTestDebug;
 
 const
   KEY_FREETRACKFILTER = 'CLSID\{0A99F2CA-79C9-4312-B78E-ED6CB3829275}\InprocServer32';
@@ -286,7 +286,9 @@ begin
   LoadParamsToGui;
 end;
 
-procedure TfCameraDM.DoOnGetPoints(Sender: TObject; const List: T3DPointList);
+{$DEFINE DEBUG}
+
+procedure TfCameraDM.DoOnGetPoints(Sender: TObject; var List: T3DPointList);
 
   function MilliSecToDateTimeFormat(const Format: String; T: Cardinal): String;
   var
@@ -298,10 +300,24 @@ procedure TfCameraDM.DoOnGetPoints(Sender: TObject; const List: T3DPointList);
     Ms := T mod 1000;
     Result := FormatDateTime(Format, EncodeTime(H, M, S, Ms));
   end;
-
+var
+  I: Integer;
+  P: T3DPoint;
 begin
+  // Fix for coordinates
+  for I := 0 to List.Count - 1 do
+    begin
+      P := List[I];
+      P.X := P.X - FCam1Width div 2;
+      P.Y := P.Y - FCam1Height div 2;
+      P.Z := P.Z - FCam1Width div 2;
+      List[I] := P;
+    end;
   with FCaptureFile.AddCoordinate do
     SetList(List);
+  {$IFDEF DEBUG}
+  fTestDebug.Add(List);
+  {$ENDIF}
 
   FLastStep := FCurStep;
   Inc(FTestTime, List.Time);
@@ -1248,7 +1264,7 @@ begin
     end;
 end;
 
-procedure TCameraManager.DoOnGetPoint(const List: T3DPointList);
+procedure TCameraManager.DoOnGetPoint(var List: T3DPointList);
 begin
   if Assigned(FOnGetPoint) then
     FOnGetPoint(Self, List);

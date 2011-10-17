@@ -124,8 +124,15 @@ begin
 end;
 
 procedure T3DPointList.SetItems(Index: Integer; const Value: T3DPoint);
+var
+  P: Pointer;
 begin
-  inherited Items[Index] := @Value;
+  P := (inherited Items[Index]);
+  FreeMem(P, SizeOf(T3DPoint));
+  P := nil;
+  GetMem(P, SizeOf(T3DPoint));
+  T3DPoint(P^) := Value;
+  inherited Items[Index] := P;
 end;
 
 { TMCPoint }
@@ -300,12 +307,18 @@ end;
 procedure TMCPoint.SetList(const List: T3DPointList);
 var
   I: Integer;
+  P: T3DPoint;
 begin
   if Assigned(FPoints) then
     FreeAndNil(FPoints);
   FPoints := T3DPointList.Create(List.Time);
   for I := 0 to List.Count - 1 do
-    FPoints.Add(List[I]);
+    begin
+      P.X := List.Items[I].X;
+      P.Y := List.Items[I].Y;
+      P.Z := List.Items[I].Z;
+      FPoints.Add(P);
+    end;
 end;
 
 procedure TMCPoint.SetTime(const Value: Cardinal);
