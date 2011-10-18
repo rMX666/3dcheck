@@ -11,7 +11,7 @@ uses
 
 type
   TPlayBtnType = (btPlay, btStop, btPause, btStepBack, btStepForvard, btBack, btForvard);
-  TControlButton = (cbZoomIn, cbZoomOut, cbRotateUp, cbRotateLeft, cbRotateRight, cbRotateDown);
+  TControlButton = (cbZoomIn, cbZoomOut, cbRotateUp, cbRotateLeft, cbRotateRight, cbRotateDown, cbUpdate);
 
   TfMain = class(TForm)
     ActionManager1: TActionManager;
@@ -158,6 +158,7 @@ type
     cbNeedCountTrajectory: TCheckBox;
     btnTestDebug: TButton;
     btnSaveSettings: TButton;
+    btnUpdate: TSpeedButton;
     procedure btnSaveSettingsClick(Sender: TObject);
     procedure btnTestDebugClick(Sender: TObject);
     procedure EditTestNameChange(Sender: TObject);
@@ -395,6 +396,8 @@ begin
         GLCameraMain.MoveAroundTarget(0, -2);
       cbRotateDown:
         GLCameraMain.MoveAroundTarget(-2, 0);
+      cbUpdate:
+        SceneAnimateEnd;
     end;
 end;
 
