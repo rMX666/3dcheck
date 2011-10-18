@@ -24,11 +24,14 @@ object fTestDebug: TfTestDebug
     Width = 684
     Height = 515
     Align = alClient
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Courier New'
+    Font.Style = []
+    ParentFont = False
+    ScrollBars = ssVertical
     TabOrder = 0
-    ExplicitLeft = 176
-    ExplicitTop = 184
-    ExplicitWidth = 185
-    ExplicitHeight = 89
   end
   object btnClose: TButton
     Left = 0

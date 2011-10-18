@@ -57,8 +57,10 @@ end;
 
 procedure TfTestDebug.FormShow(Sender: TObject);
 begin
+  Width := 450;
   Left := Screen.Width - Width;
-  Top := 300;
+  Top := 150;
+  Height := Screen.Height - 200;
 end;
 
 function TfTestDebug.IsActive: Boolean;
