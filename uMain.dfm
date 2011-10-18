@@ -38,7 +38,7 @@ object fMain: TfMain
     Top = 0
     Width = 1127
     Height = 776
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange

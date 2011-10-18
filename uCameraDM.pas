@@ -426,6 +426,13 @@ begin
       ComboPointCount.ItemIndex := Params['PointCount'].AsInteger - 1;
       ComboPointCount.OnChange(ComboPointCount);
 
+      CheckBoxSyncCamSettings.Checked := Params['SyncCamSettings'].AsBoolean;
+
+      Treshhold1.OnChange := nil;
+      Treshhold2.OnChange := nil;
+      Treshhold1Edit.OnChange := nil;
+      Treshhold2Edit.OnChange := nil;
+
       MinPointSize1.OnChange := nil;
       MinPointSize2.OnChange := nil;
       MaxPointSize1.OnChange := nil;
@@ -460,8 +467,13 @@ begin
       MaxPointSize1Edit.OnChange := FilterPropertyChange;
       MaxPointSize2Edit.OnChange := FilterPropertyChange;
 
-      CheckBoxDisableFilter1.Checked := Params['DisableFilter2'].AsBoolean;
-      CheckBoxDisableFilter2.Checked := Params['DisableFilter1'].AsBoolean;
+      Treshhold1.OnChange := FilterPropertyChange;
+      Treshhold2.OnChange := FilterPropertyChange;
+      Treshhold1Edit.OnChange := FilterPropertyChange;
+      Treshhold2Edit.OnChange := FilterPropertyChange;
+
+      CheckBoxDisableFilter1.Checked := Params['DisableFilter1'].AsBoolean;
+      CheckBoxDisableFilter2.Checked := Params['DisableFilter2'].AsBoolean;
       EditCameraDegree1.Text := Params['CameraDegree1'].AsString;
       EditCameraDegree2.Text := Params['CameraDegree2'].AsString;
       EditCamRadius.Text := Params['CamRadius'].AsString;
@@ -470,7 +482,6 @@ begin
       EditY0.Text := Params['Y0'].AsString;
       EditZ0.Text := Params['Z0'].AsString;
       EditMass.Text := Params['Mass'].AsString;
-      CheckBoxSyncCamSettings.Checked := Params['SyncCamSettings'].AsBoolean;
 
       CheckBoxEnablePerspective.Checked := Params['EnablePerspective'].AsBoolean;
     end;
