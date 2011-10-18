@@ -32,14 +32,13 @@ type
   private
     FOwner: TMCFile;
     FPoints: T3DPointList;
-    FIndex: Integer;
     function GetMetricPoint(const Index: Integer): T3DPoint;
     function GetTime: Cardinal;
     procedure SetTime(const Value: Cardinal);
     function GetCount: Integer;
     function GetPoint(const Index: Integer): T3DPoint;
   protected
-    procedure OrderPoints;
+    procedure OrderPoints(const Index: Integer);
   public
     constructor Create(AOwner: TMCFile); overload;
     constructor Create(AOwner: TMCFile; const ATime: Cardinal); overload;
@@ -70,7 +69,9 @@ type
     function CheckNodeType(const Name: String): TMCNodeType;
   protected
     procedure OrderPoints;
+    procedure TrimZeroPoints;
     procedure DoOnLoadFile;
+    procedure FreeCoordinate(const Index: Integer);
   public
     constructor Create;
     destructor Destroy; override;
@@ -163,14 +164,12 @@ end;
 constructor TMCPoint.Create(AOwner: TMCFile);
 begin
   FOwner := AOwner;
-  FIndex := -1;
 end;
 
 constructor TMCPoint.Create(AOwner: TMCFile; const ATime: Cardinal);
 begin
   FPoints := T3DPointList.Create(ATime);
   FOwner := AOwner;
-  FIndex := -1;
 end;
 
 destructor TMCPoint.Destroy;
@@ -260,7 +259,7 @@ begin
   Result := (FPoints[Index].X = -1) and (FPoints[Index].Y = -1) and (FPoints[Index].Z = -1);
 end;
 
-procedure TMCPoint.OrderPoints;
+procedure TMCPoint.OrderPoints(const Index: Integer);
 
   // Разность пройденых расстояний для двух ближайших точек
   function GetPointDiff(const p1, p2, p3: T3DPoint): Real;
@@ -275,11 +274,11 @@ var
   MinDiff, DiffRun: Real;
   temp: T3DPoint;
 begin
-  if FIndex <= 1 then
+  if Index <= 1 then
     Exit;
 
-  PrevPoint := FOwner.Coordinates[FIndex - 1].FPoints;
-  PPrevPoint := FOwner.Coordinates[FIndex - 2].FPoints;
+  PrevPoint := FOwner.Coordinates[Index - 1].FPoints;
+  PPrevPoint := FOwner.Coordinates[Index - 2].FPoints;
   for I := 0 to PrevPoint.Count - 1 do
     begin
       MinDiffIndex := 0;
@@ -331,7 +330,6 @@ end;
 function TMCFile.AddCoordinate: TMCPoint;
 begin
   Result := TMCPoint.Create(Self);
-  Result.FIndex := FCoordinates.Count;
   FCoordinates.Add(Result);
 end;
 
@@ -463,7 +461,7 @@ var
   I: Integer;
 begin
   for I := 2 to CoordinateCount - 1 do
-    Coordinates[I].OrderPoints;
+    Coordinates[I].OrderPoints(I);
 end;
 
 // Serialize to XML
@@ -480,6 +478,7 @@ procedure TMCFile.SaveFile(const FileName: String);
 var
   F, I, J: Integer;
 begin
+  TrimZeroPoints;
   OrderPoints;
   F := SysUtils.FileCreate(FileName);
   if F > 0 then
@@ -507,6 +506,40 @@ begin
       WriteStr('  </coordinates>'#13#10, F);
       WriteStr('</test>'#13#10, F);
       SysUtils.FileClose(F);
+    end;
+end;
+
+procedure TMCFile.FreeCoordinate(const Index: Integer);
+var
+  O: TMCPoint;
+begin
+  O := TMCPoint(FCoordinates[Index]);
+  FreeAndNil(O);
+  FCoordinates.Delete(Index);
+end;
+
+procedure TMCFile.TrimZeroPoints;
+
+  function IsZero(Point: TMCPoint): Boolean;
+  var
+    I: Integer;
+  begin
+    Result := False;
+    for I := 0 to Point.Count - 1 do
+      Result := Result or ((Point.Points[I].X = -1) and (Point.Points[I].Y = -1) and (Point.Points[I].Z = -1));
+  end;
+
+var
+  I: Integer;
+begin
+  while IsZero(Coordinates[0]) do
+    FreeCoordinate(0);
+
+  I := CoordinateCount - 1;
+  while IsZero(Coordinates[I]) do
+    begin
+      FreeCoordinate(I);
+      Dec(I);
     end;
 end;
 

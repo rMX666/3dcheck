@@ -300,6 +300,7 @@ procedure TfCameraDM.DoOnGetPoints(Sender: TObject; var List: T3DPointList);
     Ms := T mod 1000;
     Result := FormatDateTime(Format, EncodeTime(H, M, S, Ms));
   end;
+
 var
   I: Integer;
   P: T3DPoint;
@@ -308,10 +309,13 @@ begin
   for I := 0 to List.Count - 1 do
     begin
       P := List[I];
-      P.X := P.X - FCam1Width div 2;
-      P.Y := P.Y - FCam1Height div 2;
-      P.Z := P.Z - FCam1Width div 2;
-      List[I] := P;
+      if (P.X <> -1) and (P.Y <> -1) and (P.Z <> -1) then
+        begin
+          P.X := P.X - FCam1Width div 2;
+          P.Y := P.Y - FCam1Height div 2;
+          P.Z := P.Z - FCam1Width div 2;
+          List[I] := P;
+        end;
     end;
   with FCaptureFile.AddCoordinate do
     SetList(List);
