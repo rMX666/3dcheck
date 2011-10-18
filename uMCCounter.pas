@@ -22,6 +22,7 @@ type
     cpaAnglePath, cpaAngleAxeX, cpaAngleAxeY, cpaAngleAxeZ, // Angle paramaters
     cpaCircleRadius
   );
+  TCountParameterTypes = set of TCountParameterType;
 
 type
   TCountParameterNameWraper = class

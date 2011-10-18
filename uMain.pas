@@ -1010,10 +1010,26 @@ begin
 end;
 
 procedure TfMain.SceneMakeTable;
+
+  function AllowedLength(const S: TCountParameterTypes): Integer;
+  var
+    I: TCountParameterType;
+  begin
+    Result := 0;
+    for I := Low(TCountParameterType) to High(TCountParameterType) do
+      if I in S then
+        Inc(Result);
+  end;
+
+const
+  AllowedTypes: TCountParameterTypes = [cpaDeltaTime, cpaX, cpaY, cpaZ, cpaPathMod, cpaSpeedMod, cpaAccelMod, cpaPulseMod, cpaForceMod];
+
 var
-  I, J, CountCnt: Integer;
+  I, J: Integer;
+  Typ: TCountParameterType;
   Data: PSceneTableData;
   TrajectoryIndex: Integer;
+  CCount: Integer;
 begin
   Tree3DTable.Clear;
   Tree3DTable.BeginUpdate;
@@ -1030,13 +1046,14 @@ begin
 
         with fServiceDM.MCCounter.GetNameWrapper(1) do
           for I := 0 to Count - 1 do
-            with Columns.Add do
-              begin
-                Text := Name[I];
-                Width := Length(Name[I]) * 8;
-                if Width > 150 then
-                  Width := 150;
-              end;
+            if TCountParameterType(I) in AllowedTypes then
+              with Columns.Add do
+                begin
+                  Text := Name[I];
+                  Width := Length(Name[I]) * 8;
+                  if Width > 150 then
+                    Width := 150;
+                end;
       end;
 
     TrajectoryIndex := cbTrajectory.ItemIndex;
@@ -1045,15 +1062,20 @@ begin
 
     with fServiceDM.MCFile, Tree3DTable do
       begin
-        CountCnt := fServiceDM.MCCounter.TypeCount;
+        CCount := AllowedLength(AllowedTypes);
         for I := 0 to CoordinateCount - 1 do
           begin
             Data := GetNodeData(AddChild(nil));
             Data.Caption := 'Координата';
             Data.Value := IntToStr(I + 1);
-            SetLength(Data.PointChars, CountCnt);
-            for J := 0 to CountCnt - 1 do
-              Data.PointChars[J] := FloatToStr(RoundTo(fServiceDM.MCCounter.Value[J, I, TrajectoryIndex], -3));
+            SetLength(Data.PointChars, CCount);
+            J := 0;
+            for Typ := Low(TCountParameterType) to High(TCountParameterType) do
+              if Typ in AllowedTypes then
+                begin
+                  Data.PointChars[J] := FloatToStr(RoundTo(fServiceDM.MCCounter.Value[Integer(Typ), I, TrajectoryIndex], -3));
+                  Inc(J);
+                end;
           end;
       end;
   finally
