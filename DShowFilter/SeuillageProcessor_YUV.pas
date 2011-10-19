@@ -50,22 +50,21 @@ procedure TSeuillageProcessor_YUV.DrawGrid;
 var
   pPixelVert, pPixelHor: array of pByte;
   i, j: Integer;
-  iPixelSizeXSampleWidth: Integer;
 begin
-  SetLength(pPixelHor, GridSize);
-  SetLength(pPixelVert, GridSize);
-  for j := 0 to GridSize - 1 do
+  SetLength(pPixelHor, GridSize - 1);
+  SetLength(pPixelVert, GridSize - 1);
+  for j := 0 to GridSize - 2 do
     begin
-      pPixelHor[j] := pByte(FAddrStart + SampleHeight * SampleWidth * j div GridSize);
-      pPixelVert[j] := pByte(FAddrStart + SampleWidth * j div GridSize);
+      pPixelHor[j] := pByte(FAddrStart + SampleHeight * SampleWidth * (j + 1) div GridSize);
+      pPixelVert[j] := pByte(FAddrStart + SampleWidth * (j + 1) div GridSize);
     end;
 
-  for i := 0 to SampleWidth do
-    for j := 0 to GridSize - 1 do
+  for i := 0 to SampleWidth - 1 do
+    for j := 0 to GridSize - 2 do
       begin
-        if (Longint(pPixelHor[j]) >= FAddrStart) and (Longint(pPixelHor[j]) <= FAddrEnd) then
+        if (Cardinal(pPixelHor[j]) >= FAddrStart) and (Cardinal(pPixelHor[j]) <= FAddrEnd) then
           (pPixelHor[j])^ := X_CENTER_COL;
-        if (Longint(pPixelVert[j]) >= FAddrStart) and (Longint(pPixelVert[j]) <= FAddrEnd) then
+        if (Cardinal(pPixelVert[j]) >= FAddrStart) and (Cardinal(pPixelVert[j]) <= FAddrEnd) then
           (pPixelVert[j])^ := X_CENTER_COL;
 
         Inc(pPixelHor[j]);

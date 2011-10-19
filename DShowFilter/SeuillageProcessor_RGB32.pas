@@ -60,25 +60,25 @@ var
   i, j: Integer;
   iPixelSizeXSampleWidth: Integer;
 begin
-  SetLength(pPixelHor, GridSize);
-  SetLength(pPixelVert, GridSize);
-  for j := 0 to GridSize - 1 do
+  SetLength(pPixelHor, GridSize - 1);
+  SetLength(pPixelVert, GridSize - 1);
+  for j := 0 to GridSize - 2 do
     begin
-      pPixelHor[j] := PRGBQuad(FAddrStart + iPixelSize*(round((1 / GridSize) * j * SampleHeight)) * SampleWidth);
-      pPixelVert[j] := PRGBQuad(FAddrStart + iPixelSize*(round((1 / GridSize) * j * SampleWidth)));
+      pPixelHor[j] := PRGBQuad(FAddrStart + iPixelSize * Floor((j + 1) * SampleHeight * SampleWidth / GridSize));
+      pPixelVert[j] := PRGBQuad(FAddrStart + iPixelSize * Floor((j + 1) * SampleWidth / GridSize));
     end;
   iPixelSizeXSampleWidth := iPixelSize*SampleWidth;
 
-  for i := 0 to SampleWidth do
-    for j := 0 to GridSize - 1 do
+  for i := 0 to SampleWidth - 1 do
+    for j := 0 to GridSize - 2 do
       begin
-        if (Longint(pPixelHor[j]) >= FAddrStart) and (Longint(pPixelHor[j]) <= FAddrEnd) then
+        if (Cardinal(pPixelHor[j]) >= FAddrStart) and (Cardinal(pPixelHor[j]) <= FAddrEnd) then
           FillChar((pPixelHor[j])^, iPixelSize, X_CENTER_COL);
-        if (Longint(pPixelVert[j]) >= FAddrStart) and (Longint(pPixelVert[j]) <= FAddrEnd) then
+        if (Cardinal(pPixelVert[j]) >= FAddrStart) and (Cardinal(pPixelVert[j]) <= FAddrEnd) then
           FillChar((pPixelVert[j])^, iPixelSize, X_CENTER_COL);
 
-        pPixelHor[j]  := PRGBQuad(Longint(pPixelHor[j]) + iPixelSize);
-        pPixelVert[j] := PRGBQuad(Longint(pPixelVert[j]) + iPixelSizeXSampleWidth);
+        pPixelHor[j]  := PRGBQuad(Cardinal(pPixelHor[j]) + iPixelSize);
+        pPixelVert[j] := PRGBQuad(Cardinal(pPixelVert[j]) + iPixelSizeXSampleWidth);
       end;
 
   SetLength(pPixelHor, 0);
