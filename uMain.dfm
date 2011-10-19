@@ -1984,41 +1984,32 @@ object fMain: TfMain
           Height = 457
           Caption = #1050#1072#1084#1077#1088#1072' '#8470'1'
           TabOrder = 0
-          DesignSize = (
-            337
-            457)
           object lblTrashhold1: TLabel
             Left = 28
             Top = 376
             Width = 81
-            Height = 13
+            Height = 17
             Alignment = taRightJustify
-            Anchors = [akLeft, akBottom]
             Caption = #1057#1074#1077#1090#1086#1074#1086#1081' '#1087#1086#1088#1086#1075
             Enabled = False
-            ExplicitTop = 400
           end
           object lblMinPointSize1: TLabel
             Left = 14
-            Top = 400
+            Top = 424
             Width = 95
             Height = 13
             Alignment = taRightJustify
-            Anchors = [akLeft, akBottom]
             Caption = #1052#1080#1085'. '#1088#1072#1079#1084#1077#1088' '#1090#1086#1095#1082#1080
             Enabled = False
-            ExplicitTop = 424
           end
           object lblMaxPointSize1: TLabel
             Left = 9
-            Top = 424
+            Top = 400
             Width = 100
             Height = 13
             Alignment = taRightJustify
-            Anchors = [akLeft, akBottom]
             Caption = #1052#1072#1082#1089'. '#1088#1072#1079#1084#1077#1088' '#1090#1086#1095#1082#1080
             Enabled = False
-            ExplicitTop = 400
           end
           object btnPreview1: TSpeedButton
             Tag = 1
@@ -2118,7 +2109,6 @@ object fMain: TfMain
             Top = 376
             Width = 169
             Height = 17
-            Anchors = [akLeft, akBottom]
             Enabled = False
             Max = 255
             Position = 100
@@ -2137,7 +2127,6 @@ object fMain: TfMain
             VMROptions.Mode = vmrWindowed
             VMROptions.Streams = 1
             Color = clBlack
-            Anchors = [akLeft, akBottom]
           end
           object MinPointSize1: TTrackBar
             Tag = 2
@@ -2145,7 +2134,6 @@ object fMain: TfMain
             Top = 400
             Width = 169
             Height = 17
-            Anchors = [akLeft, akBottom]
             Enabled = False
             Max = 254
             Position = 3
@@ -2161,7 +2149,6 @@ object fMain: TfMain
             Top = 424
             Width = 169
             Height = 17
-            Anchors = [akLeft, akBottom]
             Enabled = False
             Max = 255
             Min = 1
@@ -2177,7 +2164,6 @@ object fMain: TfMain
             Top = 376
             Width = 30
             Height = 21
-            Anchors = [akLeft, akBottom]
             Enabled = False
             TabOrder = 5
             Text = '200'
@@ -2188,7 +2174,6 @@ object fMain: TfMain
             Top = 376
             Width = 16
             Height = 21
-            Anchors = [akLeft, akBottom]
             Associate = Treshhold1Edit
             Enabled = False
             Max = 255
@@ -2201,7 +2186,6 @@ object fMain: TfMain
             Top = 400
             Width = 30
             Height = 21
-            Anchors = [akLeft, akBottom]
             Enabled = False
             TabOrder = 8
             Text = '2'
@@ -2212,7 +2196,6 @@ object fMain: TfMain
             Top = 400
             Width = 16
             Height = 21
-            Anchors = [akLeft, akBottom]
             Associate = MinPointSize1Edit
             Enabled = False
             Max = 254
@@ -2225,7 +2208,6 @@ object fMain: TfMain
             Top = 424
             Width = 30
             Height = 21
-            Anchors = [akLeft, akBottom]
             Enabled = False
             TabOrder = 11
             Text = '50'
@@ -2236,7 +2218,6 @@ object fMain: TfMain
             Top = 424
             Width = 16
             Height = 21
-            Anchors = [akLeft, akBottom]
             Associate = MaxPointSize1Edit
             Enabled = False
             Min = 1
@@ -2249,7 +2230,6 @@ object fMain: TfMain
             Top = 352
             Width = 121
             Height = 17
-            Anchors = [akLeft, akBottom]
             Caption = #1054#1090#1082#1083#1102#1095#1080#1090#1100' '#1092#1080#1083#1100#1090#1088
             TabOrder = 3
             OnClick = FilterPropertyChange
@@ -2276,6 +2256,18 @@ object fMain: TfMain
             TabOrder = 1
             OnChange = ComboMediaTypesChange
           end
+          object CheckBoxGrid1: TCheckBox
+            Tag = 2
+            Left = 144
+            Top = 352
+            Width = 113
+            Height = 17
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1089#1077#1090#1082#1091
+            Checked = True
+            State = cbChecked
+            TabOrder = 14
+            OnClick = FilterPropertyChange
+          end
         end
         object GroupBox2: TGroupBox
           Left = 352
@@ -2284,41 +2276,32 @@ object fMain: TfMain
           Height = 457
           Caption = #1050#1072#1084#1077#1088#1072' '#8470'2'
           TabOrder = 1
-          DesignSize = (
-            337
-            457)
           object lblTrashhold2: TLabel
             Left = 28
             Top = 376
             Width = 81
-            Height = 13
+            Height = 17
             Alignment = taRightJustify
-            Anchors = [akLeft, akBottom]
             Caption = #1057#1074#1077#1090#1086#1074#1086#1081' '#1087#1086#1088#1086#1075
             Enabled = False
-            ExplicitTop = 400
           end
           object lblMinPointSize2: TLabel
             Left = 14
-            Top = 400
+            Top = 424
             Width = 95
             Height = 13
             Alignment = taRightJustify
-            Anchors = [akLeft, akBottom]
             Caption = #1052#1080#1085'. '#1088#1072#1079#1084#1077#1088' '#1090#1086#1095#1082#1080
             Enabled = False
-            ExplicitTop = 424
           end
           object lblMaxPointSize2: TLabel
             Left = 9
-            Top = 424
+            Top = 400
             Width = 100
             Height = 13
             Alignment = taRightJustify
-            Anchors = [akLeft, akBottom]
             Caption = #1052#1072#1082#1089'. '#1088#1072#1079#1084#1077#1088' '#1090#1086#1095#1082#1080
             Enabled = False
-            ExplicitTop = 400
           end
           object btnPreview2: TSpeedButton
             Tag = 2
@@ -2419,7 +2402,6 @@ object fMain: TfMain
             Top = 376
             Width = 169
             Height = 17
-            Anchors = [akLeft, akBottom]
             Enabled = False
             Max = 255
             Position = 100
@@ -2439,7 +2421,6 @@ object fMain: TfMain
             VMROptions.Streams = 1
             VMROptions.Preferences = []
             Color = clBlack
-            Anchors = [akLeft, akBottom]
           end
           object MinPointSize2: TTrackBar
             Tag = 3
@@ -2447,7 +2428,6 @@ object fMain: TfMain
             Top = 400
             Width = 169
             Height = 17
-            Anchors = [akLeft, akBottom]
             Enabled = False
             Max = 254
             Position = 3
@@ -2463,7 +2443,6 @@ object fMain: TfMain
             Top = 424
             Width = 169
             Height = 17
-            Anchors = [akLeft, akBottom]
             Enabled = False
             Max = 255
             Min = 1
@@ -2480,7 +2459,6 @@ object fMain: TfMain
             Top = 376
             Width = 30
             Height = 21
-            Anchors = [akLeft, akBottom]
             Enabled = False
             TabOrder = 5
             Text = '200'
@@ -2491,7 +2469,6 @@ object fMain: TfMain
             Top = 376
             Width = 16
             Height = 21
-            Anchors = [akLeft, akBottom]
             Associate = Treshhold2Edit
             Enabled = False
             Max = 255
@@ -2503,7 +2480,6 @@ object fMain: TfMain
             Top = 400
             Width = 16
             Height = 21
-            Anchors = [akLeft, akBottom]
             Associate = MinPointSize2Edit
             Enabled = False
             Max = 254
@@ -2515,7 +2491,6 @@ object fMain: TfMain
             Top = 424
             Width = 16
             Height = 21
-            Anchors = [akLeft, akBottom]
             Associate = MaxPointSize2Edit
             Enabled = False
             Min = 1
@@ -2529,7 +2504,6 @@ object fMain: TfMain
             Top = 424
             Width = 30
             Height = 21
-            Anchors = [akLeft, akBottom]
             Enabled = False
             TabOrder = 11
             Text = '50'
@@ -2541,7 +2515,6 @@ object fMain: TfMain
             Top = 400
             Width = 30
             Height = 21
-            Anchors = [akLeft, akBottom]
             Enabled = False
             TabOrder = 8
             Text = '2'
@@ -2553,7 +2526,6 @@ object fMain: TfMain
             Top = 352
             Width = 121
             Height = 17
-            Anchors = [akLeft, akBottom]
             Caption = #1054#1090#1082#1083#1102#1095#1080#1090#1100' '#1092#1080#1083#1100#1090#1088
             TabOrder = 3
             OnClick = FilterPropertyChange
@@ -2579,6 +2551,18 @@ object fMain: TfMain
             ItemHeight = 13
             TabOrder = 1
             OnChange = ComboMediaTypesChange
+          end
+          object CheckBoxGrid2: TCheckBox
+            Tag = 3
+            Left = 144
+            Top = 352
+            Width = 113
+            Height = 17
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1089#1077#1090#1082#1091
+            Checked = True
+            State = cbChecked
+            TabOrder = 14
+            OnClick = FilterPropertyChange
           end
         end
         object gbParams: TGroupBox
@@ -2860,20 +2844,21 @@ object fMain: TfMain
         end
         object btnTestDebug: TButton
           Left = 696
-          Top = 320
+          Top = 352
           Width = 289
           Height = 25
           Caption = #1054#1090#1082#1088#1099#1090#1100' '#1086#1082#1085#1086' '#1086#1090#1083#1072#1076#1082#1080
-          TabOrder = 6
+          TabOrder = 7
+          Visible = False
           OnClick = btnTestDebugClick
         end
         object btnSaveSettings: TButton
           Left = 696
-          Top = 352
+          Top = 320
           Width = 289
           Height = 25
           Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
-          TabOrder = 7
+          TabOrder = 6
           OnClick = btnSaveSettingsClick
         end
       end

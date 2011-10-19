@@ -23,9 +23,9 @@ type
     FActive: Boolean;
     FCallback: TOnLedDetectedCB;
     FGridSize: Byte;
-    FNeedGrid: Byte;
+    FShowGrid: Boolean;
     procedure SetGridSize(const Value: Byte);
-    procedure SetNeedGrid(const Value: Byte);
+    procedure SetShowGrid(const Value: Boolean);
     procedure SetCallback(const Value: TOnLedDetectedCB);
     procedure SetActive(const Value: Boolean);
     procedure SetMaxPointSize(const Value: Byte);
@@ -43,7 +43,7 @@ type
     property MaxPointSize: Byte read FMaxPointSize write SetMaxPointSize;
     property Treshhold: Byte    read FTreshhold    write SetTreshhold;
     property PointCount: Byte   read FPointCount   write SetPointCount;
-    property NeedGrid: Byte     read FNeedGrid     write SetNeedGrid;
+    property ShowGrid: Boolean  read FShowGrid     write SetShowGrid;
     property GridSize: Byte     read FGridSize     write SetGridSize;
   end;
 
@@ -474,6 +474,8 @@ begin
 
       CheckBoxDisableFilter1.Checked := Params['DisableFilter1'].AsBoolean;
       CheckBoxDisableFilter2.Checked := Params['DisableFilter2'].AsBoolean;
+      CheckBoxGrid1.Checked := Params['ShowGrid1'].AsBoolean;
+      CheckBoxGrid2.Checked := Params['ShowGrid2'].AsBoolean;
       EditCameraDegree1.Text := Params['CameraDegree1'].AsString;
       EditCameraDegree2.Text := Params['CameraDegree2'].AsString;
       EditCamRadius.Text := Params['CamRadius'].AsString;
@@ -503,6 +505,8 @@ begin
       FSeuil.SetSeuil(FTreshhold);
       FSeuil.SetMaxPointCount(FPointCount);
       FSeuil.SetCallback(FCallback);
+      FSeuil.SetShowGrid(FShowGrid);
+      FSeuil.SetGridSize(FGridSize);
     end;
 end;
 
@@ -521,6 +525,8 @@ begin
   FTreshhold := 200;
   FMinPointSize := 2;
   FMaxPointSize := 50;
+  FShowGrid := True;
+  FGridSize := 4;
 end;
 
 destructor TFilterProperties.Destroy;
@@ -566,9 +572,9 @@ begin
     Apply;
 end;
 
-procedure TFilterProperties.SetNeedGrid(const Value: Byte);
+procedure TFilterProperties.SetShowGrid(const Value: Boolean);
 begin
-  FNeedGrid := Value;
+  FShowGrid := Value;
   if FOwner.IsCapturing then
     Apply;
 end;

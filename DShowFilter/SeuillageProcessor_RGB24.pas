@@ -75,13 +75,13 @@ begin
   for i := 0 to SampleWidth - 1 do
     for j := 0 to GridSize - 2 do
       begin
-        if (Cardinal(pPixelHor[j]) >= FAddrStart) and (Cardinal(pPixelHor[j]) <= FAddrEnd) then
+        if (Longint(pPixelHor[j]) >= FAddrStart) and (Longint(pPixelHor[j]) <= FAddrEnd) then
           FillChar((pPixelHor[j])^, iPixelSize, X_CENTER_COL);
-        if (Cardinal(pPixelVert[j]) >= FAddrStart) and (Cardinal(pPixelVert[j]) <= FAddrEnd) then
+        if (Longint(pPixelVert[j]) >= FAddrStart) and (Longint(pPixelVert[j]) <= FAddrEnd) then
           FillChar((pPixelVert[j])^, iPixelSize, X_CENTER_COL);
 
-        pPixelHor[j]  := PRGBTriple(Cardinal(pPixelHor[j]) + iPixelSize);
-        pPixelVert[j] := PRGBTriple(Cardinal(pPixelVert[j]) + iPixelSizeXSampleWidth);
+        pPixelHor[j]  := PRGBTriple(Longint(pPixelHor[j]) + iPixelSize);
+        pPixelVert[j] := PRGBTriple(Longint(pPixelVert[j]) + iPixelSizeXSampleWidth);
       end;
 
   SetLength(pPixelHor, 0);

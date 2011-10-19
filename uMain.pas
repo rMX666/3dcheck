@@ -159,6 +159,8 @@ type
     btnTestDebug: TButton;
     btnSaveSettings: TButton;
     btnUpdate: TSpeedButton;
+    CheckBoxGrid1: TCheckBox;
+    CheckBoxGrid2: TCheckBox;
     procedure btnSaveSettingsClick(Sender: TObject);
     procedure btnTestDebugClick(Sender: TObject);
     procedure EditTestNameChange(Sender: TObject);
@@ -544,6 +546,16 @@ begin
                 begin
                   SecondCamera.Filter.Active := not TCheckBox(Sender).Checked;
                   Params['DisableFilter2'].AsBoolean := TCheckBox(Sender).Checked;
+                end;
+              2:
+                begin
+                  FirstCamera.Filter.ShowGrid := TCheckBox(Sender).Checked;
+                  Params['ShowGrid1'].AsBoolean := TCheckBox(Sender).Checked;
+                end;
+              3:
+                begin
+                  SecondCamera.Filter.ShowGrid := TCheckBox(Sender).Checked;
+                  Params['ShowGrid2'].AsBoolean := TCheckBox(Sender).Checked;
                 end;
             end;
           stTrackBar:

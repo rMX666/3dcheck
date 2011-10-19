@@ -62,9 +62,9 @@ begin
   for i := 0 to SampleWidth - 1 do
     for j := 0 to GridSize - 2 do
       begin
-        if (Cardinal(pPixelHor[j]) >= FAddrStart) and (Cardinal(pPixelHor[j]) <= FAddrEnd) then
+        if (Longint(pPixelHor[j]) >= FAddrStart) and (Longint(pPixelHor[j]) <= FAddrEnd) then
           (pPixelHor[j])^ := X_CENTER_COL;
-        if (Cardinal(pPixelVert[j]) >= FAddrStart) and (Cardinal(pPixelVert[j]) <= FAddrEnd) then
+        if (Longint(pPixelVert[j]) >= FAddrStart) and (Longint(pPixelVert[j]) <= FAddrEnd) then
           (pPixelVert[j])^ := X_CENTER_COL;
 
         Inc(pPixelHor[j]);

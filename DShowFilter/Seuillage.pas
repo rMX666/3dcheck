@@ -48,7 +48,7 @@ type
     MaxPointSize  : Integer;
     fOnLedDetected : TOnLedDetectedCB;
     FMaxPointCount: Byte;
-    FNeedGrid: Boolean;
+    FShowGrid: Boolean;
     FGridSize: Byte;
 
     fSeuillageProcessor : TSeuillageProcessor;
@@ -83,8 +83,8 @@ type
     function SetMaxPointCount(Count: Byte): HResult; stdcall;
     function GetMaxPointCount(pbCount: PByte): HResult; stdcall;
 
-    function SetNeedGrid(Need: Boolean): HRESULT; stdcall;
-    function GetNeedGrid(pNeed: PBoolean): HRESULT; stdcall;
+    function SetShowGrid(Show: Boolean): HRESULT; stdcall;
+    function GetShowGrid(pShow: PBoolean): HRESULT; stdcall;
 
     function SetGridSize(Size: Byte): HRESULT; stdcall;
     function GetGridSize(pSize: PByte): HResult; stdcall;
@@ -216,13 +216,13 @@ begin
     Result := fSeuillageProcessor.SetSeuil(bSeuil);
 end;
 
-function TSeuillage.SetNeedGrid(Need: Boolean): HRESULT;
+function TSeuillage.SetShowGrid(Show: Boolean): HRESULT;
 begin
-  FNeedGrid := Need;
+  FShowGrid := Show;
   Result := S_OK;
 
   if Assigned(fSeuillageProcessor) then
-    fSeuillageProcessor.NeedGrid := FNeedGrid;
+    fSeuillageProcessor.NeedGrid := FShowGrid;
 end;
 
 function TSeuillage.SetNoise(noise1, noise2 : Byte): HResult;
@@ -314,9 +314,9 @@ begin
   Result := S_OK;
 end;
 
-function TSeuillage.GetNeedGrid(pNeed: PBoolean): HRESULT;
+function TSeuillage.GetShowGrid(pShow: PBoolean): HRESULT;
 begin
-  pNeed^ := FNeedGrid;
+  pShow^ := FShowGrid;
   Result := S_OK;
 end;
 
