@@ -773,9 +773,14 @@ begin
 end;
 
 procedure TfMain.PlayTimerTimer(Sender: TObject);
+var
+  T: Cardinal;
 begin
+  T := fServiceDM.MCFile.Coordinates[FSceneAnimateLastStep].Time;
   SceneAnimateStepForvard;
-  TTimer(Sender).Interval := fServiceDM.MCFile.Coordinates[FSceneAnimateLastStep].Time;
+  if T <= 0 then
+    T := 10;
+  TTimer(Sender).Interval := T;
 end;
 
 // Event handlers end

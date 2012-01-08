@@ -31,21 +31,18 @@ object fMain: TfMain
       item
         Width = 400
       end>
-    ExplicitTop = 688
   end
   object PageMain: TPageControl
     Left = 0
     Top = 0
     Width = 1127
     Height = 776
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
-    ExplicitHeight = 688
     object TabSheet1: TTabSheet
       Caption = #1040#1085#1072#1083#1080#1090#1080#1095#1077#1089#1082#1080#1081' '#1084#1086#1076#1091#1083#1100
-      ExplicitHeight = 660
       object Splitter3DTable: TSplitter
         Left = 0
         Top = 582
@@ -68,11 +65,9 @@ object fMain: TfMain
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
-        ExplicitHeight = 421
         object TabSheet4: TTabSheet
           Caption = '3D-'#1084#1086#1076#1077#1083#1100
           TabVisible = False
-          ExplicitHeight = 411
           object Splitter2: TSplitter
             Left = 669
             Top = 0
@@ -92,7 +87,6 @@ object fMain: TfMain
             BevelOuter = bvNone
             Caption = 'pnl3dView'
             TabOrder = 0
-            ExplicitHeight = 411
             object pnl3dViewControls: TPanel
               Left = 0
               Top = 432
@@ -101,7 +95,6 @@ object fMain: TfMain
               Align = alBottom
               BevelOuter = bvNone
               TabOrder = 0
-              ExplicitTop = 344
               DesignSize = (
                 669
                 67)
@@ -1595,7 +1588,6 @@ object fMain: TfMain
     object TabSheet2: TTabSheet
       Caption = #1055#1088#1086#1074#1077#1076#1077#1085#1080#1077' '#1080#1089#1087#1099#1090#1072#1085#1080#1081
       ImageIndex = 1
-      ExplicitHeight = 660
       object Panel4: T3DGradientPanel
         Left = 0
         Top = 0
@@ -1976,7 +1968,6 @@ object fMain: TfMain
         BevelOuter = bvNone
         BorderStyle = bsNone
         TabOrder = 1
-        ExplicitHeight = 587
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
@@ -1988,7 +1979,7 @@ object fMain: TfMain
             Left = 28
             Top = 376
             Width = 81
-            Height = 17
+            Height = 13
             Alignment = taRightJustify
             Caption = #1057#1074#1077#1090#1086#1074#1086#1081' '#1087#1086#1088#1086#1075
             Enabled = False
@@ -2280,7 +2271,7 @@ object fMain: TfMain
             Left = 28
             Top = 376
             Width = 81
-            Height = 17
+            Height = 13
             Alignment = taRightJustify
             Caption = #1057#1074#1077#1090#1086#1074#1086#1081' '#1087#1086#1088#1086#1075
             Enabled = False
@@ -3019,7 +3010,6 @@ object fMain: TfMain
     object TabSheet3: TTabSheet
       Caption = #1057#1087#1088#1072#1074#1082#1072
       ImageIndex = 2
-      ExplicitHeight = 660
       object Panel3: T3DGradientPanel
         Left = 0
         Top = 0
@@ -3402,7 +3392,6 @@ object fMain: TfMain
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 1
-        ExplicitHeight = 587
         object TabHelp: TTabSheet
           Caption = 'TabHelp'
           ImageIndex = 1
