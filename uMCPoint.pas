@@ -179,7 +179,10 @@ end;
 
 function TMCPoint.GetCount: Integer;
 begin
-  Result := FPoints.Count;
+  if FPoints = nil then
+    Result := 0
+  else
+    Result := FPoints.Count;
 end;
 
 function TMCPoint.GetMetricPoint(const Index: Integer): T3DPoint;
@@ -532,7 +535,11 @@ var
   I: Integer;
 begin
   while IsZero(Coordinates[0]) do
-    FreeCoordinate(0);
+    begin
+      FreeCoordinate(0);
+      if CoordinateCount = 0 then
+        Exit; // Exit if no coordinates left to trim
+    end;
 
   I := CoordinateCount - 1;
   while IsZero(Coordinates[I]) do
