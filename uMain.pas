@@ -803,7 +803,6 @@ begin
   ClearScene;
   LoadFile(Params['TestsDir'].AsString + ComboTestList.Items[ComboTestList.ItemIndex]);
   SceneShowCameras(CheckBoxShowCamera.Checked, fServiceDM.MCFile.Options['CameraRadius'].AsFloat, fServiceDM.MCFile.Options['CameraHeight'].AsFloat);
-//  SceneCenterCamera;
   SceneCreatePath;
   SceneMakeAnimateTable;
   SceneMakeTrajectoryList;
