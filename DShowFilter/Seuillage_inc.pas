@@ -35,8 +35,8 @@ const
   MEDIASUBTYPE_Y422 : TGUID ='{32323459-0000-0010-8000-00AA00389B71}';
   MEDIASUBTYPE_GREY : TGUID ='{59455247-0000-0010-8000-00AA00389B71}';
 
-  LISTPOINT_SCALER = 100; // Ìíîæèòåëü (áûëî 100)
-  LISTPOINT_SCALER_INV = 0.01; // Áûëî 0.01
+  LISTPOINT_SCALER = 100;
+  LISTPOINT_SCALER_INV = 0.01;
 
   X_POINT_SIZE = 15;
   X_POINT_SIZE_HALF = X_POINT_SIZE div 2;
@@ -56,8 +56,6 @@ type
     property Items[Index: Integer] : TPoint read GetItems write SetItems; default;
   end;
 
-
-
   TListRect = class(TList)
   private
     FOffset: TPoint;
@@ -72,7 +70,6 @@ type
     property Items[Index: Integer] : TRect read GetItems write SetItems; default;
     property Offset : TPoint read FOffset write FOffset;
   end;
-
 
   TOnLedDetectedCB = procedure(Points : TListPoint) of object;
 
@@ -104,43 +101,31 @@ type
     function GetGridSize(pSize: PByte): HResult; stdcall;
   end;
 
-
-
 implementation
-
 
 uses Types, Math;
 
 function SortBy_Y(Item1, Item2 : Pointer):Integer;
 begin
   //  >0 (positive)	Item1 est inférieur àItem2.
-  //Result := TPoint(Item2^).y - TPoint(Item1^).y;
   Result := TPoint(Item1^).y - TPoint(Item2^).y;
 end;
-
 
 function SortBy_X(Item1, Item2 : Pointer):Integer;
 begin
   //  >0 (positive)	Item1 est inférieur àItem2.
-  //Result := TPoint(Item2^).y - TPoint(Item1^).y;
   Result := TPoint(Item1^).x - TPoint(Item2^).x;
 end;
-
-
 
 function TListPoint.GetItems(Index: Integer): TPoint;
 begin
   Result := TPoint((inherited Items[index])^) ;
 end;
 
-
-
 procedure TListPoint.SetItems(Index: Integer; const Value: TPoint);
 begin
   inherited Items[index] := @Value;
 end;
-
-
 
 function TListPoint.SortCap : boolean;
 var
@@ -159,16 +144,13 @@ begin
   Move(IdxTop, 0);
 
   Result := True;
-
 end;
-
 
 function TListPoint.SortY : boolean;
 begin
   inherited Sort(@SortBy_Y);
   Result := True;
 end;
-
 
 function TListPoint.Add(const aPoint : TPoint): Integer;
 var
@@ -179,8 +161,6 @@ begin
   Result := inherited Add(p);
 end;
 
-
-
 procedure TListPoint.Clear;
 var
   i : integer;
@@ -190,8 +170,6 @@ begin
   inherited Clear; 
 end;
 
-
-
 { TListRect }
 
 function SortRects(Item1, Item2 : Pointer):Integer;
@@ -199,7 +177,6 @@ begin
   //  >0 (positive)	Item1 est inférieur àItem2.
   Result := TRect(Item2^).Left - TRect(Item1^).Left;
 end;
-
 
 function TListRect.Add(const aRect: TRect): Integer;
 var
@@ -210,8 +187,6 @@ begin
   Result := inherited Add(p);
 end;
 
-
-
 procedure TListRect.Clear;
 var
   i : integer;
@@ -221,15 +196,11 @@ begin
   inherited Clear;
 end;
 
-
-
 procedure TListRect.Delete(Index: Integer);
 begin
   FreeMem( inherited items[index]);
   inherited  Delete (Index);
 end;
-
-
 
 function TListRect.GetItems(Index: Integer): TRect;
 begin
@@ -237,14 +208,10 @@ begin
   OffsetRect(Result, FOffset.X, FOffset.Y);
 end;
 
-
-
 procedure TListRect.SetItems(Index: Integer; const Value: TRect);
 begin
   inherited Items[index] := @Value;
 end;
-
-
 
 function TListRect.Sort: boolean;
 begin
