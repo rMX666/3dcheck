@@ -130,7 +130,6 @@ var
 begin
   P := (inherited Items[Index]);
   FreeMem(P, SizeOf(T3DPoint));
-  P := nil;
   GetMem(P, SizeOf(T3DPoint));
   T3DPoint(P^) := Value;
   inherited Items[Index] := P;
