@@ -1200,6 +1200,7 @@ object fMain: TfMain
                 Style = csDropDownList
                 ItemHeight = 13
                 TabOrder = 4
+                OnChange = cbTrajectoryChange
               end
               object cbNeedCountTrajectory: TCheckBox
                 Left = 368

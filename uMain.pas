@@ -161,6 +161,7 @@ type
     btnUpdate: TSpeedButton;
     CheckBoxGrid1: TCheckBox;
     CheckBoxGrid2: TCheckBox;
+    procedure cbTrajectoryChange(Sender: TObject);
     procedure btnSaveSettingsClick(Sender: TObject);
     procedure btnTestDebugClick(Sender: TObject);
     procedure EditTestNameChange(Sender: TObject);
@@ -226,6 +227,7 @@ type
     procedure SceneMakeTrajectoryList;
     procedure SceneMakeTable;
     procedure SceneMakeAnimateTable;
+    procedure SceneSetLineColor;
 
     procedure SceneAnimateBegin;
     procedure SceneAnimateStepBack(StepCount: Integer = 1);
@@ -380,6 +382,11 @@ begin
   Splitter3DTable.Visible := TCheckBox(Sender).Checked;
   if TCheckBox(Sender).Checked then
     SceneMakeTable;
+end;
+
+procedure TfMain.cbTrajectoryChange(Sender: TObject);
+begin
+  SceneSetLineColor;
 end;
 
 procedure TfMain.SceneControlButtonClick(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -1128,6 +1135,7 @@ begin
 
       SetLength(FSceneLines, Options['PointCount'].AsInteger);
       SetLength(FSceneCubes, Options['PointCount'].AsInteger);
+
       for I := 0 to Options['PointCount'].AsInteger - 1 do
         begin
           FSceneLines[I] := TGLLines.Create(Self);
@@ -1138,29 +1146,64 @@ begin
           FSceneLines[I].NodesAspect := lnaInvisible;
           FSceneLines[I].NodeSize := 0.05;
           FSceneLines[I].Options := [loUseNodeColorForLines];
-          with Params['GLLineColor'] do
-            begin
-              FSceneLines[I].NodeColor.Red := fServiceDM.HexToInt(Copy(AsString, 2, 2)) / 255;
-              FSceneLines[I].NodeColor.Green := fServiceDM.HexToInt(Copy(AsString, 4, 2)) / 255;
-              FSceneLines[I].NodeColor.Blue := fServiceDM.HexToInt(Copy(AsString, 6, 2)) / 255;
-            end;
+
           FSceneLines[I].SplineMode := lsmLines;
 
           FSceneCubes[I] := TGLDummyCube.Create(Self);
           FSceneCubes[I].CubeSize := 0.05;
           FSceneCubes[I].VisibleAtRunTime := True;
-          with Params['GLLineColor'] do
-            begin
-              FSceneCubes[I].EdgeColor.Red := fServiceDM.HexToInt(Copy(AsString, 2, 2)) / 255;
-              FSceneCubes[I].EdgeColor.Green := fServiceDM.HexToInt(Copy(AsString, 4, 2)) / 255;
-              FSceneCubes[I].EdgeColor.Blue := fServiceDM.HexToInt(Copy(AsString, 6, 2)) / 255;
-            end;
 
           fServiceDM.GLScene1.Objects.AddChild(FSceneLines[I]);
           fServiceDM.GLScene1.Objects.AddChild(FSceneCubes[I]);
         end;
+      SceneSetLineColor;
     end;
   FSceneAnimateLastStep := 0;
+end;
+
+procedure TfMain.SceneSetLineColor;
+var
+  I, PointCount: Integer;
+  NodeColor: array [0..2] of Real;
+  Cond: Boolean;
+begin
+  with Params['GLLineColor'] do
+    begin
+      NodeColor[0] := fServiceDM.HexToInt(Copy(AsString, 2, 2)) / 256;
+      NodeColor[1] := fServiceDM.HexToInt(Copy(AsString, 4, 2)) / 256;
+      NodeColor[2] := fServiceDM.HexToInt(Copy(AsString, 6, 2)) / 256;
+    end;
+
+  PointCount := fServiceDM.MCFile.Options['PointCount'].AsInteger;
+  for I := 0 to PointCount - 1 do
+    begin
+      Cond := (I = cbTrajectory.ItemIndex) and (PointCount > 1);
+      if Cond then
+        begin
+          FSceneLines[I].NodeColor.Red := 1;
+          FSceneLines[I].NodeColor.Green := 1;
+          FSceneLines[I].NodeColor.Blue := 1;
+        end
+      else
+        begin
+          FSceneLines[I].NodeColor.Red := NodeColor[0];
+          FSceneLines[I].NodeColor.Green := NodeColor[1];
+          FSceneLines[I].NodeColor.Blue := NodeColor[2];
+        end;
+
+      if Cond then
+        begin
+          FSceneCubes[I].EdgeColor.Red := 1;
+          FSceneCubes[I].EdgeColor.Green := 1;
+          FSceneCubes[I].EdgeColor.Blue := 1;
+        end
+      else
+        begin
+          FSceneCubes[I].EdgeColor.Red := NodeColor[0];
+          FSceneCubes[I].EdgeColor.Green := NodeColor[1];
+          FSceneCubes[I].EdgeColor.Blue := NodeColor[2];
+        end;
+    end;
 end;
 
 procedure TfMain.SceneShowCameras(Visible: Boolean; R: Real = -1; H: Real = -1);
