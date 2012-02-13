@@ -37,7 +37,7 @@ object fMain: TfMain
     Top = 0
     Width = 1127
     Height = 776
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = PageMainChange
@@ -2841,7 +2841,6 @@ object fMain: TfMain
           Height = 25
           Caption = #1054#1090#1082#1088#1099#1090#1100' '#1086#1082#1085#1086' '#1086#1090#1083#1072#1076#1082#1080
           TabOrder = 7
-          Visible = False
           OnClick = btnTestDebugClick
         end
         object btnSaveSettings: TButton

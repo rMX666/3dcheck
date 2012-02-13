@@ -43,10 +43,8 @@ var
 begin
   if IsActive then
     begin
-      Add('Points ---------------------------------');
       for I := 0 to P.Count - 1 do
         mDebug.Lines.Add(Format(cPointLogFormat, [(I + 1), P.Time, P[I].X, P[I].Y, P[I].Z]));
-      Add('Points ---------------------------------');
     end;
 end;
 

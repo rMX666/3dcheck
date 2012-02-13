@@ -99,36 +99,27 @@ type
 
   TCameraSynchronizer = class
   private
-    FPoints: T3DPointList;
+    FStartTime: TDateTime;
+    FCam1Points: TList;
+    FCam2Points: TList;
     FOwner: TCameraManager;
     FCaptureMode: TCaptureMode;
-
-    FPrevSyncTime: TDateTime;
-
-    FCamera1Points: TListPoint;
-    FCamera2Points: TListPoint;
-    FCamera1Time: TDateTime;
-    FCamera2Time: TDateTime;
-    FCamera1LastTime: TDateTime;
-    FCamera2LastTime: TDateTime;
     function GetOnCameraGetPoints(const Index: Byte): TOnLedDetectedCB;
-
-    procedure Make3DList;
+    function Make3DList(T: Cardinal; P1, P2: TListPoint): T3DPointList;
   protected
     constructor Create(AOwner: TCameraManager);
     destructor Destroy; override;
-    procedure DoSynchronize;
-    procedure Drop;
     procedure DoOnCamera1GetPoints(Points: TListPoint);
     procedure DoOnCamera2GetPoints(Points: TListPoint);
   public
     property CameraGetPointProc[const Index: Byte]: TOnLedDetectedCB read GetOnCameraGetPoints;
+    procedure SyncronizePoints;
   end;
 
   TSetMediaTypeEvent = procedure(Sender: TObject; const CameraIndex: Integer; Width, Height: Integer) of object;
   TBeforeStartCaptureEvent = procedure (Sender: TObject; const CameraIndex: Integer; var AllowStart: Boolean) of object;
   // When you get the point
-  TGetPointsEvent = procedure (Sender: TObject; var List: T3DPointList) of object;
+  TGetPointsEvent = procedure (Sender: TObject; const List: T3DPointList) of object;
 
   TCameraManager = class
   private
@@ -152,7 +143,7 @@ type
     procedure Initialize(const ACamera1, ACamera2, AFilter1, AFilter2: TFilter; const AGraph1, AGraph2: TFilterGraph;
       const AVideoWindow1, AVideoWindow2: TVideoWindow);
     procedure DoOnBeforeStartCapture(const CameraIndex: Integer; var AllowStart: Boolean);
-    procedure DoOnGetPoint(var List: T3DPointList);
+    procedure DoOnGetPoint(const List: T3DPointList);
     procedure DoOnStartCapture;
     procedure DoOnStopCapture;
   public
@@ -185,7 +176,7 @@ type
     Graph2: TFilterGraph;
     procedure DataModuleCreate(Sender: TObject);
   private
-    procedure DoOnGetPoints(Sender: TObject; var List: T3DPointList);
+    procedure DoOnGetPoints(Sender: TObject; const List: T3DPointList);
     procedure DoOnBeforeStartCapture(Sender: TObject; const CameraIndex: Integer; var AllowStart: Boolean);
     procedure DoOnStartCature(Sender: TObject);
     procedure DoOnStopCature(Sender: TObject);
@@ -200,7 +191,6 @@ type
     FCam2Width: Integer;
     FCam1Height: Integer;
     FCam2Height: Integer;
-    FTestTime: Cardinal;
 
     FLastStep: Integer;
     FCurStep: Integer;
@@ -231,6 +221,17 @@ function CameraManager: TCameraManager;
 begin
   Result := _CameraManager;
 end;
+
+type
+  // Syncronyzer helper class
+  T2DPoint = class
+  private
+    FTime: TDateTime;
+    FPoints: TListPoint;
+  public
+    property Points: TListPoint read FPoints write FPoints;
+    property Time: TDateTime read FTime write FTime;
+  end;
 
 {$R *.dfm}
 
@@ -288,7 +289,7 @@ end;
 
 {$DEFINE DEBUG}
 
-procedure TfCameraDM.DoOnGetPoints(Sender: TObject; var List: T3DPointList);
+procedure TfCameraDM.DoOnGetPoints(Sender: TObject; const List: T3DPointList);
 
   function MilliSecToDateTimeFormat(const Format: String; T: Cardinal): String;
   var
@@ -304,8 +305,10 @@ procedure TfCameraDM.DoOnGetPoints(Sender: TObject; var List: T3DPointList);
 var
   I: Integer;
   P: T3DPoint;
+  L: T3DPointList;
 begin
   // Fix for coordinates
+  L := T3DPointList.Create(List.Time);
   for I := 0 to List.Count - 1 do
     begin
       P := List[I];
@@ -315,17 +318,16 @@ begin
         P.Y := P.Y - FCam1Height div 2;
       if (P.Z <> -1) then
         P.Z := P.Z - FCam1Width div 2;
-      List[I] := P;
+      L.Add(P);
     end;
-  with FCaptureFile.AddCoordinate do
-    SetList(List);
+
+  FCaptureFile.AddCoordinate.SetList(List);
+
   {$IFDEF DEBUG}
   fTestDebug.Add(List);
   {$ENDIF}
 
   FLastStep := FCurStep;
-  Inc(FTestTime, List.Time);
-  fMain.StBar.Panels[0].Text := 'Время: ' + MilliSecToDateTimeFormat('hh:nn:ss.zzz', FTestTime);
 end;
 
 procedure TfCameraDM.DoOnSetMediaType(Sender: TObject; const CameraIndex: Integer; Width, Height: Integer);
@@ -1013,81 +1015,52 @@ end;
 constructor TCameraSynchronizer.Create(AOwner: TCameraManager);
 begin
   FOwner := AOwner;
-  FPoints := T3DPointList.Create(0);
+  FCam1Points := TList.Create;
+  FCam2Points := TList.Create;
   FCaptureMode := cmNone;
-  FPrevSyncTime := 0;
 end;
 
 destructor TCameraSynchronizer.Destroy;
 begin
   FOwner := nil;
-  FPoints.Clear;
-  FreeAndNil(FPoints);
+  FreeAndNil(FCam1Points);
+  FreeAndNil(FCam2Points);
   inherited;
 end;
 
 procedure TCameraSynchronizer.DoOnCamera1GetPoints(Points: TListPoint);
+var
+  P: T2DPoint;
 begin
   if FOwner.IsCapturing then
     begin
-      FCamera1Points := Points;
-      FCamera1Time := Time;
-      DoSynchronize;
+      P := T2DPoint.Create;
+      P.Time := Now;
+      P.Points := Points.Clone;
+      FCam1Points.Add(P);
+
+      {$IFDEF DEBUG}
+      if Points.Count > 0 then
+        fTestDebug.Add('Cam1: ' + FloatToStr(Points[0].X) + ', ' + FloatToStr(Points[0].Y));
+      {$ENDIF}
     end;
 end;
 
 procedure TCameraSynchronizer.DoOnCamera2GetPoints(Points: TListPoint);
+var
+  P: T2DPoint;
 begin
   if FOwner.IsCapturing then
     begin
-      FCamera2Points := Points;
-      FCamera2Time := Time;
-      DoSynchronize;
+      P := T2DPoint.Create;
+      P.Time := Now;
+      P.Points := Points.Clone;
+
+      {$IFDEF DEBUG}
+      if Points.Count > 0 then
+        fTestDebug.Add('Cam2: ' + FloatToStr(Points[0].X) + ', ' + FloatToStr(Points[0].Y));
+      {$ENDIF}
     end;
-end;
-
-procedure TCameraSynchronizer.DoSynchronize;
-var
-  IsSync: Boolean;
-begin
-  IsSync := False;
-  case FCaptureMode of
-    cmBoth:
-      IsSync :=
-        (FCamera1Time <> 0) and
-        (FCamera2Time <> 0) and
-        ((MillisecondsBetween(FCamera1LastTime, FCamera1Time) >= (Params['Interval'].AsInteger - 50)) or (FCamera1LastTime = 0)) and
-        ((MillisecondsBetween(FCamera2LastTime, FCamera2Time) >= (Params['Interval'].AsInteger - 50)) or (FCamera2LastTime = 0));
-    cmSingleFirst:
-      IsSync :=
-        (FCamera1Time <> 0) and
-        ((MillisecondsBetween(FCamera1LastTime, FCamera1Time) >= (Params['Interval'].AsInteger - 50)) or (FCamera1LastTime = 0));
-    cmSingleSecond:
-      IsSync :=
-        (FCamera2Time <> 0) and
-        ((MillisecondsBetween(FCamera2LastTime, FCamera2Time) >= (Params['Interval'].AsInteger - 50)) or (FCamera2LastTime = 0));
-    cmNone: // Should not be so...
-      begin
-        FOwner.StopCapture;
-        raise ECameraManagerError.Create(cSynchronizeNoneModeError);
-      end;
-  end;
-
-  if IsSync then
-    begin
-      Make3DList;
-      FOwner.DoOnGetPoint(FPoints);
-      FPrevSyncTime := Now;
-      Drop;
-    end;
-end;
-
-procedure TCameraSynchronizer.Drop;
-begin
-  FCamera1LastTime := FCamera1Time;
-  FCamera2LastTime := FCamera2Time;
-  FCamera1Time := 0;
-  FCamera2Time := 0;
 end;
 
 function TCameraSynchronizer.GetOnCameraGetPoints(const Index: Byte): TOnLedDetectedCB;
@@ -1099,66 +1072,136 @@ begin
   end;
 end;
 
-procedure TCameraSynchronizer.Make3DList;
+function TCameraSynchronizer.Make3DList(T: Cardinal; P1, P2: TListPoint): T3DPointList;
 
-  procedure FillZeroPoints;
+  procedure FillZeroPoints(const PointCount: Integer; var Points: T3DPointList);
   var
     P: T3DPoint;
-  var
     ToFill, I: Integer;
   begin
-    ToFill := Params['PointCount'].AsInteger - FPoints.Count;
+    ToFill := PointCount - Points.Count;
     P.X := -1;
     P.Y := -1;
     P.Z := -1;
     for I := 0 to ToFill - 1 do
-      FPoints.Add(P);
+      Points.Add(P);
   end;
 
 var
   I, L: Integer;
   P: T3DPoint;
 begin
-  FPoints.Clear;
-  FPoints.Time := MilliSecondsBetween(FPrevSyncTime, Now);
+  Result := T3DPointList.Create(T);
   case FCaptureMode of
     cmSingleFirst:
-      for I := 0 to FCamera1Points.Count - 1 do
+      for I := 0 to P1.Count - 1 do
         begin
-          P.X := FCamera1Points[I].X;
+          P.X := P1[I].X;
           P.Y := -1;
-          P.Z := FCamera1Points[I].Y;
-          FPoints.Add(P);
+          P.Z := P1[I].Y;
+          Result.Add(P);
         end;
     cmSingleSecond:
-      for I := 0 to FCamera2Points.Count - 1 do
+      for I := 0 to P2.Count - 1 do
         begin
           P.X := -1;
-          P.Y := FCamera2Points[I].X;
-          P.Z := FCamera2Points[I].Y;
-          FPoints.Add(P);
+          P.Y := P2[I].X;
+          P.Z := P2[I].Y;
+          Result.Add(P);
         end;
     cmBoth:
       begin
-        if FCamera1Points.Count > FCamera2Points.Count then
-          L := FCamera2Points.Count
+        if P1.Count > P2.Count then
+          L := P2.Count
         else
-          L := FCamera1Points.Count;
+          L := P1.Count;
         for I := 0 to L - 1 do
           begin
-            P.X := FCamera1Points[I].X;
-            P.Y := FCamera2Points[I].X;
-            P.Z := FCamera1Points[I].Y;
-            FPoints.Add(P);
+            P.X := P1[I].X;
+            P.Y := P2[I].X;
+            P.Z := P1[I].Y;
+            Result.Add(P);
           end;
       end;
     cmNone: // Should not be so...
-      begin
-        FOwner.StopCapture;
-        raise ECameraManagerError.Create(cSynchronizeNoneModeError);
-      end;
+      raise ECameraManagerError.Create(cSynchronizeNoneModeError);
   end;
-  FillZeroPoints;
+  FillZeroPoints(Params['PointCount'].AsInteger, Result);
+end;
+
+procedure TCameraSynchronizer.SyncronizePoints;
+
+  function FindClosest(const P: T2DPoint; const InList: TList): T2DPoint;
+  var
+    I: Integer;
+    PrevDiff, Diff: Cardinal;
+  begin
+    if InList.Count > 1 then
+      begin
+        I := 1;
+        while I < InList.Count do
+          begin
+            PrevDiff := MilliSecondsBetween(P.Time, T2DPoint(InList[I - 1]).Time);
+            Diff := MilliSecondsBetween(P.Time, T2DPoint(InList[I]).Time);
+            if PrevDiff < Diff then
+              Break;
+            Inc(I);
+          end;
+        Result := T2DPoint(InList[I - 1]);
+      end
+    else
+      Result := P;
+  end;
+
+var
+  P1, P2: T2DPoint;
+  I: Integer;
+  T: Cardinal;
+  Point: T3DPointList;
+  ForList: TList;
+  PrevTime: TDateTime;
+begin
+  case FCaptureMode of
+    cmSingleFirst, cmBoth:
+      ForList := FCam1Points;
+    cmSingleSecond:
+      ForList := FCam2Points;
+    cmNone:
+      raise ECameraManagerError.Create(cSynchronizeNoneModeError);
+  end;
+
+  if ForList.Count > 0 then
+    begin
+      PrevTime := FStartTime;
+      for I := 0 to ForList.Count - 1 do
+        begin
+          case FCaptureMode of
+            cmSingleFirst:
+              begin
+                P1 := T2DPoint(ForList[I]);
+                T := MilliSecondsBetween(PrevTime, P1.Time);
+                Point := Make3DList(T, P1.Points, nil);
+                PrevTime := P1.Time;
+              end;
+            cmSingleSecond:
+              begin
+                P2 := T2DPoint(ForList[I]);
+                T := MilliSecondsBetween(PrevTime, P1.Time);
+                Point := Make3DList(T, nil, P2.Points);
+                PrevTime := P2.Time;
+              end;
+            cmBoth:
+              begin
+                P1 := T2DPoint(ForList[I]);
+                P2 := FindClosest(P1, FCam2Points);
+                T := MilliSecondsBetween(PrevTime, P1.Time + (P1.Time - P2.Time));
+                Point := Make3DList(T, P1.Points, P2.Points);
+                PrevTime := P1.Time + (P1.Time - P2.Time);
+              end;
+          end;
+          FOwner.DoOnGetPoint(Point);
+        end;
+    end;
 end;
 
 { ================================================================================================ }
@@ -1286,7 +1329,7 @@ begin
     end;
 end;
 
-procedure TCameraManager.DoOnGetPoint(var List: T3DPointList);
+procedure TCameraManager.DoOnGetPoint(const List: T3DPointList);
 begin
   if Assigned(FOnGetPoint) then
     FOnGetPoint(Self, List);
@@ -1332,7 +1375,7 @@ begin
     end;
   DoOnStartCapture;
   FIsCapturing := True;
-  FCamSync.FPrevSyncTime := Now;
+  FCamSync.FStartTime := Now;
 end;
 
 function TCameraManager.StopCapture: Boolean;
@@ -1348,6 +1391,7 @@ begin
 
   for I := 0 to 1 do
     FCams[I].StopCapture;
+  FCamSync.SyncronizePoints;
   DoOnStopCapture;
   FIsCapturing := False;
 end;

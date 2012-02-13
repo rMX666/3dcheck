@@ -48,6 +48,7 @@ type
     procedure SetItems(Index: Integer; const Value: TPoint);
   public
     ReferenceClock : IReferenceClock;
+    function Clone: TListPoint;
     function SortY : boolean;
     function SortCap : boolean;
     function Add(const aPoint : TPoint): Integer;reintroduce;
@@ -168,6 +169,15 @@ begin
   for i := Count - 1 downto 0 do
     Delete(i);
   inherited Clear; 
+end;
+
+function TListPoint.Clone: TListPoint;
+var
+  I: Integer;
+begin
+  Result := TListPoint.Create;
+  for I := 0 to Count - 1 do
+    Result.Add(Self.GetItems(I));
 end;
 
 { TListRect }
